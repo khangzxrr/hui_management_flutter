@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:hui_management/helper/mocking.dart';
+import 'package:hui_management/view/dashboard_view.dart';
 
 class LoginWidget extends StatelessWidget {
   LoginWidget({super.key});
@@ -16,7 +18,7 @@ class LoginWidget extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Đăng nhập'),
+        title: const Text('Đăng nhập'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -48,6 +50,16 @@ class LoginWidget extends StatelessWidget {
                     onPressed: () async {
                       print('hi!');
                       print(_formKey.currentState?.isValid);
+
+                      //mocking login success
+                      if (MockingData.isTesting) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DashboardWidget(),
+                          ),
+                        );
+                      }
                     },
                     child: const Text('Đăng nhập'))
               ],
