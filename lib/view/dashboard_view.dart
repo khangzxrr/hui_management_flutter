@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/mocking.dart';
-import 'package:hui_management/view/fund_view.dart';
-import 'package:hui_management/view/member_view.dart';
+import 'package:hui_management/view/funds_view.dart';
+import 'package:hui_management/view/members_view.dart';
 
 class DashboardWidget extends StatelessWidget {
   const DashboardWidget({super.key});

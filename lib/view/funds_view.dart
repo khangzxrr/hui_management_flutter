@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hui_management/view/fund_detail.dart';
 import 'package:hui_management/view/fund_edit.dart';
+import 'package:hui_management/view/fund_new_take_view.dart';
 
 class FundWidget extends StatelessWidget {
   const FundWidget({super.key});
@@ -67,9 +68,12 @@ class FundWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FundNewTakeWidget()),
+                      ),
                       icon: Icon(Icons.paid),
-                      label: Text('Chốt'),
+                      label: Text('Hốt'),
                     )
                   ],
                 ),
