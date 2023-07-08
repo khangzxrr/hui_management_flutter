@@ -28,10 +28,10 @@ class FundEditWidget extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                FormBuilderDateTimePicker(
+                FormBuilderTextField(
                   key: _nameKey,
                   name: 'name',
-                  decoration: const InputDecoration(labelText: 'Tên dây hụi'),
+                  decoration: const InputDecoration(labelText: 'Tên hụi'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],

@@ -8,6 +8,7 @@ class FundNewTakeWidget extends StatelessWidget {
 
   final _formKey = GlobalKey<FormBuilderState>();
 
+  final _nameKey = GlobalKey<FormBuilderState>();
   final _predictPriceKey = GlobalKey<FormBuilderState>();
   final _fundPriceKey = GlobalKey<FormBuilderState>();
   final _ownerCostKey = GlobalKey<FormBuilderState>();
@@ -28,25 +29,14 @@ class FundNewTakeWidget extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                FormBuilderDropdown<String>(
-                  name: 'gender',
-                  decoration: InputDecoration(
-                    labelText: 'Gender',
-                    suffix: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        _formKey.currentState!.fields['gender']?.reset();
-                      },
-                    ),
-                    hintText: 'Select Gender',
+                FormBuilderTextField(
+                  key: _nameKey,
+                  name: 'name',
+                  decoration: const InputDecoration(labelText: 'Tên dây hụiii'),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required()],
                   ),
-                  items: genderOptions
-                      .map((gender) => DropdownMenuItem(
-                            alignment: AlignmentDirectional.center,
-                            value: gender,
-                            child: Text(gender),
-                          ))
-                      .toList(),
                 ),
                 FormBuilderTextField(
                   key: _predictPriceKey,
