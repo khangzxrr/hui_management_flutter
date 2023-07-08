@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/mocking.dart';
+import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/service/user_service.dart';
 import 'package:hui_management/view/member_edit.dart';
+import 'package:provider/provider.dart';
 
 class MemberWidget extends StatelessWidget {
-  const MemberWidget({super.key});
+  late final UserModel user;
+
+  MemberWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,13 @@ class MemberWidget extends StatelessWidget {
         children: [
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
-            onPressed: (context) {},
+            onPressed: (context) async {
+              bool isSuccess = await GetIt.I<UserService>().delete(user.id);
+
+              if (isSuccess) {
+                Provider.of<UsersProvider>(context, listen: false).removeUser(user);
+              }
+            },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -30,7 +43,7 @@ class MemberWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MemberEditWidget(),
+                  builder: (context) => MemberEditWidget(isCreateNew: false, user: user),
                 ),
               );
             },
@@ -52,8 +65,8 @@ class MemberWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50.0),
                 child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
               ),
-              title: Text('Họ và Tên'),
-              subtitle: Text('Đã tham gia 8 dây hụi'),
+              title: Text(user.name),
+              subtitle: Text('${user.email}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
             )
           ],
         ),
@@ -63,28 +76,30 @@ class MemberWidget extends StatelessWidget {
 }
 
 class MembersWidget extends StatelessWidget {
-  const MembersWidget({super.key});
+  MembersWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final usersProvider = Provider.of<UsersProvider>(context);
+
+    final List<Widget> userWidgets = [];
+    usersProvider.users.forEach((user) {
+      userWidgets.add(MemberWidget(user: user));
+    });
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
       ),
       body: ListView(
-        children: [
-          MemberWidget(),
-          MemberWidget(),
-          MemberWidget(),
-        ],
+        children: userWidgets,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MemberEditWidget(),
+              builder: (context) => MemberEditWidget(isCreateNew: true, user: null),
             ),
           );
         },

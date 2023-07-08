@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
+import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/login_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  final setupService = SetupService();
-  setupService.setup();
+  SetupService.setup();
 
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (context) => AuthenticationProvider())],
+    providers: [
+      ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
+      ChangeNotifierProvider(create: (context) => UsersProvider()),
+    ],
     child: const MyApp(),
   ));
 }

@@ -24,14 +24,7 @@ class FundDetailMember extends StatelessWidget {
             label: 'Xóa',
           ),
           SlidableAction(
-            onPressed: (context) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MemberEditWidget(),
-                ),
-              );
-            },
+            onPressed: (context) {},
             backgroundColor: Color.fromARGB(255, 31, 132, 248),
             foregroundColor: Colors.white,
             icon: Icons.edit,

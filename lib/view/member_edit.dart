@@ -1,12 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:hui_management/helper/mocking.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/dialog.dart';
+import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/service/user_service.dart';
+import 'package:provider/provider.dart';
 
 class MemberEditWidget extends StatelessWidget {
-  MemberEditWidget({super.key});
+  late final bool isCreateNew;
+  late UserModel? user;
+
+  MemberEditWidget({super.key, required this.isCreateNew, required this.user});
 
   final _formKey = GlobalKey<FormBuilderState>();
   final _emailFieldKey = GlobalKey<FormBuilderFieldState>();
@@ -26,6 +34,10 @@ class MemberEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+
+    final usersProvider = Provider.of<UsersProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
@@ -40,35 +52,39 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _nameFieldKey,
                   name: 'name',
+                  initialValue: isCreateNew ? "" : user!.name,
                   decoration: const InputDecoration(labelText: 'Tên thành viên'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
-                  ),
-                ), 
-                FormBuilderTextField(
-                  key: _bankNumberFieldKey,
-                  name: 'bankNumber',
-                  decoration: const InputDecoration(labelText: 'Số tài khoản'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
                 ),
                 FormBuilderTextField(
                   key: _bankNameFieldKey,
                   name: 'bankName',
+                  initialValue: isCreateNew ? "" : user!.bankname,
                   decoration: const InputDecoration(labelText: 'Bank name'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
+                  ),
+                ),
+                FormBuilderTextField(
+                  key: _bankNumberFieldKey,
+                  name: 'bankNumber',
+                  initialValue: isCreateNew ? "" : user!.banknumber,
+                  decoration: const InputDecoration(labelText: 'Số tài khoản'),
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
                 ),
                 FormBuilderTextField(
                   key: _addressFieldKey,
                   name: 'address',
                   decoration: const InputDecoration(labelText: 'Địa chỉ thành viên'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: isCreateNew ? "" : user!.address,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -76,8 +92,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _phonenumberFieldKey,
                   name: 'phonenumber',
+                  initialValue: isCreateNew ? "" : user!.phonenumber,
                   decoration: const InputDecoration(labelText: 'Số điện thoại thành viên'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
@@ -85,8 +102,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _emailFieldKey,
                   name: 'email',
+                  initialValue: isCreateNew ? "" : user!.email,
                   decoration: const InputDecoration(labelText: 'Email'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.email()],
                   ),
@@ -94,8 +112,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _passwordFieldKey,
                   name: 'password',
+                  initialValue: isCreateNew ? "" : user!.password,
                   decoration: const InputDecoration(labelText: 'Password'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -103,8 +122,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _additionalFieldKey,
                   name: 'additional',
+                  initialValue: isCreateNew ? "" : user!.additionalInfo,
                   decoration: const InputDecoration(labelText: 'additional'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [],
                   ),
@@ -112,10 +132,50 @@ class MemberEditWidget extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 ElevatedButton(
                     onPressed: () async {
-                      print('hi!');
-                      print(_formKey.currentState?.isValid);
+                      if (!_formKey.currentState!.isValid) {
+                        return;
+                      }
+
+                      if (isCreateNew) {
+                        final user = await GetIt.I<UserService>().createNew(
+                          name: _nameFieldKey.currentState!.value,
+                          password: _passwordFieldKey.currentState!.value,
+                          email: _emailFieldKey.currentState!.value,
+                          phonenumber: _phonenumberFieldKey.currentState!.value,
+                          bankname: _bankNameFieldKey.currentState!.value,
+                          banknumber: _bankNumberFieldKey.currentState!.value,
+                          address: _addressFieldKey.currentState!.value,
+                          additionalInfo: _additionalFieldKey.currentState!.value,
+                        );
+
+                        if (user == null) {
+                          return;
+                        }
+
+                        usersProvider.addUser(user);
+                      } else {
+                        final updatedUser = await GetIt.I<UserService>().update(
+                          id: user!.id,
+                          name: _nameFieldKey.currentState!.value,
+                          password: _passwordFieldKey.currentState!.value,
+                          email: _emailFieldKey.currentState!.value,
+                          phonenumber: _phonenumberFieldKey.currentState!.value,
+                          bankname: _bankNameFieldKey.currentState!.value,
+                          banknumber: _bankNumberFieldKey.currentState!.value,
+                          address: _addressFieldKey.currentState!.value,
+                          additionalInfo: _additionalFieldKey.currentState!.value,
+                        );
+
+                        if (user == null) {
+                          return;
+                        }
+
+                        usersProvider.updateUser(updatedUser!);
+                      }
+
+                      navigator.pop();
                     },
-                    child: const Text('Đăng kí thành viên mới'))
+                    child: Text(isCreateNew ? 'Đăng kí thành viên mới' : 'Lưu chỉnh sửa'))
               ],
             ),
           ),

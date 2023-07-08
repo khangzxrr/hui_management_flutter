@@ -1,18 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/mocking.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
+import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/service/user_service.dart';
 import 'package:hui_management/view/funds_view.dart';
 import 'package:hui_management/view/members_view.dart';
 import 'package:provider/provider.dart';
 
 class DashboardWidget extends StatelessWidget {
-  const DashboardWidget({super.key});
+  final getIt = GetIt.instance;
+
+  DashboardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isWideScreen = MediaQuery.of(context).size.width >= 1080;
 
     final authenticationProvider = Provider.of<AuthenticationProvider>(context);
+    final usersProvider = Provider.of<UsersProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,10 +37,13 @@ class DashboardWidget extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () async {
+                  final users = await getIt<UserService>().getAll();
+                  usersProvider.addUsers(users!);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MembersWidget(),
+                      builder: (context) => MembersWidget(),
                     ),
                   );
                 },
