@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -60,27 +59,15 @@ class LoginWidget extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 ElevatedButton(
                     onPressed: () async {
-                      print('hi!');
-                      print(_formKey.currentState?.isValid);
-
-                      //mocking login success
-                      if (MockingData.isTesting) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const DashboardWidget(),
-                          ),
-                        );
-
-                        return;
-                      }
-
                       await EasyLoading.show(status: 'Đang đăng nhập...');
 
                       final authentication = await getIt<LoginService>().login("0862106650", "123123aaa");
 
-                      authenticationProvider.setAuthentication(authentication);
+                      log(authentication.toString());
 
                       if (authentication != null) {
+                        authenticationProvider.setAuthentication(authentication);
+
                         navigate.pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => const DashboardWidget(),

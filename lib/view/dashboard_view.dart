@@ -18,7 +18,7 @@ class DashboardWidget extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Xin chào ${authenticationProvider.model!.name}'),
+        title: Text('Xin chào ${authenticationProvider.model.name}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),

@@ -12,6 +12,6 @@ class AuthenticationModel {
 
   @override
   String toString() {
-    return '{${email} ${name} ${phonenumber} ${token}}';
+    return '{$email $name $phonenumber $token}';
   }
 }
