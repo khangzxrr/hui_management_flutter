@@ -51,15 +51,12 @@ class DashboardWidget extends StatelessWidget {
             const SizedBox(width: 30, height: 30),
             ElevatedButton(
                 onPressed: () async {
-                  //mocking login success
-                  if (MockingData.isTesting) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FundsWidget(),
-                      ),
-                    );
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FundsWidget(),
+                    ),
+                  );
                 },
                 child: const Text('Danh sách dây hụi')),
           ],
