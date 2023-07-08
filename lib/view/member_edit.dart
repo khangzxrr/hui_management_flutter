@@ -154,6 +154,7 @@ class MemberEditWidget extends StatelessWidget {
 
                         usersProvider.addUser(user);
                       } else {
+                        
                         final updatedUser = await GetIt.I<UserService>().update(
                           id: user!.id,
                           name: _nameFieldKey.currentState!.value,
