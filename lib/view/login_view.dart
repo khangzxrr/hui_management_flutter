@@ -1,9 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/mocking.dart';
+import 'package:hui_management/provider/authentication_provider.dart';
+import 'package:hui_management/service/login_service.dart';
 import 'package:hui_management/view/dashboard_view.dart';
+import 'package:provider/provider.dart';
 
 class LoginWidget extends StatelessWidget {
   LoginWidget({super.key});
@@ -12,8 +19,13 @@ class LoginWidget extends StatelessWidget {
   final _emailFieldKey = GlobalKey<FormBuilderFieldState>();
   final _passwordFieldKey = GlobalKey<FormBuilderFieldState>();
 
+  final getIt = GetIt.instance;
+
   @override
   Widget build(BuildContext context) {
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    final navigate = Navigator.of(context);
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -53,13 +65,30 @@ class LoginWidget extends StatelessWidget {
 
                       //mocking login success
                       if (MockingData.isTesting) {
-                        Navigator.push(
-                          context,
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const DashboardWidget(),
+                          ),
+                        );
+
+                        return;
+                      }
+
+                      await EasyLoading.show(status: 'Đang đăng nhập...');
+
+                      final authentication = await getIt<LoginService>().login("0862106650", "123123aaa");
+
+                      authenticationProvider.setAuthentication(authentication);
+
+                      if (authentication != null) {
+                        navigate.pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => const DashboardWidget(),
                           ),
                         );
                       }
+
+                      await EasyLoading.dismiss();
                     },
                     child: const Text('Đăng nhập'))
               ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/mocking.dart';
+import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/view/funds_view.dart';
 import 'package:hui_management/view/members_view.dart';
+import 'package:provider/provider.dart';
 
 class DashboardWidget extends StatelessWidget {
   const DashboardWidget({super.key});
@@ -10,11 +12,13 @@ class DashboardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isWideScreen = MediaQuery.of(context).size.width >= 1080;
 
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('Màn hình chính'),
+        title: Text('Xin chào ${authenticationProvider.model!.name}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),
@@ -25,15 +29,12 @@ class DashboardWidget extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () async {
-                  //mocking login success
-                  if (MockingData.isTesting) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MembersWidget(),
-                      ),
-                    );
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MembersWidget(),
+                    ),
+                  );
                 },
                 child: const Text('Danh sách người dùng')),
             const SizedBox(width: 30, height: 30),
