@@ -30,11 +30,11 @@ class FundWidget extends StatelessWidget {
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
             onPressed: (context) async {
-              final isSuccess = await GetIt.I<FundService>().archived(fund, true);
+              final isSuccessEither = GetIt.I<FundService>().archived(fund, true);
 
-              if (isSuccess) {
+              isSuccessEither.match((l) => {}, (r) {
                 fundProvider.removeFund(fund);
-              }
+              }).run();
             },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
