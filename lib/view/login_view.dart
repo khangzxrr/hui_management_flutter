@@ -7,6 +7,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorizeHttp.dart';
 import 'package:hui_management/helper/mocking.dart';
+import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/service/login_service.dart';
 import 'package:hui_management/service/setup_service.dart';
@@ -63,22 +64,23 @@ class LoginWidget extends StatelessWidget {
                     onPressed: () async {
                       await EasyLoading.show(status: 'Đang đăng nhập...');
 
-                      final authentication = await getIt<LoginService>().login("0862106650", "123123aaa");
+                      final authenticationEither = await getIt<LoginService>().login("0862106650", "123123aaa").run();
 
-                      log(authentication.toString());
+                      authenticationEither.match(
+                        (error) => log(error),
+                        (authentication) {
+                          log(authentication.toString());
+                          authenticationProvider.setAuthentication(authentication);
 
-                      if (authentication != null) {
-                        authenticationProvider.setAuthentication(authentication);
+                          SetupService.setupAuthorizeServiced(authentication.token);
 
-                        //register authorize http client instance
-                        SetupService.setupAuthorizeServiced(authentication.token);
-
-                        navigate.pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => DashboardWidget(),
-                          ),
-                        );
-                      }
+                          navigate.pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => DashboardWidget(),
+                            ),
+                          );
+                        },
+                      );
 
                       await EasyLoading.dismiss();
                     },
