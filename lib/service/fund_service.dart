@@ -19,47 +19,35 @@ class FundService {
         throw Exception(response.body);
       }, (error, stackTrace) => error.toString());
 
-  Future<Fund?> update(Fund fund) async {
-    try {
-      final response = await httpClient.put(
-        Uri.parse('http://localhost:57678/funds'),
-        body: jsonEncode(fund.toJson()),
-      );
+  TaskEither<String, Fund> update(Fund fund) => TaskEither.tryCatch(() async {
+        final response = await httpClient.put(
+          Uri.parse('http://localhost:57678/funds'),
+          body: jsonEncode(fund.toJson()),
+        );
 
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.body)['fund'];
+        if (response.statusCode == 200) {
+          final json = jsonDecode(response.body)['fund'];
 
-        return Fund.fromJson(json);
-      }
+          return Fund.fromJson(json);
+        }
 
-      log(response.body);
-    } catch (e) {
-      log(e.toString());
-    }
+        throw Exception(response.body);
+      }, (error, stackTrace) => error.toString());
 
-    return null;
-  }
+  TaskEither<String, Fund> create(Fund fund) => TaskEither.tryCatch(() async {
+        final response = await httpClient.post(
+          Uri.parse('http://localhost:57678/funds'),
+          body: jsonEncode(fund.toJson()),
+        );
 
-  Future<Fund?> create(Fund fund) async {
-    try {
-      final response = await httpClient.post(
-        Uri.parse('http://localhost:57678/funds'),
-        body: jsonEncode(fund.toJson()),
-      );
+        if (response.statusCode == 200) {
+          final json = jsonDecode(response.body)['fund'];
 
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.body)['fund'];
+          return Fund.fromJson(json);
+        }
 
-        return Fund.fromJson(json);
-      }
-
-      log(response.body);
-    } catch (e) {
-      log(e.toString());
-    }
-
-    return null;
-  }
+        throw Exception(response.body);
+      }, (error, stackTrace) => error.toString());
 
   Future<List<Fund>?> getAll() async {
     try {

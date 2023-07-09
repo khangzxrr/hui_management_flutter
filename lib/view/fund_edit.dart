@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
@@ -108,19 +111,25 @@ class FundEditWidget extends StatelessWidget {
                       );
 
                       if (isNew) {
-                        final createdFund = await GetIt.I<FundService>().create(newFund);
+                        final createdFundEither = await GetIt.I<FundService>().create(newFund);
 
-                        if (createdFund != null) {
-                          fundProvider.addFund(createdFund);
-                          navigator.pop();
-                        }
+                        createdFundEither.match(
+                          (l) => log(l),
+                          (createdFund) {
+                            fundProvider.addFund(createdFund);
+                            navigator.pop();
+                          },
+                        ).run();
                       } else {
-                        final updatedFund = await GetIt.I<FundService>().update(newFund);
+                        final updatedFundEither = GetIt.I<FundService>().update(newFund);
 
-                        if (updatedFund != null) {
-                          fundProvider.updateFund(updatedFund);
-                          navigator.pop();
-                        }
+                        updatedFundEither.match(
+                          (l) => log(l),
+                          (updatedFund) {
+                            fundProvider.updateFund(updatedFund);
+                            navigator.pop();
+                          },
+                        ).run();
                       }
                     },
                     child: const Text('Tạo dây hụi mới'))
