@@ -94,7 +94,7 @@ class FundEditWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 30.0),
                 ElevatedButton(
-                    onPressed: () async {
+                    onPressed: () {
                       if (!_formKey.currentState!.isValid) {
                         return;
                       }
@@ -111,7 +111,7 @@ class FundEditWidget extends StatelessWidget {
                       );
 
                       if (isNew) {
-                        final createdFundEither = await GetIt.I<FundService>().create(newFund);
+                        final createdFundEither = GetIt.I<FundService>().create(newFund);
 
                         createdFundEither.match(
                           (l) => log(l),
