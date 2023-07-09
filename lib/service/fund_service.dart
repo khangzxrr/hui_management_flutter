@@ -8,6 +8,22 @@ import 'package:hui_management/model/fund_model.dart';
 class FundService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
+  Future<bool> archived(Fund fund, bool isArchived) async {
+    try {
+      final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/${fund.id}/archive?isArchived=$isArchived'));
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+
+      log(response.body);
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return false;
+  }
+
   Future<Fund?> update(Fund fund) async {
     try {
       final response = await httpClient.put(

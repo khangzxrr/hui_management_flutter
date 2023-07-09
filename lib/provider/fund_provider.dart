@@ -17,6 +17,12 @@ class FundProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeFund(Fund fund) {
+    _funds.removeWhere((element) => element.id == fund.id);
+
+    notifyListeners();
+  }
+
   void addFund(Fund fund) {
     _funds.add(fund);
 

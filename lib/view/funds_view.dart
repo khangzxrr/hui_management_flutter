@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/service/fund_service.dart';
 import 'package:hui_management/view/fund_detail.dart';
 import 'package:hui_management/view/fund_edit.dart';
 import 'package:hui_management/view/fund_new_take_view.dart';
@@ -15,6 +17,8 @@ class FundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fundProvider = Provider.of<FundProvider>(context, listen: false);
+
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -25,7 +29,13 @@ class FundWidget extends StatelessWidget {
         children: [
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
-            onPressed: (context) {},
+            onPressed: (context) async {
+              final isSuccess = await GetIt.I<FundService>().archived(fund, true);
+
+              if (isSuccess) {
+                fundProvider.removeFund(fund);
+              }
+            },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.archive,
