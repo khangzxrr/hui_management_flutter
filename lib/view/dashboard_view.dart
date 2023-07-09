@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/helper/mocking.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
+import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/service/fund_service.dart';
 import 'package:hui_management/service/user_service.dart';
 import 'package:hui_management/view/funds_view.dart';
 import 'package:hui_management/view/members_view.dart';
@@ -21,6 +22,8 @@ class DashboardWidget extends StatelessWidget {
 
     final authenticationProvider = Provider.of<AuthenticationProvider>(context);
     final usersProvider = Provider.of<UsersProvider>(context);
+
+    final fundProvier = Provider.of<FundProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -51,6 +54,16 @@ class DashboardWidget extends StatelessWidget {
             const SizedBox(width: 30, height: 30),
             ElevatedButton(
                 onPressed: () async {
+                  final funds = await getIt<FundService>().getAll();
+
+                  if (funds == null) {
+                    return;
+                  }
+
+                  log(funds.toString());
+
+                  fundProvier.setFunds(funds);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(

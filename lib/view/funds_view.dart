@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hui_management/helper/utils.dart';
+import 'package:hui_management/model/fund_model.dart';
+import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/view/fund_detail.dart';
 import 'package:hui_management/view/fund_edit.dart';
 import 'package:hui_management/view/fund_new_take_view.dart';
+import 'package:provider/provider.dart';
 
 class FundWidget extends StatelessWidget {
-  const FundWidget({super.key});
+  final Fund fund;
+
+  const FundWidget({super.key, required this.fund});
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +33,12 @@ class FundWidget extends StatelessWidget {
           ),
           SlidableAction(
             onPressed: (context) {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => MemberEditWidget(),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FundEditWidget(isNew: false, fund: fund),
+                ),
+              );
             },
             backgroundColor: Color.fromARGB(255, 31, 132, 248),
             foregroundColor: Colors.white,
@@ -54,24 +60,24 @@ class FundWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 237, 44, 218),
-                  child: const Text('1'),
+                  backgroundColor: const Color.fromARGB(255, 237, 44, 218),
+                  child: Text('${fund.id}'),
                 ),
-                title: Text('Ngày mở hụi: 13/08/2022\nDây hụi 1,000.000đ\nThời gian khui: T2 mỗi tuần\nSố phần: 16\nGhi chú: đây là hụi abcxyz...'),
-                subtitle: Chip(label: Text('12/16')),
+                title: Text('Tên: ${fund.name}\nNgày mở hụi: ${fund.openDateText}\nDây hụi ${fund.fundPrice}.000đ\nHoa hồng: ${fund.serviceCost}.000đ\nSố phần: ${fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fund.openDate)}'),
+                subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
               ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton.icon(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FundNewTakeWidget()),
+                        MaterialPageRoute(builder: (context) => FundNewTakeWidget(isNew: true, fund: null)),
                       ),
-                      icon: Icon(Icons.paid),
-                      label: Text('Hốt'),
+                      icon: const Icon(Icons.paid),
+                      label: const Text('Hốt'),
                     )
                   ],
                 ),
@@ -89,22 +95,26 @@ class FundsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fundProvider = Provider.of<FundProvider>(context);
+
+    List<Widget> fundWidgets = fundProvider
+        .getFunds()
+        .map(
+          (e) => FundWidget(fund: e),
+        )
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí danh sách dây hụi'),
       ),
-      body: ListView(
-        children: [
-          FundWidget(),
-          FundWidget(),
-        ],
-      ),
+      body: ListView(children: fundWidgets),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => FundEditWidget(),
+              builder: (context) => FundEditWidget(isNew: true, fund: null),
             ),
           );
         },

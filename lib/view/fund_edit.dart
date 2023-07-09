@@ -3,20 +3,31 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hui_management/model/fund_model.dart';
+import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/service/fund_service.dart';
+import 'package:provider/provider.dart';
 
 class FundEditWidget extends StatelessWidget {
-  FundEditWidget({super.key});
+  final bool isNew;
+  final Fund? fund;
+
+  FundEditWidget({super.key, required this.isNew, required this.fund});
 
   final _formKey = GlobalKey<FormBuilderState>();
 
-  final _nameKey = GlobalKey<FormBuilderState>();
-  final _openDateKey = GlobalKey<FormBuilderState>();
-  final _costKey = GlobalKey<FormBuilderState>();
-  final _openDateTextKey = GlobalKey<FormBuilderState>();
-  final _openDateDurationKey = GlobalKey<FormBuilderState>();
+  final _nameKey = GlobalKey<FormBuilderFieldState>();
+  final _openDateKey = GlobalKey<FormBuilderFieldState>();
+  final _costKey = GlobalKey<FormBuilderFieldState>();
+  final _ownerCostKey = GlobalKey<FormBuilderFieldState>();
+  final _openDateTextKey = GlobalKey<FormBuilderFieldState>();
 
   @override
   Widget build(BuildContext context) {
+    final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final navigator = Navigator.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
@@ -32,16 +43,8 @@ class FundEditWidget extends StatelessWidget {
                   key: _nameKey,
                   name: 'name',
                   decoration: const InputDecoration(labelText: 'Tên hụi'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required()],
-                  ),
-                ),
-                FormBuilderDateTimePicker(
-                  key: _openDateKey,
-                  name: 'openDate',
-                  decoration: const InputDecoration(labelText: 'Ngày mở dây hụi'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: isNew ? "" : fund!.name,
+                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -50,7 +53,18 @@ class FundEditWidget extends StatelessWidget {
                   key: _costKey,
                   name: 'cost',
                   decoration: const InputDecoration(labelText: 'Số tiền dây hụi '),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: isNew ? "" : fund!.fundPrice.toString(),
+                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                  ),
+                ),
+                FormBuilderTextField(
+                  key: _ownerCostKey,
+                  name: 'ownerCost',
+                  decoration: const InputDecoration(labelText: 'Số tiền hoa hồng '),
+                  initialValue: isNew ? "" : fund!.serviceCost.toString(),
+                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
@@ -59,25 +73,55 @@ class FundEditWidget extends StatelessWidget {
                   key: _openDateTextKey,
                   name: 'openDateText',
                   decoration: const InputDecoration(labelText: 'Ngày khui (ghi chú)'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: isNew ? "" : fund!.openDateText,
+                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
                 ),
-                FormBuilderTextField(
-                  key: _openDateDurationKey,
-                  name: 'openDateDuration',
-                  decoration: const InputDecoration(labelText: 'Tổng số ngày giữa 2 lần khui (dùng để nhắc khui)'),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                FormBuilderDateTimePicker(
+                  key: _openDateKey,
+                  name: 'openDate',
+                  decoration: const InputDecoration(labelText: 'Ngày mở dây hụi'),
+                  initialValue: isNew ? DateTime.now() : fund!.openDate,
+                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                    [FormBuilderValidators.required()],
                   ),
                 ),
                 const SizedBox(height: 30.0),
                 ElevatedButton(
                     onPressed: () async {
-                      print('hi!');
-                      print(_formKey.currentState?.isValid);
+                      if (!_formKey.currentState!.isValid) {
+                        return;
+                      }
+
+                      final newFund = Fund(
+                        id: fund == null ? -1 : fund!.id,
+                        fundPrice: double.parse(_costKey.currentState!.value),
+                        name: _nameKey.currentState!.value,
+                        openDate: _openDateKey.currentState!.value,
+                        serviceCost: double.parse(_ownerCostKey.currentState!.value),
+                        openDateText: _openDateTextKey.currentState!.value,
+                        membersCount: 0,
+                        sessionsCount: 0,
+                      );
+
+                      if (isNew) {
+                        final createdFund = await GetIt.I<FundService>().create(newFund);
+
+                        if (createdFund != null) {
+                          fundProvider.addFund(createdFund);
+                          navigator.pop();
+                        }
+                      } else {
+                        final updatedFund = await GetIt.I<FundService>().update(newFund);
+
+                        if (updatedFund != null) {
+                          fundProvider.updateFund(updatedFund);
+                          navigator.pop();
+                        }
+                      }
                     },
                     child: const Text('Tạo dây hụi mới'))
               ],

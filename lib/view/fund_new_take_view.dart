@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/view/fund_detail.dart';
 
 class FundNewTakeWidget extends StatelessWidget {
-  FundNewTakeWidget({super.key});
+  final bool isNew;
+  final Fund? fund;
+
+  FundNewTakeWidget({super.key, required this.isNew, required this.fund});
 
   final _formKey = GlobalKey<FormBuilderState>();
 

@@ -6,9 +6,7 @@ import 'package:hui_management/helper/authorizeHttp.dart';
 import 'package:hui_management/model/user_model.dart';
 
 class UserService {
-  late final AuthorizeHttp httpClient;
-
-  UserService({required this.httpClient});
+  final httpClient = GetIt.I<AuthorizeHttp>();
 
   Future<bool> delete(int id) async {
     try {
