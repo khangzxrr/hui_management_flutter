@@ -64,7 +64,7 @@ class FundWidget extends StatelessWidget {
         child: InkWell(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const FundDetailWidget()),
+            MaterialPageRoute(builder: (context) => FundDetailWidget(fund: fund)),
           ),
           child: Column(
             children: <Widget>[

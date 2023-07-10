@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hui_management/view/fund_detail_member.dart';
-import 'package:hui_management/view/session_view.dart';
-import 'package:hui_management/view/member_edit.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:hui_management/view/fund_members_view.dart';
+
+import '../helper/utils.dart';
+import '../model/fund_model.dart';
 
 class FundDetailWidget extends StatelessWidget {
-  const FundDetailWidget({super.key});
+  final Fund fund;
+
+  FundDetailWidget({super.key, required this.fund});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dây hụi abc xyz'),
+        title: Text('Dây hụi ${fund.name}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -21,15 +22,85 @@ class FundDetailWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Ngày mở hụi: 13/08/2022\nDây hụi 1,000.000đ\nThời gian khui: T2 mỗi tuần\nSố phần: 16\nGhi chú: đây là hụi abcxyz...',
+                'Tên: ${fund.name}\nNgày mở hụi: ${fund.openDateText}\nDây hụi ${fund.fundPrice}.000đ\nHoa hồng: ${fund.serviceCost}.000đ\nSố phần: ${fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fund.openDate)}',
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 30, width: 30),
-              Text('Các kỳ đã khui (còn lại N kỳ)'),
-              SessionViewWidget(),
+              Text('Các kỳ đã khui ${fund.sessionsCount} (còn lại ${fund.membersCount - fund.sessionsCount} kỳ)'),
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => FundMembersWidget()),
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(
+                            'Quản lí hụi viên',
+                            style: TextStyle(fontSize: 24, color: Colors.grey[800]),
+                          ),
+                          Container(height: 10),
+                          Text(
+                            'Nhấn vào đây để thêm xóa sửa các hụi viên',
+                            style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          )
+                        ]),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: InkWell(
+                  onTap: () {},
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(
+                            'Quản lí các kì',
+                            style: TextStyle(fontSize: 24, color: Colors.grey[800]),
+                          ),
+                          Container(height: 10),
+                          Text(
+                            'Nhấn vào đây để chỉnh sửa các kì',
+                            style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+                          )
+                        ]),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
+      ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        children: [
+          FloatingActionButton(
+            onPressed: () {},
+            heroTag: null,
+            child: const Icon(Icons.person_add),
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            heroTag: null,
+            child: const Icon(Icons.paid),
+          ),
+        ],
       ),
     );
   }

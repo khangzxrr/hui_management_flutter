@@ -83,10 +83,10 @@ class FundNewTakeWidget extends StatelessWidget {
                     onPressed: () async {
                       print('hi!');
                       print(_formKey.currentState?.isValid);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => FundDetailWidget()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => FundDetailWidget(fund: )),
+                      // );
                     },
                     child: const Text('Hốt hụi'))
               ],

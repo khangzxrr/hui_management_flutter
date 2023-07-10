@@ -108,6 +108,7 @@ class FundEditWidget extends StatelessWidget {
                         openDateText: _openDateTextKey.currentState!.value,
                         membersCount: 0,
                         sessionsCount: 0,
+                        members: [],
                       );
 
                       if (isNew) {
