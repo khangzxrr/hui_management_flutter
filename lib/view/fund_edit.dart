@@ -8,13 +8,14 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/fund_model.dart';
-import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/model/general_fund_model.dart';
+import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:provider/provider.dart';
 
 class FundEditWidget extends StatelessWidget {
   final bool isNew;
-  final Fund? fund;
+  final GeneralFundModel? fund;
 
   FundEditWidget({super.key, required this.isNew, required this.fund});
 
@@ -28,7 +29,7 @@ class FundEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final fundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
     final navigator = Navigator.of(context);
 
     return Scaffold(
@@ -99,7 +100,7 @@ class FundEditWidget extends StatelessWidget {
                         return;
                       }
 
-                      final newFund = Fund(
+                      final newFund = GeneralFundModel(
                         id: fund == null ? -1 : fund!.id,
                         fundPrice: double.parse(_costKey.currentState!.value),
                         name: _nameKey.currentState!.value,
@@ -108,7 +109,6 @@ class FundEditWidget extends StatelessWidget {
                         openDateText: _openDateTextKey.currentState!.value,
                         membersCount: 0,
                         sessionsCount: 0,
-                        members: [],
                       );
 
                       if (isNew) {

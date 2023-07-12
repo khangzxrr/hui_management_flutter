@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/view/fund_members_view.dart';
+import 'package:provider/provider.dart';
 
 import '../helper/utils.dart';
 import '../model/fund_model.dart';
 
 class FundDetailWidget extends StatelessWidget {
-  final Fund fund;
-
-  FundDetailWidget({super.key, required this.fund});
+  const FundDetailWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final fundProvider = Provider.of<FundProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dây hụi ${fund.name}'),
+        title: Text('Dây hụi ${fundProvider.fund.name}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -22,11 +24,11 @@ class FundDetailWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Tên: ${fund.name}\nNgày mở hụi: ${fund.openDateText}\nDây hụi ${fund.fundPrice}.000đ\nHoa hồng: ${fund.serviceCost}.000đ\nSố phần: ${fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fund.openDate)}',
+                'Tên: ${fundProvider.fund.name}\nNgày mở hụi: ${fundProvider.fund.openDateText}\nDây hụi ${fundProvider.fund.fundPrice}.000đ\nHoa hồng: ${fundProvider.fund.serviceCost}.000đ\nSố phần: ${fundProvider.fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fundProvider.fund.openDate)}',
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 30, width: 30),
-              Text('Các kỳ đã khui ${fund.sessionsCount} (còn lại ${fund.membersCount - fund.sessionsCount} kỳ)'),
+              Text('Các kỳ đã khui ${fundProvider.fund.sessionsCount} (còn lại ${fundProvider.fund.membersCount - fundProvider.fund.sessionsCount} kỳ)'),
               Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 clipBehavior: Clip.antiAliasWithSaveLayer,

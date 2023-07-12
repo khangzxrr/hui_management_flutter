@@ -67,7 +67,7 @@ class LoginWidget extends StatelessWidget {
                       final authenticationEither = await getIt<LoginService>().login("0862106650", "123123aaa").run();
 
                       authenticationEither.match(
-                        (error) => log(error),
+                        (error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Lỗi đăng nhập, vui lòng thử lại'))),
                         (authentication) {
                           log(authentication.toString());
                           authenticationProvider.setAuthentication(authentication);

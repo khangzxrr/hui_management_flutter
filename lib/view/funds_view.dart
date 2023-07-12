@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/utils.dart';
-import 'package:hui_management/model/fund_model.dart';
+import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:hui_management/view/fund_detail.dart';
 import 'package:hui_management/view/fund_edit.dart';
@@ -11,12 +14,13 @@ import 'package:hui_management/view/fund_new_take_view.dart';
 import 'package:provider/provider.dart';
 
 class FundWidget extends StatelessWidget {
-  final Fund fund;
+  final GeneralFundModel fund;
 
   const FundWidget({super.key, required this.fund});
 
   @override
   Widget build(BuildContext context) {
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
 
     return Slidable(
@@ -30,10 +34,10 @@ class FundWidget extends StatelessWidget {
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
             onPressed: (context) async {
-              final isSuccessEither = GetIt.I<FundService>().archived(fund, true);
+              final isSuccessEither = GetIt.I<FundService>().archived(fund.id, true);
 
               isSuccessEither.match((l) => {}, (r) {
-                fundProvider.removeFund(fund);
+                generalFundProvider.removeFund(fund);
               }).run();
             },
             backgroundColor: Color(0xFFFE4A49),
@@ -62,10 +66,19 @@ class FundWidget extends StatelessWidget {
       // component is not dragged.
       child: Card(
         child: InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FundDetailWidget(fund: fund)),
-          ),
+          onTap: () {
+            fundProvider
+                .getFund(fund.id)
+                .match(
+                  (l) => log(l.toString()),
+                  (r) => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FundDetailWidget()),
+                  ),
+                )
+                .run();
+            ;
+          },
           child: Column(
             children: <Widget>[
               ListTile(
@@ -105,7 +118,7 @@ class FundsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fundProvider = Provider.of<FundProvider>(context);
+    final fundProvider = Provider.of<GeneralFundProvider>(context);
 
     List<Widget> fundWidgets = fundProvider
         .getFunds()

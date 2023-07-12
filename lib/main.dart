@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/login_view.dart';
@@ -14,6 +15,7 @@ void main() {
     providers: [
       ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
       ChangeNotifierProvider(create: (context) => UsersProvider()),
+      ChangeNotifierProvider(create: (context) => GeneralFundProvider()),
       ChangeNotifierProvider(create: (context) => FundProvider()),
     ],
     child: const MyApp(),
