@@ -63,7 +63,7 @@ class FundMemberWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50.0),
                 child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
               ),
-              title: Text(fundMember.user.name),
+              title: Text(fundMember.nickName),
               subtitle: Text('${fundMember.user.email}\n${fundMember.user.phonenumber}\n${fundMember.user.bankname} - ${fundMember.user.banknumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
             )
           ],
