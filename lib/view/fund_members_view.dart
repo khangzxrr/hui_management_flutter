@@ -80,8 +80,6 @@ class AddMemberWidget extends StatelessWidget {
 
   final _formKey = GlobalKey<FormBuilderState>();
 
-  bool disableAddButton = true;
-
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
@@ -160,14 +158,15 @@ class FundMembersWidget extends StatelessWidget {
     widgets.addAll(members);
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Quản lí thành viên'),
+      appBar: AppBar(
+        title: const Text('Quản lí thành viên'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: ListView(
+          children: widgets,
         ),
-        body: Padding(
-          padding: EdgeInsets.all(10),
-          child: ListView(
-            children: widgets,
-          ),
-        ));
+      ),
+    );
   }
 }

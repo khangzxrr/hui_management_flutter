@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hui_management/view/fund_detail.dart';
-import 'package:hui_management/view/session_detail.dart';
+import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/view/fund_session/session_detail.dart';
+import 'package:provider/provider.dart';
 
 class SessionViewWidget extends StatelessWidget {
   const SessionViewWidget({super.key});
@@ -54,6 +53,27 @@ class SessionViewWidget extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class FundSessionsWidget extends StatelessWidget {
+  const FundSessionsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final fundProvider = Provider.of<FundProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Quản lí các kì của dây hụi ${fundProvider.fund.name}'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: ListView(
+          children: [SessionViewWidget()],
         ),
       ),
     );

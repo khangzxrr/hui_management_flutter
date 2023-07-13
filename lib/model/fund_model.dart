@@ -1,4 +1,5 @@
 import 'package:hui_management/model/fund_member.dart';
+import 'package:hui_management/model/fund_session_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'fund_model.g.dart';
@@ -16,6 +17,7 @@ class Fund {
   int sessionsCount;
 
   List<FundMember> members;
+  List<FundSession> sessions;
 
   Fund({
     required this.id,
@@ -27,6 +29,7 @@ class Fund {
     required this.membersCount,
     required this.sessionsCount,
     required this.members,
+    required this.sessions,
   });
 
   factory Fund.fromJson(Map<String, dynamic> json) => _$FundFromJson(json);
