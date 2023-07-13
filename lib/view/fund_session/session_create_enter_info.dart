@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -19,12 +21,14 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
 
   final _formKey = GlobalKey<FormBuilderState>();
 
+  double predictPrice = 0;
   double totalFundPrice = 0;
   double serviceCost = 0;
   double remainPrice = 0;
 
-  void setData({required double totalFundPrice, required double serviceCost, required remainPrice}) {
+  void setData({required double predictPrice, required double totalFundPrice, required double serviceCost, required remainPrice}) {
     setState(() {
+      this.predictPrice = predictPrice;
       this.totalFundPrice = totalFundPrice;
       this.serviceCost = serviceCost;
       this.remainPrice = remainPrice;
@@ -99,6 +103,7 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
                       _formKey.currentState?.fields['predictedPrice']?.validate();
 
                       setData(
+                        predictPrice: predictedPrice,
                         totalFundPrice: totalFund,
                         serviceCost: fundProvider.fund.serviceCost,
                         remainPrice: totalFund - fundProvider.fund.serviceCost,
@@ -139,7 +144,17 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
             const Text('Lưu ý: những hụi viên đã hốt rồi sẽ không hiển thị trên danh sách'),
             Container(height: 10),
             ElevatedButton(
-              onPressed: isValid ? () {} : null,
+              onPressed: isValid
+                  ? () {
+                      fundProvider
+                          .addSession(widget.fundMember.id, predictPrice)
+                          .andThen(
+                            () => fundProvider.getFund(fundProvider.fund.id),
+                          )
+                          .match((l) => log(l), (r) => log('OK'))
+                          .run();
+                    }
+                  : null,
               child: const Text('Hốt hụi'),
               style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),
             )

@@ -49,13 +49,11 @@ class _SessionCreateSelectMemberWidgetState extends State<SessionCreateSelectMem
                   return members.where((mem) {
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
-                    final isTaken = sessions.any(
-                      (session) => session.fundSessionDetails.any(
-                        (detail) => detail.isTaken == true && detail.fundMember.id == mem.id,
-                      ),
+                    final isNotExistTaken = sessions.any(
+                      (session) => session.takenSessionDetail.fundMember.id != mem.id,
                     );
 
-                    return nameContain && !isTaken;
+                    return nameContain && !isNotExistTaken;
                   }).toList();
                 },
                 onChanged: (mem) {

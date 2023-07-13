@@ -10,6 +10,19 @@ import 'package:hui_management/model/general_fund_model.dart';
 class FundService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
+  Future<bool> addSession(int fundId, int memberId, double predictPrice) async {
+    final response = await httpClient.post(
+      Uri.parse('http://localhost:57678/funds/$fundId/sessions/add'),
+      body: jsonEncode({"memberId": memberId, "predictPrice": predictPrice}),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+
+    throw Exception(response.body);
+  }
+
   Future<bool> removeMember(int fundId, int memberId) async {
     final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId/members/$memberId/remove'));
 
@@ -34,7 +47,9 @@ class FundService {
     final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId'));
 
     if (response.statusCode == 200) {
-      return Fund.fromJson(jsonDecode(response.body)['fund']);
+      final jsonData = jsonDecode(response.body)['fund'];
+      log(response.body);
+      return Fund.fromJson(jsonData);
     }
 
     throw Exception(response.body);

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'fund_session_detail_model.dart';
+part of 'fund_taken_session_detail_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FundSessionDetail _$FundSessionDetailFromJson(Map<String, dynamic> json) =>
-    FundSessionDetail(
+TakenSessionDetail _$TakenSessionDetailFromJson(Map<String, dynamic> json) =>
+    TakenSessionDetail(
       id: json['id'] as int,
       fundMember:
           FundMember.fromJson(json['fundMember'] as Map<String, dynamic>),
@@ -15,10 +15,9 @@ FundSessionDetail _$FundSessionDetailFromJson(Map<String, dynamic> json) =>
       fundAmount: (json['fundAmount'] as num).toDouble(),
       remainPrice: (json['remainPrice'] as num).toDouble(),
       serviceCost: (json['serviceCost'] as num).toDouble(),
-      isTaken: json['isTaken'] as bool,
     );
 
-Map<String, dynamic> _$FundSessionDetailToJson(FundSessionDetail instance) =>
+Map<String, dynamic> _$TakenSessionDetailToJson(TakenSessionDetail instance) =>
     <String, dynamic>{
       'id': instance.id,
       'fundMember': instance.fundMember,
@@ -26,5 +25,4 @@ Map<String, dynamic> _$FundSessionDetailToJson(FundSessionDetail instance) =>
       'fundAmount': instance.fundAmount,
       'remainPrice': instance.remainPrice,
       'serviceCost': instance.serviceCost,
-      'isTaken': instance.isTaken,
     };

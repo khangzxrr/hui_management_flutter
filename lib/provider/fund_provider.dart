@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +18,15 @@ class FundProvider with ChangeNotifier {
 
           notifyListeners();
         },
+        (error, stackTrace) {
+          log(error.toString(), stackTrace: stackTrace);
+
+          return error.toString();
+        },
+      );
+
+  TaskEither<String, bool> addSession(int memberId, double predictPrice) => TaskEither.tryCatch(
+        () async => GetIt.I<FundService>().addSession(_fund.id, memberId, predictPrice),
         (error, stackTrace) => error.toString(),
       );
 
