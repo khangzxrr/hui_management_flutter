@@ -10,6 +10,16 @@ import 'package:hui_management/model/general_fund_model.dart';
 class FundService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
+  Future<bool> removeMember(int fundId, int memberId) async {
+    final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId/members/$memberId/remove'));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+
+    throw Exception(response.body);
+  }
+
   Future<bool> addMember(int fundId, int memberId) async {
     final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId/members/$memberId/add'));
 

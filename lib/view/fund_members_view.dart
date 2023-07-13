@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
@@ -22,18 +23,50 @@ class FundMemberWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(50.0),
-            child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+    final fundProvider = Provider.of<FundProvider>(context, listen: false);
+
+    return Slidable(
+      // The start action pane is the one at the left or the top side.
+      startActionPane: ActionPane(
+        // A motion is a widget used to control how the pane animates.
+        motion: const ScrollMotion(),
+
+        // All actions are defined in the children parameter.
+        children: [
+          // A SlidableAction can have an icon and/or a label.
+          SlidableAction(
+            onPressed: (context) async {
+              fundProvider
+                  .removeMember(fundMember.id)
+                  .andThen(() => fundProvider.getFund(fundProvider.fund.id))
+                  .match(
+                    (l) => log(l),
+                    (r) => log("OK"),
+                  )
+                  .run();
+            },
+            backgroundColor: Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Xóa',
           ),
-          title: Text(fundMember.user.name),
-          subtitle: Text('${fundMember.user.email} ${fundMember.user.phonenumber}\n${fundMember.user.bankname} - ${fundMember.user.banknumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
+        ],
+      ),
+
+      // The child of the Slidable is what the user sees when the
+      // component is not dragged.
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(50.0),
+                child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+              ),
+              title: Text(fundMember.user.name),
+              subtitle: Text('${fundMember.user.email}\n${fundMember.user.phonenumber}\n${fundMember.user.bankname} - ${fundMember.user.banknumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
+            )
+          ],
         ),
       ),
     );

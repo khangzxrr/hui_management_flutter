@@ -19,6 +19,11 @@ class FundProvider with ChangeNotifier {
         (error, stackTrace) => error.toString(),
       );
 
+  TaskEither<String, bool> removeMember(int memberId) => TaskEither.tryCatch(
+        () async => GetIt.I<FundService>().removeMember(_fund.id, memberId),
+        (error, stackTrace) => error.toString(),
+      );
+
   TaskEither<String, bool> addMember(int memberId) => TaskEither.tryCatch(() async {
         final addMemberStatus = await GetIt.I<FundService>().addMember(_fund.id, memberId);
 
