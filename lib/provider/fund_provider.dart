@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/service/fund_service.dart';
 
