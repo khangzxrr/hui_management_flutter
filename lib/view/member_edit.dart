@@ -152,14 +152,13 @@ class MemberEditWidget extends StatelessWidget {
                           return;
                         }
 
-                        usersProvider.addUser(user);
+                        usersProvider.getAllUsers().run();
                       } else {
-                        
-                        final updatedUser = await GetIt.I<UserService>().update(
+                        final updateUser = UserModel(
                           id: user!.id,
                           name: _nameFieldKey.currentState!.value,
-                          password: _passwordFieldKey.currentState!.value,
                           email: _emailFieldKey.currentState!.value,
+                          password: _passwordFieldKey.currentState!.value,
                           phonenumber: _phonenumberFieldKey.currentState!.value,
                           bankname: _bankNameFieldKey.currentState!.value,
                           banknumber: _bankNumberFieldKey.currentState!.value,
@@ -167,11 +166,14 @@ class MemberEditWidget extends StatelessWidget {
                           additionalInfo: _additionalFieldKey.currentState!.value,
                         );
 
-                        if (user == null) {
-                          return;
-                        }
-
-                        usersProvider.updateUser(updatedUser!);
+                        usersProvider
+                            .updateUser(updateUser)
+                            .andThen(() => usersProvider.getAllUsers())
+                            .match(
+                              (l) => log(l),
+                              (r) => log("ok"),
+                            )
+                            .run();
                       }
 
                       navigator.pop();

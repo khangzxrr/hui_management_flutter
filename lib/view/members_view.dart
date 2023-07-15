@@ -1,8 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/helper/mocking.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/user_service.dart';
@@ -16,6 +16,8 @@ class MemberWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UsersProvider>(context, listen: false);
+
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -27,11 +29,9 @@ class MemberWidget extends StatelessWidget {
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
             onPressed: (context) async {
-              bool isSuccess = await GetIt.I<UserService>().delete(user.id);
-
-              if (isSuccess) {
-                Provider.of<UsersProvider>(context, listen: false).removeUser(user);
-              }
+              userProvider.removeUser(user.id).andThen(() => userProvider.getAllUsers()).getOrElse((l) {
+                log(l);
+              }).run();
             },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
@@ -47,7 +47,7 @@ class MemberWidget extends StatelessWidget {
                 ),
               );
             },
-            backgroundColor: Color.fromARGB(255, 31, 132, 248),
+            backgroundColor: const Color.fromARGB(255, 31, 132, 248),
             foregroundColor: Colors.white,
             icon: Icons.edit,
             label: 'Chỉnh sửa',
@@ -76,16 +76,17 @@ class MemberWidget extends StatelessWidget {
 }
 
 class MembersWidget extends StatelessWidget {
-  MembersWidget({super.key});
+  const MembersWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final usersProvider = Provider.of<UsersProvider>(context);
 
     final List<Widget> userWidgets = [];
-    usersProvider.users.forEach((user) {
-      userWidgets.add(MemberWidget(user: user));
-    });
+
+    userWidgets.addAll(
+      usersProvider.users.map((user) => MemberWidget(user: user)),
+    );
 
     return Scaffold(
       appBar: AppBar(

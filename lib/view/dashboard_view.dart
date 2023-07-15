@@ -39,16 +39,14 @@ class DashboardWidget extends StatelessWidget {
           direction: isWideScreen ? Axis.horizontal : Axis.vertical,
           children: [
             ElevatedButton(
-                onPressed: () async {
-                  final users = await getIt<UserService>().getAll();
-                  usersProvider.addUsers(users!);
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MembersWidget(),
-                    ),
-                  );
+                onPressed: () {
+                  usersProvider
+                      .getAllUsers()
+                      .match(
+                        (l) => log(l),
+                        (r) => Navigator.of(context).pushNamed('/members'),
+                      )
+                      .run();
                 },
                 child: const Text('Danh sách người dùng')),
             const SizedBox(width: 30, height: 30),
