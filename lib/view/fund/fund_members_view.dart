@@ -97,7 +97,7 @@ class AddMemberWidget extends StatelessWidget {
               asyncItems: (filter) async {
                 final users = await GetIt.I<UserService>().getAll();
 
-                return users!.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
+                return users.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
               },
             ),
           ),
