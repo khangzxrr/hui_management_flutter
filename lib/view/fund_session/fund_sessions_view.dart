@@ -52,9 +52,9 @@ class SessionViewWidget extends StatelessWidget {
               ListTile(
                 leading: CircleAvatar(
                   backgroundColor: const Color.fromARGB(255, 237, 44, 218),
-                  child: Text('K${session.id}'),
+                  child: Text('K${session.sessionNumber}'),
                 ),
-                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ 1\nThành viên hốt: ${session.takenSessionDetail.fundMember.nickName}\nThăm kêu: ${session.takenSessionDetail.predictedPrice}\nTiền hụi: ${session.takenSessionDetail.fundAmount}\nTrừ hoa hồng: ${session.takenSessionDetail.serviceCost}\nCòn lại: ${session.takenSessionDetail.remainPrice}', textAlign: TextAlign.right),
+                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ ${session.sessionNumber}\nThành viên hốt: ${session.takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(session.takenSessionDetail.predictedPrice)}đ\nTiền hụi: ${Utils.moneyFormat.format(session.takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(session.takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(session.takenSessionDetail.remainPrice)}đ', textAlign: TextAlign.right),
               ),
             ],
           ),

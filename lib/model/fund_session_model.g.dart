@@ -8,6 +8,7 @@ part of 'fund_session_model.dart';
 
 FundSession _$FundSessionFromJson(Map<String, dynamic> json) => FundSession(
       id: json['id'] as int,
+      sessionNumber: json['sessionNumber'] as int,
       takenDate: DateTime.parse(json['takenDate'] as String),
       takenSessionDetail: TakenSessionDetail.fromJson(
           json['takenSessionDetail'] as Map<String, dynamic>),
@@ -19,6 +20,7 @@ FundSession _$FundSessionFromJson(Map<String, dynamic> json) => FundSession(
 Map<String, dynamic> _$FundSessionToJson(FundSession instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'sessionNumber': instance.sessionNumber,
       'takenDate': instance.takenDate.toIso8601String(),
       'takenSessionDetail': instance.takenSessionDetail,
       'normalSessionDetails': instance.normalSessionDetails,

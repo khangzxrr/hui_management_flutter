@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/model/fund_model.dart';
-import 'package:hui_management/view/fund_detail.dart';
 
 class FundNewTakeWidget extends StatelessWidget {
   final bool isNew;

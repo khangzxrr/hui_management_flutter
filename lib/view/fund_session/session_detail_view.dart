@@ -24,7 +24,7 @@ class TakenSessionDetailWidget extends StatelessWidget {
               takenSessionDetail.fundMember.nickName,
               style: const TextStyle(color: Colors.white),
             ),
-            subtitle: Text('Thăm kêu: ${takenSessionDetail.predictedPrice}\nTiền hụi: ${takenSessionDetail.fundAmount}\nTrừ hoa hồng: ${takenSessionDetail.serviceCost}\nCòn lại: ${takenSessionDetail.remainPrice}', textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+            subtitle: Text('Thăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTiền hụi: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.remainPrice)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
           )
         ],
       ),
@@ -48,7 +48,7 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
               child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
             ),
             title: Text(normalSessionDetail.fundMember.nickName),
-            subtitle: Text('Tiền hụi sống: ${normalSessionDetail.payCost}', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+            subtitle: Text('Tiền hụi sống: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
           )
         ],
       ),

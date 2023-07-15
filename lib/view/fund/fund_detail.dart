@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:hui_management/provider/fund_provider.dart';
-import 'package:hui_management/view/fund_members_view.dart';
 import 'package:provider/provider.dart';
 
-import '../helper/utils.dart';
-import 'fund_session/fund_sessions_view.dart';
-import 'fund_session/session_create_select_member.dart';
+import '../../helper/utils.dart';
+import '../fund_session/fund_sessions_view.dart';
+import '../fund_session/session_create_select_member.dart';
+import 'fund_members_view.dart';
 
 class FundDetailWidget extends StatelessWidget {
   const FundDetailWidget({super.key});
@@ -25,7 +25,7 @@ class FundDetailWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Tên: ${fundProvider.fund.name}\nNgày mở hụi: ${fundProvider.fund.openDateText}\nDây hụi ${fundProvider.fund.fundPrice}.000đ\nHoa hồng: ${fundProvider.fund.serviceCost}.000đ\nNgày tạo hụi: ${Utils.dateFormat.format(fundProvider.fund.openDate)}',
+                'Tên: ${fundProvider.fund.name}\nNgày mở hụi: ${fundProvider.fund.openDateText}\nDây hụi ${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ\nHoa hồng: ${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ\nNgày tạo hụi: ${Utils.dateFormat.format(fundProvider.fund.openDate)}',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
@@ -34,7 +34,7 @@ class FundDetailWidget extends StatelessWidget {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: InkWell(
                   onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => FundMembersWidget()),
+                    MaterialPageRoute(builder: (context) => const FundMembersWidget()),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class FundDetailWidget extends StatelessWidget {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: InkWell(
                   onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => FundSessionsWidget()),
+                    MaterialPageRoute(builder: (context) => const FundSessionsWidget()),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,11 +92,6 @@ class FundDetailWidget extends StatelessWidget {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         children: [
-          FloatingActionButton(
-            onPressed: () {},
-            heroTag: null,
-            child: const Icon(Icons.person_add),
-          ),
           FloatingActionButton(
             onPressed: () {
               Navigator.of(context).push(

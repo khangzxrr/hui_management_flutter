@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hui_management/model/authentication_model.dart';
 
 class AuthenticationProvider with ChangeNotifier {
-  late AuthenticationModel model;
+  AuthenticationModel? model;
 
   void setAuthentication(AuthenticationModel model) {
     this.model = model;

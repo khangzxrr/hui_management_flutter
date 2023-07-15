@@ -6,10 +6,12 @@ import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/dashboard_view.dart';
-import 'package:hui_management/view/funds_view.dart';
+
 import 'package:hui_management/view/login_view.dart';
 import 'package:hui_management/view/members_view.dart';
 import 'package:provider/provider.dart';
+
+import 'view/fund/funds_view.dart';
 
 void main() {
   SetupService.setup();

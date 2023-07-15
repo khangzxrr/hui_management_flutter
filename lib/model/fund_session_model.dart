@@ -7,12 +7,13 @@ part 'fund_session_model.g.dart';
 @JsonSerializable()
 class FundSession {
   int id;
+  int sessionNumber;
   DateTime takenDate;
 
   TakenSessionDetail takenSessionDetail;
   List<NormalSessionDetail> normalSessionDetails;
 
-  FundSession({required this.id, required this.takenDate, required this.takenSessionDetail, required this.normalSessionDetails});
+  FundSession({required this.id, required this.sessionNumber, required this.takenDate, required this.takenSessionDetail, required this.normalSessionDetails});
 
   factory FundSession.fromJson(Map<String, dynamic> json) => _$FundSessionFromJson(json);
   Map<String, dynamic> toJson() => _$FundSessionToJson(this);

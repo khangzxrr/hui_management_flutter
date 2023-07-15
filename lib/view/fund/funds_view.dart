@@ -8,10 +8,10 @@ import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
-import 'package:hui_management/view/fund_detail.dart';
-import 'package:hui_management/view/fund_edit.dart';
-import 'package:hui_management/view/fund_new_take_view.dart';
 import 'package:provider/provider.dart';
+
+import 'fund_detail.dart';
+import 'fund_edit.dart';
 
 class FundWidget extends StatelessWidget {
   final GeneralFundModel fund;
@@ -86,25 +86,9 @@ class FundWidget extends StatelessWidget {
                   backgroundColor: const Color.fromARGB(255, 237, 44, 218),
                   child: Text('${fund.id}'),
                 ),
-                title: Text('Tên: ${fund.name}\nNgày mở hụi: ${fund.openDateText}\nDây hụi ${fund.fundPrice}.000đ\nHoa hồng: ${fund.serviceCost}.000đ\nSố phần: ${fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fund.openDate)}'),
+                title: Text('Tên: ${fund.name}\nNgày mở hụi: ${fund.openDateText}\nDây hụi ${Utils.moneyFormat.format(fund.fundPrice)}đ\nHoa hồng: ${Utils.moneyFormat.format(fund.serviceCost)}đ\nSố phần: ${fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fund.openDate)}'),
                 subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
               ),
-              Padding(
-                padding: const EdgeInsets.all(5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => FundNewTakeWidget(isNew: true, fund: null)),
-                      ),
-                      icon: const Icon(Icons.paid),
-                      label: const Text('Hốt'),
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ),
@@ -141,7 +125,6 @@ class FundsWidget extends StatelessWidget {
             ),
           );
         },
-        backgroundColor: Colors.green,
         child: const Icon(Icons.add),
       ),
     );
