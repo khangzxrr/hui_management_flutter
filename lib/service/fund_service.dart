@@ -10,6 +10,16 @@ import 'package:hui_management/model/general_fund_model.dart';
 class FundService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
+  Future<bool> removeSession(int fundId, int sessionId) async {
+    final response = await httpClient.delete(Uri.parse('http://localhost:57678/funds/$fundId/sessions/$sessionId'));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+
+    throw Exception(response.body);
+  }
+
   Future<bool> addSession(int fundId, int memberId, double predictPrice) async {
     final response = await httpClient.post(
       Uri.parse('http://localhost:57678/funds/$fundId/sessions/add'),

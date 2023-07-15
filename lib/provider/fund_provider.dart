@@ -24,6 +24,11 @@ class FundProvider with ChangeNotifier {
         },
       );
 
+  TaskEither<String, bool> removeSession(int sessionId) => TaskEither.tryCatch(
+        () async => GetIt.I<FundService>().removeSession(_fund.id, sessionId),
+        (error, stackTrace) => error.toString(),
+      );
+
   TaskEither<String, bool> addSession(int memberId, double predictPrice) => TaskEither.tryCatch(
         () async => GetIt.I<FundService>().addSession(_fund.id, memberId, predictPrice),
         (error, stackTrace) => error.toString(),

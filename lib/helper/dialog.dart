@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class DialogHelper {
+  static showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
+
   static Future<void> showAlert(BuildContext context) async {
     return showDialog<void>(
       context: context,

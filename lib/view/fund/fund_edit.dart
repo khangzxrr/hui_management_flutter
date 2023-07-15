@@ -34,7 +34,7 @@ class FundEditWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quản lí thành viên'),
+        title: const Text('Quản lí dây hụi'),
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hui_management/model/fund_session_model.dart';
@@ -5,6 +7,7 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/view/fund_session/session_detail_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/dialog.dart';
 import '../../helper/utils.dart';
 
 class SessionViewWidget extends StatelessWidget {
@@ -14,6 +17,7 @@ class SessionViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fundProvider = Provider.of<FundProvider>(context);
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -24,6 +28,16 @@ class SessionViewWidget extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) {
+              fundProvider
+                  .removeSession(session.id)
+                  .andThen(
+                    () => fundProvider.getFund(fundProvider.fund.id),
+                  )
+                  .match((l) {
+                log(l);
+                DialogHelper.showSnackBar(context, l);
+              }, (r) => DialogHelper.showSnackBar(context, "Xóa kì hụi thành công!")).run();
+
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(
