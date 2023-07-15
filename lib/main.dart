@@ -8,10 +8,10 @@ import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/dashboard_view.dart';
 
 import 'package:hui_management/view/login_view.dart';
-import 'package:hui_management/view/members_view.dart';
 import 'package:provider/provider.dart';
 
 import 'view/fund/funds_view.dart';
+import 'view/member/members_view.dart';
 
 void main() {
   SetupService.setup();

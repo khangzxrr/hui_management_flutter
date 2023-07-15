@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hui_management/view/member_edit.dart';
 
 class FundDetailMember extends StatelessWidget {
   const FundDetailMember({super.key});

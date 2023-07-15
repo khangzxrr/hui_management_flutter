@@ -41,13 +41,7 @@ class DashboardWidget extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  usersProvider
-                      .getAllUsers()
-                      .match(
-                        (l) => log(l),
-                        (r) => Navigator.of(context).pushNamed('/members'),
-                      )
-                      .run();
+                  Navigator.of(context).pushNamed('/members');
                 },
                 child: const Text('Danh sách người dùng')),
             const SizedBox(width: 30, height: 30),

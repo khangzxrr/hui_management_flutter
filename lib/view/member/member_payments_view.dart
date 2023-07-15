@@ -6,13 +6,14 @@ import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/user_service.dart';
-import 'package:hui_management/view/member_edit.dart';
 import 'package:provider/provider.dart';
 
-class MemberWidget extends StatelessWidget {
-  late final UserModel user;
+import 'member_edit.dart';
 
-  MemberWidget({super.key, required this.user});
+class PaymentWidget extends StatelessWidget {
+  final UserModel user;
+
+  const PaymentWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +76,8 @@ class MemberWidget extends StatelessWidget {
   }
 }
 
-class MembersWidget extends StatelessWidget {
-  const MembersWidget({super.key});
+class MemberPaymentsWidget extends StatelessWidget {
+  const MemberPaymentsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +86,12 @@ class MembersWidget extends StatelessWidget {
     final List<Widget> userWidgets = [];
 
     userWidgets.addAll(
-      usersProvider.users.map((user) => MemberWidget(user: user)),
+      usersProvider.users.map((user) => PaymentWidget(user: user)),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quản lí thành viên'),
+        title: const Text('Quản lí thanh toán'),
       ),
       body: ListView(
         children: userWidgets,
