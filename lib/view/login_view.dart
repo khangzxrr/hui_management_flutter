@@ -67,18 +67,16 @@ class LoginWidget extends StatelessWidget {
                       final authenticationEither = await getIt<LoginService>().login("0862106650", "123123aaa").run();
 
                       authenticationEither.match(
-                        (error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text('Lỗi đăng nhập, vui lòng thử lại'))),
+                        (error) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Lỗi đăng nhập, vui lòng thử lại'),
+                        )),
                         (authentication) {
                           log(authentication.toString());
                           authenticationProvider.setAuthentication(authentication);
 
                           SetupService.setupAuthorizeServiced(authentication.token);
 
-                          navigate.pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => DashboardWidget(),
-                            ),
-                          );
+                          navigate.pushReplacementNamed('/dashboard');
                         },
                       );
 

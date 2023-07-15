@@ -5,7 +5,10 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/setup_service.dart';
+import 'package:hui_management/view/dashboard_view.dart';
+import 'package:hui_management/view/funds_view.dart';
 import 'package:hui_management/view/login_view.dart';
+import 'package:hui_management/view/members_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -33,8 +36,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
       builder: EasyLoading.init(),
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Quản lí hụi'),
+        '/dashboard': (context) => DashboardWidget(),
+        '/members': (context) => const MembersWidget(),
+        '/funds': (context) => const FundsWidget(),
+      },
     );
   }
 }

@@ -6,13 +6,11 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
-import 'package:hui_management/service/fund_service.dart';
 import 'package:hui_management/service/user_service.dart';
 import 'package:provider/provider.dart';
 
@@ -94,7 +92,7 @@ class AddMemberWidget extends StatelessWidget {
               popupProps: const PopupProps.dialog(showSearchBox: true),
               name: 'searchable_dropdown_user',
               decoration: const InputDecoration(
-                labelText: 'Searchable Dropdown Online',
+                labelText: 'Chọn người dùng',
               ),
               itemAsString: (user) => user.name,
               compareFn: (user1, user2) => user1.name != user2.name,

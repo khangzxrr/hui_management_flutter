@@ -6,9 +6,7 @@ import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
-import 'package:hui_management/service/user_service.dart';
 import 'package:hui_management/view/funds_view.dart';
-import 'package:hui_management/view/members_view.dart';
 import 'package:provider/provider.dart';
 
 class DashboardWidget extends StatelessWidget {
@@ -52,19 +50,14 @@ class DashboardWidget extends StatelessWidget {
             const SizedBox(width: 30, height: 30),
             ElevatedButton(
                 onPressed: () async {
-                  final funds = await getIt<FundService>().getAll().match(
+                  getIt<FundService>().getAll().match(
                     (err) => log(err),
                     (funds) {
                       fundProvier.setFunds(funds);
+
+                      Navigator.of(context).pushNamed('/funds');
                     },
                   ).run();
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FundsWidget(),
-                    ),
-                  );
                 },
                 child: const Text('Danh sách dây hụi')),
           ],

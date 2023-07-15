@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/view/fund_session/fund_sessions_view.dart';
 import 'package:provider/provider.dart';
 
 class SessionCreateEnterInfoWidget extends StatefulWidget {
@@ -151,7 +152,14 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
                           .andThen(
                             () => fundProvider.getFund(fundProvider.fund.id),
                           )
-                          .match((l) => log(l), (r) => log('OK'))
+                          .match(
+                            (l) => log(l),
+                            (r) => Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (buildContext) => const FundSessionsWidget()),
+                              ModalRoute.withName('/funds'),
+                            ),
+                          )
                           .run();
                     }
                   : null,
