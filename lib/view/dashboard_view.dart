@@ -43,7 +43,7 @@ class DashboardWidget extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed('/members');
                 },
-                child: const Text('Danh sách người dùng')),
+                child: const Text('Quản lí người dùng')),
             const SizedBox(width: 30, height: 30),
             ElevatedButton(
                 onPressed: () {
@@ -51,12 +51,19 @@ class DashboardWidget extends StatelessWidget {
                     (err) => log(err),
                     (funds) {
                       fundProvier.setFunds(funds);
-
                       Navigator.of(context).pushNamed('/funds');
                     },
                   ).run();
                 },
-                child: const Text('Danh sách dây hụi')),
+                child: const Text('Quản lí dây hụi')),
+            const SizedBox(
+              width: 30,
+              height: 30,
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pushNamed('/funds/payments'),
+              child: const Text('Quản lí thanh toán'),
+            )
           ],
         ),
       ),

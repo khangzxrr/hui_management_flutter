@@ -3,15 +3,18 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
+import 'package:hui_management/provider/payment_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/dashboard_view.dart';
 
 import 'package:hui_management/view/login_view.dart';
+import 'package:hui_management/view/member/member_payments_view.dart';
 import 'package:provider/provider.dart';
 
 import 'view/fund/funds_view.dart';
 import 'view/member/members_view.dart';
+import 'view/payments/payments_members_view.dart';
 
 void main() {
   SetupService.setup();
@@ -22,6 +25,7 @@ void main() {
       ChangeNotifierProvider(create: (context) => UsersProvider()),
       ChangeNotifierProvider(create: (context) => GeneralFundProvider()),
       ChangeNotifierProvider(create: (context) => FundProvider()),
+      ChangeNotifierProvider(create: (context) => PaymentProvider()),
     ],
     child: const MyApp(),
   ));
@@ -44,6 +48,8 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => DashboardWidget(),
         '/members': (context) => const MembersWidget(),
         '/funds': (context) => const FundsWidget(),
+        '/funds/payments': (context) => const PaymentMembersViewWidget(),
+        '/members/payments': (context) => const MemberPaymentsWidget(),
       },
     );
   }
