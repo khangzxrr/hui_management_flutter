@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/dialog.dart';
+import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/payment_provider.dart';
@@ -14,7 +15,24 @@ class PaymentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(payment.createAt.toString());
+    return Card(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          leading: const Icon(Icons.request_quote),
+          title: Text('Bill thanh toán ngày ${Utils.dateFormat.format(payment.createAt)}'),
+          subtitle: Text('Loại: ${payment.totalCost < 0 ? 'Chủ hụi phải thanh toán' : 'Thành viên phải thanh toán'}\nTổng tiền thanh toán: ${Utils.moneyFormat.format(payment.totalCost.abs())}đ'),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(onPressed: () {}, child: const Text('Xử lí bill này')),
+            const SizedBox(width: 8),
+          ],
+        )
+      ],
+    ));
   }
 }
 

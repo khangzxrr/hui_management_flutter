@@ -7,7 +7,7 @@ import 'package:hui_management/provider/users_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/payment_provider.dart';
-import 'funds_payments_detail.dart';
+import 'payment_summaries_view.dart';
 
 class MemberWidget extends StatelessWidget {
   final UserModel user;
