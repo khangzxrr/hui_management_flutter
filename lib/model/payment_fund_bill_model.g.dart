@@ -11,16 +11,16 @@ FundBillModel _$FundBillModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       fromFund:
           GeneralFundModel.fromJson(json['fromFund'] as Map<String, dynamic>),
-      amount: (json['amount'] as num).toDouble(),
-      type: json['type'] as String,
-      status: json['status'] as String,
+      fromSession:
+          FundSession.fromJson(json['fromSession'] as Map<String, dynamic>),
+      fromSessionDetail: NormalSessionDetail.fromJson(
+          json['fromSessionDetail'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$FundBillModelToJson(FundBillModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'fromFund': instance.fromFund,
-      'amount': instance.amount,
-      'type': instance.type,
-      'status': instance.status,
+      'fromSession': instance.fromSession,
+      'fromSessionDetail': instance.fromSessionDetail,
     };

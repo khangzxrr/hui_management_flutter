@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorizeHttp.dart';
+import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 
@@ -11,7 +12,7 @@ class FundService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
   Future<bool> removeSession(int fundId, int sessionId) async {
-    final response = await httpClient.delete(Uri.parse('http://localhost:57678/funds/$fundId/sessions/$sessionId'));
+    final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/funds/$fundId/sessions/$sessionId'));
 
     if (response.statusCode == 200) {
       return true;
@@ -22,7 +23,7 @@ class FundService {
 
   Future<bool> addSession(int fundId, int memberId, double predictPrice) async {
     final response = await httpClient.post(
-      Uri.parse('http://localhost:57678/funds/$fundId/sessions/add'),
+      Uri.parse('${Constants.apiHostName}/funds/$fundId/sessions/add'),
       body: jsonEncode({"memberId": memberId, "predictPrice": predictPrice}),
     );
 
@@ -34,7 +35,7 @@ class FundService {
   }
 
   Future<bool> removeMember(int fundId, int memberId) async {
-    final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId/members/$memberId/remove'));
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds/$fundId/members/$memberId/remove'));
 
     if (response.statusCode == 200) {
       return true;
@@ -44,7 +45,7 @@ class FundService {
   }
 
   Future<bool> addMember(int fundId, int memberId) async {
-    final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId/members/$memberId/add'));
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds/$fundId/members/$memberId/add'));
 
     if (response.statusCode == 200) {
       return true;
@@ -54,7 +55,7 @@ class FundService {
   }
 
   Future<Fund> get(int fundId) async {
-    final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId'));
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds/$fundId'));
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body)['fund'];
@@ -66,7 +67,7 @@ class FundService {
   }
 
   TaskEither<String, bool> archived(int fundId, bool isArchived) => TaskEither.tryCatch(() async {
-        final response = await httpClient.get(Uri.parse('http://localhost:57678/funds/$fundId/archive?isArchived=$isArchived'));
+        final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds/$fundId/archive?isArchived=$isArchived'));
 
         if (response.statusCode == 200) {
           return true;
@@ -77,7 +78,7 @@ class FundService {
 
   TaskEither<String, GeneralFundModel> update(GeneralFundModel fund) => TaskEither.tryCatch(() async {
         final response = await httpClient.put(
-          Uri.parse('http://localhost:57678/funds'),
+          Uri.parse('${Constants.apiHostName}/funds'),
           body: jsonEncode(fund.toJson()),
         );
 
@@ -92,7 +93,7 @@ class FundService {
 
   TaskEither<String, GeneralFundModel> create(GeneralFundModel fund) => TaskEither.tryCatch(() async {
         final response = await httpClient.post(
-          Uri.parse('http://localhost:57678/funds'),
+          Uri.parse('${Constants.apiHostName}/funds'),
           body: jsonEncode(fund.toJson()),
         );
 
@@ -106,7 +107,7 @@ class FundService {
       }, (error, stackTrace) => error.toString());
 
   TaskEither<String, List<GeneralFundModel>> getAll() => TaskEither.tryCatch(() async {
-        final response = await httpClient.get(Uri.parse('http://localhost:57678/funds'));
+        final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds'));
 
         if (response.statusCode == 200) {
           final Iterable jsonIterable = jsonDecode(response.body)['funds'];

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/view/fund_session/session_detail_view.dart';
@@ -18,6 +19,8 @@ class SessionViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context);
+
+    NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == "Taken").first;
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -68,7 +71,7 @@ class SessionViewWidget extends StatelessWidget {
                   backgroundColor: const Color.fromARGB(255, 237, 44, 218),
                   child: Text('K${session.sessionNumber}'),
                 ),
-                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ ${session.sessionNumber}\nThành viên hốt: ${session.takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(session.takenSessionDetail.predictedPrice)}đ\nTiền hụi: ${Utils.moneyFormat.format(session.takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(session.takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(session.takenSessionDetail.remainPrice)}đ', textAlign: TextAlign.right),
+                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTiền hụi: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right),
               ),
             ],
           ),

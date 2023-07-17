@@ -33,9 +33,12 @@ class MemberWidget extends StatelessWidget {
           onTap: () {
             //todo fix member provider inside build
             //add ui for payments
-            Provider.of<PaymentProvider>(context, listen: false).getPayments(user.id).match((l) => log(l), (r) => log("ok")).run();
-
-            Navigator.of(context).push(MaterialPageRoute(builder: (builder) => PaymentSummariesWidget(user: user)));
+            Provider.of<PaymentProvider>(context, listen: false).getPayments(user.id).match((l) {
+              log(l);
+              DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
+            }, (r) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => PaymentSummariesWidget(user: user)));
+            }).run();
           }),
     );
   }
@@ -47,11 +50,6 @@ class PaymentMembersViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usersProvider = Provider.of<UsersProvider>(context);
-
-    usersProvider.getAllUsers().getOrElse((l) {
-      DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-      Navigator.of(context).pop();
-    }).run();
 
     final List<Widget> userWidgets = [];
 

@@ -8,6 +8,8 @@ import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:provider/provider.dart';
 
+import '../helper/dialog.dart';
+
 class DashboardWidget extends StatelessWidget {
   final getIt = GetIt.instance;
 
@@ -61,7 +63,15 @@ class DashboardWidget extends StatelessWidget {
               height: 30,
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pushNamed('/funds/payments'),
+              onPressed: () {
+                Provider.of<UsersProvider>(context, listen: false).getAllUsers().match(
+                  (l) {
+                    log(l);
+                    DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
+                  },
+                  (r) => Navigator.of(context).pushNamed('/funds/payments'),
+                ).run();
+              },
               child: const Text('Quản lí thanh toán'),
             )
           ],

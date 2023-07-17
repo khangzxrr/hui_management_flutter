@@ -10,8 +10,6 @@ FundSession _$FundSessionFromJson(Map<String, dynamic> json) => FundSession(
       id: json['id'] as int,
       sessionNumber: json['sessionNumber'] as int,
       takenDate: DateTime.parse(json['takenDate'] as String),
-      takenSessionDetail: TakenSessionDetail.fromJson(
-          json['takenSessionDetail'] as Map<String, dynamic>),
       normalSessionDetails: (json['normalSessionDetails'] as List<dynamic>)
           .map((e) => NormalSessionDetail.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -22,6 +20,5 @@ Map<String, dynamic> _$FundSessionToJson(FundSession instance) =>
       'id': instance.id,
       'sessionNumber': instance.sessionNumber,
       'takenDate': instance.takenDate.toIso8601String(),
-      'takenSessionDetail': instance.takenSessionDetail,
       'normalSessionDetails': instance.normalSessionDetails,
     };

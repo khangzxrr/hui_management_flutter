@@ -50,7 +50,7 @@ class _SessionCreateSelectMemberWidgetState extends State<SessionCreateSelectMem
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
                     final isNotExistTaken = sessions.any(
-                      (session) => session.takenSessionDetail.fundMember.id == mem.id,
+                      (session) => session.normalSessionDetails.where((d) => d.type == "Taken" && d.fundMember.id == mem.id).isNotEmpty,
                     );
 
                     return nameContain && !isNotExistTaken;

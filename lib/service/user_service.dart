@@ -4,14 +4,13 @@ import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorizeHttp.dart';
 import 'package:hui_management/model/user_model.dart';
 
+import '../helper/constants.dart';
+
 class UserService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
-
-  
-
   Future<bool> delete(int id) async {
-    final response = await httpClient.delete(Uri.parse('http://localhost:57678/users/$id'));
+    final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/users/$id'));
 
     if (response.statusCode == 200) {
       return true;
@@ -21,7 +20,7 @@ class UserService {
   }
 
   Future<UserModel?> update(UserModel updateUser) async {
-    final response = await httpClient.put(Uri.parse('http://localhost:57678/users'), body: jsonEncode(updateUser.toJson()));
+    final response = await httpClient.put(Uri.parse('${Constants.apiHostName}/users'), body: jsonEncode(updateUser.toJson()));
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body)['user'];
@@ -42,7 +41,7 @@ class UserService {
     required String address,
     required String additionalInfo,
   }) async {
-    final response = await httpClient.post(Uri.parse('http://localhost:57678/users'),
+    final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/users'),
         body: jsonEncode({
           "name": name,
           "password": password,
@@ -64,7 +63,7 @@ class UserService {
   }
 
   Future<List<UserModel>> getAll() async {
-    final response = await httpClient.get(Uri.parse('http://localhost:57678/users'));
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/users'));
 
     if (response.statusCode == 200) {
       final Iterable jsonObj = jsonDecode(response.body)['users'];

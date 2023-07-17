@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
+import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/authentication_model.dart';
 
 class LoginService {
@@ -13,7 +14,7 @@ class LoginService {
         });
 
         final response = await http.post(
-          Uri.parse('http://localhost:57678/login'),
+          Uri.parse('${Constants.apiHostName}/login'),
           body: body,
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",

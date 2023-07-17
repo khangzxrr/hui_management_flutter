@@ -8,6 +8,8 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/view/fund_session/fund_sessions_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../helper/dialog.dart';
+
 class SessionCreateEnterInfoWidget extends StatefulWidget {
   final FundMember fundMember;
 
@@ -93,7 +95,10 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
                         return;
                       }
 
-                      double totalFund = (fundProvider.fund.membersCount - 1) * (fundProvider.fund.fundPrice - predictedPrice);
+                      double totalDeadFund = fundProvider.fund.sessions.length * fundProvider.fund.fundPrice;
+                      double totalAliveFund = (fundProvider.fund.membersCount - fundProvider.fund.sessions.length - 1) * (fundProvider.fund.fundPrice - predictedPrice);
+
+                      double totalFund = totalDeadFund + totalAliveFund;
 
                       if (predictedPrice > totalFund) {
                         _formKey.currentState?.fields['predictedPrice']?.invalidate('Thăm kêu không được lớn hơn tiền hụi');
@@ -153,18 +158,20 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
                             () => fundProvider.getFund(fundProvider.fund.id),
                           )
                           .match(
-                            (l) => log(l),
-                            (r) => Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (buildContext) => const FundSessionsWidget()),
-                              ModalRoute.withName('/funds'),
-                            ),
-                          )
-                          .run();
+                        (l) {
+                          log(l);
+                          DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
+                        },
+                        (r) => Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (buildContext) => const FundSessionsWidget()),
+                          ModalRoute.withName('/funds'),
+                        ),
+                      ).run();
                     }
                   : null,
-              child: const Text('Hốt hụi'),
               style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),
+              child: const Text('Hốt hụi'),
             )
           ],
         ),

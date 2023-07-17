@@ -6,6 +6,7 @@ import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/payment_provider.dart';
+import 'package:hui_management/view/payments/payment_detail_view.dart';
 import 'package:provider/provider.dart';
 
 class PaymentWidget extends StatelessWidget {
@@ -27,7 +28,11 @@ class PaymentWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            TextButton(onPressed: () {}, child: const Text('Xử lí bill này')),
+            TextButton(
+                onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PaymentDetailWidget(payment: payment)),
+                    ),
+                child: const Text('Xử lí bill này')),
             const SizedBox(width: 8),
           ],
         )
