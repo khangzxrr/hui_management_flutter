@@ -37,7 +37,7 @@ class MemberWidget extends StatelessWidget {
               log(l);
               DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
             }, (r) {
-              Navigator.of(context).push(MaterialPageRoute(builder: (builder) => PaymentSummariesWidget(user: user)));
+              Navigator.of(context).pushNamed(PaymentSummariesWidget.routeName, arguments: user);
             }).run();
           }),
     );

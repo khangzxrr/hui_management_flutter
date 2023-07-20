@@ -16,4 +16,12 @@ class PaymentService {
       (json['paymentRecords'] as Iterable).map((e) => PaymentModel.fromJson(e)),
     );
   }
+
+  Future addTransaction(PaymentModel payment, String transactionMethod, double transactionAmount, String transactionNote) async {
+    await httpClient.postJson('${Constants.apiHostName}/owner/users/${payment.owner.id}/payments/${payment.id}/transactions/add', {
+      'transactionMethod': transactionMethod,
+      'transactionAmount': transactionAmount,
+      'transactionNote': transactionNote,
+    });
+  }
 }

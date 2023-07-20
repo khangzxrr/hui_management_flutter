@@ -15,9 +15,11 @@ class PaymentModel {
   List<FundBillModel> fundBills;
 
   double totalCost;
+  double totalTransactionCost;
+
   String status;
 
-  PaymentModel({required this.id, required this.owner, required this.createAt, required this.paymentTransactions, required this.fundBills, required this.totalCost, required this.status});
+  PaymentModel({required this.id, required this.owner, required this.createAt, required this.paymentTransactions, required this.fundBills, required this.totalCost, required this.totalTransactionCost, required this.status});
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentModelToJson(this);

@@ -9,11 +9,11 @@ import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/dashboard_view.dart';
 
 import 'package:hui_management/view/login_view.dart';
-import 'package:hui_management/view/member/member_payments_view.dart';
 import 'package:provider/provider.dart';
 
 import 'view/fund/funds_view.dart';
 import 'view/member/members_view.dart';
+import 'view/payments/payment_summaries_view.dart';
 import 'view/payments/payments_members_view.dart';
 
 void main() {
@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
         '/members': (context) => const MembersWidget(),
         '/funds': (context) => const FundsWidget(),
         '/funds/payments': (context) => const PaymentMembersViewWidget(),
-        '/members/payments': (context) => const MemberPaymentsWidget(),
+        '/members/payments': (context) => const PaymentMembersViewWidget(),
+        PaymentSummariesWidget.routeName: (context) => const PaymentSummariesWidget(),
       },
     );
   }

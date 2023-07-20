@@ -21,5 +21,9 @@ class PaymentProvider with ChangeNotifier {
         (error, stackTrace) => error.toString(),
       );
 
+  TaskEither<String, void> addTransaction(PaymentModel payment, String transactionMethod, double transactionAmount, String transactionNote) => TaskEither.tryCatch(() async {
+        await paymentService.addTransaction(payment, transactionMethod, transactionAmount, transactionNote);
+      }, (error, stackTrace) => error.toString());
+
   List<PaymentModel> get payments => _payments;
 }

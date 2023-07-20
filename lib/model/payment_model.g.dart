@@ -17,6 +17,7 @@ PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
           .map((e) => FundBillModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       totalCost: (json['totalCost'] as num).toDouble(),
+      totalTransactionCost: (json['totalTransactionCost'] as num).toDouble(),
       status: json['status'] as String,
     );
 
@@ -28,5 +29,6 @@ Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
       'paymentTransactions': instance.paymentTransactions,
       'fundBills': instance.fundBills,
       'totalCost': instance.totalCost,
+      'totalTransactionCost': instance.totalTransactionCost,
       'status': instance.status,
     };

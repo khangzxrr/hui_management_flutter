@@ -190,6 +190,8 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
                     const TextSpan(text: 'Tổng còn lại phải '),
                     TextSpan(text: (ratio > 0) ? 'giao: ' : 'thu: '),
                     TextSpan(text: '${Utils.moneyFormat.format(ratio.abs())}đ\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: 'Tổng tiền đã thanh toán: '),
+                    TextSpan(text: '${Utils.moneyFormat.format(payment.totalTransactionCost)}đ\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade600)),
                     TextSpan(
                       text: (ratio > 0) ? 'Chủ hụi phải chi tiền cho hụi viên' : 'Chủ hụi phải thu tiền từ hụi viên',
                       style: TextStyle(fontWeight: FontWeight.bold, backgroundColor: ratio > 0 ? Colors.green : Colors.blue),
@@ -200,11 +202,11 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
               const SizedBox(
                 height: 4,
               ),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PaymentPaycheckWidget(payment: payment))),
-                  child: const Text('Thanh toán bill này'),
+                  onPressed: () => (payment.status == 'Finish') ? {} : Navigator.of(context).push(MaterialPageRoute(builder: (_) => PaymentPaycheckWidget(payment: payment))),
+                  child: Text(payment.status == 'Finish' ? 'Đã thanh toán thành công' : 'Thanh toán bill này'),
                 ),
               )
             ],

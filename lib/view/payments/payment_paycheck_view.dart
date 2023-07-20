@@ -1,9 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/payment_model.dart';
+import 'package:hui_management/provider/payment_provider.dart';
+import 'package:hui_management/view/payments/payment_summaries_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../helper/utils.dart';
 
@@ -16,6 +22,8 @@ class PaymentPaycheckWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Xử lí Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
@@ -28,25 +36,54 @@ class PaymentPaycheckWidget extends StatelessWidget {
             children: [
               FormBuilderRadioGroup(
                 wrapAlignment: WrapAlignment.spaceAround,
-                name: 'paymentMethod',
+                name: 'transactionMethod',
                 initialValue: 'byCash',
                 decoration: const InputDecoration(labelText: 'Phương thức thanh toán'),
                 options: const [
-                  FormBuilderFieldOption(value: 'byCash', child: Text('Tiền mặt')),
-                  FormBuilderFieldOption(value: 'byCredit', child: Text('Chuyển khoản')),
-                  FormBuilderFieldOption(value: 'debt', child: Text('Nợ')),
+                  FormBuilderFieldOption(value: 'ByCash', child: Text('Tiền mặt')),
+                  FormBuilderFieldOption(value: 'ByBanking', child: Text('Chuyển khoản')),
                 ],
                 validator: FormBuilderValidators.required(),
               ),
               FormBuilderTextField(
-                name: 'note',
+                name: 'transactionAmount',
+                decoration: const InputDecoration(labelText: 'Số tiền thanh toán'),
+                initialValue: payment.totalCost.abs().toString(),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.numeric(),
+                ]),
+              ),
+              FormBuilderTextField(
+                name: 'transactionNote',
                 decoration: const InputDecoration(labelText: 'Ghi chú'),
               ),
               const SizedBox(
                 height: 14,
               ),
               FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  paymentProvider
+                      .addTransaction(
+                        payment,
+                        formKey.currentState!.fields['transactionMethod']!.value,
+                        double.parse(formKey.currentState!.fields['transactionAmount']!.value.toString()),
+                        formKey.currentState!.fields['transactionNote']!.value,
+                      )
+                      .andThen(() => paymentProvider.getPayments(payment.owner.id))
+                      .match(
+                    (l) {
+                      log(l);
+                      DialogHelper.showSnackBar(context, 'Có lỗi xảy ra: $l');
+                    },
+                    (r) {
+                      log('OK');
+                      DialogHelper.showSnackBar(context, 'Thanh toán bill thành công');
+
+                      Navigator.popUntil(context, ModalRoute.withName(PaymentSummariesWidget.routeName));
+                    },
+                  ).run();
+                },
                 child: const Text('Lưu thông tin xử lí'),
               ),
             ],
