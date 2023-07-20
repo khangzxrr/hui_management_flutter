@@ -11,6 +11,16 @@ class AuthorizeHttp extends http.BaseClient {
 
   AuthorizeHttp({required this.token});
 
+  Future<dynamic> postJson(String url, dynamic body) async {
+    final response = await post(Uri.parse(url), body: jsonEncode(body));
+
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+
+    throw Exception(response.body);
+  }
+
   Future<dynamic> getJson(String url) async {
     final response = await get(Uri.parse(url));
 
