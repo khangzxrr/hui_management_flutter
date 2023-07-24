@@ -190,6 +190,22 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           child: ListView(
             children: [
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.titleLarge,
+                  children: <TextSpan>[
+                    const TextSpan(text: 'Tên hụi viên: '),
+                    TextSpan(text: '${payment.owner.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: 'Tên ngân hàng: '),
+                    TextSpan(text: '${payment.owner.bankname} ', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: 'Số tài khoản: '),
+                    TextSpan(text: '${payment.owner.banknumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: 'Số điện thoại: '),
+                    TextSpan(text: '${payment.owner.phonenumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
               const SizedBox(
                 height: 4,
               ),
