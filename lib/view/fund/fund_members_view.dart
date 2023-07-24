@@ -9,6 +9,7 @@ import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/user_service.dart';
 import 'package:provider/provider.dart';
 
@@ -79,6 +80,7 @@ class AddMemberWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
     return Row(
       children: [
@@ -120,6 +122,7 @@ class AddMemberWidget extends StatelessWidget {
                   .andThen(
                     () => fundProvider.getFund(fund.id),
                   )
+                  .andThen(() => generalFundProvider.fetchFunds())
                   .match(
                     (l) => log(l),
                     (r) => log("OK"),

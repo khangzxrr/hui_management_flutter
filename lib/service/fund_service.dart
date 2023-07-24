@@ -106,19 +106,19 @@ class FundService {
         throw Exception(response.body);
       }, (error, stackTrace) => error.toString());
 
-  TaskEither<String, List<GeneralFundModel>> getAll() => TaskEither.tryCatch(() async {
-        final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds'));
+  Future<List<GeneralFundModel>> getAll() async {
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds'));
 
-        if (response.statusCode == 200) {
-          final Iterable jsonIterable = jsonDecode(response.body)['funds'];
+    if (response.statusCode == 200) {
+      final Iterable jsonIterable = jsonDecode(response.body)['funds'];
 
-          return List<GeneralFundModel>.from(
-            jsonIterable.map((e) {
-              return GeneralFundModel.fromJson(e);
-            }),
-          );
-        }
+      return List<GeneralFundModel>.from(
+        jsonIterable.map((e) {
+          return GeneralFundModel.fromJson(e);
+        }),
+      );
+    }
 
-        throw Exception(response.body);
-      }, (error, stackTrace) => error.toString());
+    throw Exception(response.body);
+  }
 }

@@ -1,15 +1,9 @@
 import 'dart:developer';
 
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/helper/utils.dart';
-import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';

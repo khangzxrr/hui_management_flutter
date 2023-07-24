@@ -102,9 +102,9 @@ class FundsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fundProvider = Provider.of<GeneralFundProvider>(context);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context);
 
-    List<Widget> fundWidgets = fundProvider
+    List<Widget> generalFundWigets = generalFundProvider
         .getFunds()
         .map(
           (e) => FundWidget(fund: e),
@@ -115,7 +115,7 @@ class FundsWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Quản lí danh sách dây hụi'),
       ),
-      body: ListView(children: fundWidgets),
+      body: ListView(children: generalFundWigets),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

@@ -1,13 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/utils.dart';
-import 'package:hui_management/model/fund_session_model.dart';
-import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/model/payment_fund_bill_model.dart';
 import 'package:hui_management/model/payment_model.dart';
-import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/payment_transaction_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'payment_paycheck_view.dart';
+
+class TransactionListWidget extends StatelessWidget {
+  final List<PaymentTransaction> transactions;
+
+  TransactionListWidget({super.key, required this.transactions});
+
+  final List<PlutoColumn> columns = [
+    PlutoColumn(title: 'Số tiền', field: 'amount', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
+    PlutoColumn(title: 'Ghi chú', field: 'note', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
+    PlutoColumn(title: 'Phương thức', field: 'paymentMethod', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
+    PlutoColumn(title: 'Ngày thanh toán', field: 'createAt', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final List<PlutoRow> rows = transactions
+        .map(
+          (t) => PlutoRow(
+            cells: {
+              'amount': PlutoCell(value: '${Utils.moneyFormat.format(t.amount)}đ'),
+              'note': PlutoCell(value: t.description),
+              'paymentMethod': PlutoCell(value: t.method == 'ByCash' ? 'Tiền mặt' : 'Chuyển khoản'),
+              'createAt': PlutoCell(value: Utils.dateFormat.format(t.createAt)),
+            },
+          ),
+        )
+        .toList();
+
+    return PlutoGrid(mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
+  }
+}
 
 class GeneralInforOfFundMemberWidget extends StatelessWidget {
   final List<FundBillModel> fundBills;
@@ -198,6 +227,13 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 50.0 * (payment.paymentTransactions.length + 1),
+                child: TransactionListWidget(transactions: payment.paymentTransactions),
               ),
               const SizedBox(
                 height: 4,

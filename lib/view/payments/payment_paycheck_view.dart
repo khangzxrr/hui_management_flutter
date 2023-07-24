@@ -24,6 +24,7 @@ class PaymentPaycheckWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
 
+    double remainCost = payment.totalCost.abs() - payment.totalTransactionCost;
     return Scaffold(
       appBar: AppBar(
         title: Text('Xử lí Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
@@ -48,7 +49,7 @@ class PaymentPaycheckWidget extends StatelessWidget {
               FormBuilderTextField(
                 name: 'transactionAmount',
                 decoration: const InputDecoration(labelText: 'Số tiền thanh toán'),
-                initialValue: payment.totalCost.abs().toString(),
+                initialValue: remainCost.toString(),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.numeric(),
@@ -56,6 +57,7 @@ class PaymentPaycheckWidget extends StatelessWidget {
               ),
               FormBuilderTextField(
                 name: 'transactionNote',
+                initialValue: '',
                 decoration: const InputDecoration(labelText: 'Ghi chú'),
               ),
               const SizedBox(
@@ -63,6 +65,18 @@ class PaymentPaycheckWidget extends StatelessWidget {
               ),
               FilledButton(
                 onPressed: () {
+                  double transactionAmount = double.parse(formKey.currentState!.fields['transactionAmount']!.value.toString());
+
+                  if (transactionAmount < 0) {
+                    formKey.currentState?.fields['transactionAmount']?.invalidate('Giá tiền không thể bé hơn 0');
+                    return;
+                  }
+
+                  if (transactionAmount > remainCost) {
+                    formKey.currentState?.fields['transactionAmount']?.invalidate('Giá tiền không thể lớn hơn số tiền còn lại (${Utils.moneyFormat.format(remainCost)}đ)');
+                    return;
+                  }
+
                   paymentProvider
                       .addTransaction(
                         payment,

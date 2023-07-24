@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/general_fund_model.dart';
+import 'package:hui_management/service/fund_service.dart';
 
 class GeneralFundProvider with ChangeNotifier {
   List<GeneralFundModel> _funds = [];
@@ -28,6 +31,14 @@ class GeneralFundProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  TaskEither<String, List<GeneralFundModel>> fetchFunds() => TaskEither.tryCatch(() async {
+        final funds = await GetIt.I<FundService>().getAll();
+
+        setFunds(funds);
+
+        return funds;
+      }, (error, stackTrace) => error.toString());
 
   List<GeneralFundModel> getFunds() {
     return _funds;

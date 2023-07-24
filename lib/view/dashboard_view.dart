@@ -22,7 +22,7 @@ class DashboardWidget extends StatelessWidget {
     final authenticationProvider = Provider.of<AuthenticationProvider>(context);
     final usersProvider = Provider.of<UsersProvider>(context);
 
-    final fundProvier = Provider.of<GeneralFundProvider>(context);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context);
 
     if (authenticationProvider.model == null) {
       Navigator.of(context).popAndPushNamed('/login');
@@ -49,13 +49,13 @@ class DashboardWidget extends StatelessWidget {
             const SizedBox(width: 30, height: 30),
             ElevatedButton(
                 onPressed: () {
-                  getIt<FundService>().getAll().match(
-                    (err) => log(err),
-                    (funds) {
-                      fundProvier.setFunds(funds);
-                      Navigator.of(context).pushNamed('/funds');
-                    },
-                  ).run();
+                  generalFundProvider
+                      .fetchFunds()
+                      .match(
+                        (l) => log(l),
+                        (r) => Navigator.of(context).pushNamed('/funds'),
+                      )
+                      .run();
                 },
                 child: const Text('Quản lí dây hụi')),
             const SizedBox(
