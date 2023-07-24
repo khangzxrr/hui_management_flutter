@@ -64,13 +64,13 @@ class DashboardWidget extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Provider.of<UsersProvider>(context, listen: false).getAllUsers().match(
-                  (l) {
-                    log(l);
-                    DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                  },
-                  (r) => Navigator.of(context).pushNamed('/funds/payments'),
-                ).run();
+                usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match((l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên: $l');
+                }, (r) {
+                  print(r.length);
+                  Navigator.of(context).pushNamed('/funds/payments', arguments: r);
+                }).run();
               },
               child: const Text('Quản lí thanh toán'),
             )

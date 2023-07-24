@@ -49,13 +49,9 @@ class PaymentMembersViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final usersProvider = Provider.of<UsersProvider>(context);
+    final List<UserModel> users = ModalRoute.of(context)!.settings.arguments as List<UserModel>;
 
-    final List<Widget> userWidgets = [];
-
-    userWidgets.addAll(
-      usersProvider.users.map((user) => MemberWidget(user: user)),
-    );
+    final List<Widget> userWidgets = users.map((e) => MemberWidget(user: e)).toList();
 
     return Scaffold(
       appBar: AppBar(

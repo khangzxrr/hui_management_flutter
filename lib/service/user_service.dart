@@ -62,8 +62,22 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<UserModel>> getAll() async {
-    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/users'));
+  Future<List<UserModel>> getAll({
+    bool filterByAnyPayment = false,
+    bool filterByNotFinishedPayment = false,
+  }) async {
+    Map<String, String> queryParams = {};
+
+    if (filterByAnyPayment) {
+      queryParams['filterByAnyPayment'] = 'true';
+    }
+    if (filterByNotFinishedPayment) {
+      queryParams['filterByNotFinishedPayment'] = 'true';
+    }
+
+    final uri = Uri.http(Constants.domain, '/users', queryParams);
+
+    final response = await httpClient.get(uri);
 
     if (response.statusCode == 200) {
       final Iterable jsonObj = jsonDecode(response.body)['users'];
