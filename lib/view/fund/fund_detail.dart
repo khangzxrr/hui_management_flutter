@@ -90,19 +90,21 @@ class FundDetailWidget extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SessionCreateSelectMemberWidget()),
-              );
-            },
-            heroTag: null,
-            child: const Icon(Icons.paid),
-          ),
-        ],
-      ),
+      floatingActionButton: fundProvider.fund.sessionsCount == fundProvider.fund.membersCount
+          ? null
+          : ExpandableFab(
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const SessionCreateSelectMemberWidget()),
+                    );
+                  },
+                  heroTag: null,
+                  child: const Icon(Icons.paid),
+                ),
+              ],
+            ),
     );
   }
 }

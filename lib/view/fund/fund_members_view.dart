@@ -29,25 +29,27 @@ class FundMemberWidget extends StatelessWidget {
         motion: const ScrollMotion(),
 
         // All actions are defined in the children parameter.
-        children: [
-          // A SlidableAction can have an icon and/or a label.
-          SlidableAction(
-            onPressed: (context) async {
-              fundProvider
-                  .removeMember(fundMember.id)
-                  .andThen(() => fundProvider.getFund(fundProvider.fund.id))
-                  .match(
-                    (l) => log(l),
-                    (r) => log("OK"),
-                  )
-                  .run();
-            },
-            backgroundColor: Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Xóa',
-          ),
-        ],
+        children: (fundProvider.fund.sessionsCount != 0)
+            ? []
+            : [
+                // A SlidableAction can have an icon and/or a label.
+                SlidableAction(
+                  onPressed: (context) async {
+                    fundProvider
+                        .removeMember(fundMember.id)
+                        .andThen(() => fundProvider.getFund(fundProvider.fund.id))
+                        .match(
+                          (l) => log(l),
+                          (r) => log("OK"),
+                        )
+                        .run();
+                  },
+                  backgroundColor: Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: 'Xóa',
+                ),
+              ],
       ),
 
       // The child of the Slidable is what the user sees when the
@@ -147,7 +149,12 @@ class FundMembersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context);
 
-    List<Widget> widgets = [AddMemberWidget(fund: fundProvider.fund)];
+    List<Widget> widgets = [];
+
+    if (fundProvider.fund.sessionsCount == 0) {
+      widgets.add(AddMemberWidget(fund: fundProvider.fund));
+    }
+
     final members = fundProvider.fund.members
         .map(
           (fundMember) => FundMemberWidget(fundMember: fundMember),
