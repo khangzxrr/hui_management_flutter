@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       builder: EasyLoading.init(),
       routes: {
         '/': (context) => const MyHomePage(title: 'Quản lí hụi'),
-        '/dashboard': (context) => DashboardWidget(),
+        DashboardWidget.routeName: (context) => DashboardWidget(),
         '/members': (context) => const MembersWidget(),
         '/funds': (context) => const FundsWidget(),
         '/funds/payments': (context) => const PaymentMembersViewWidget(),

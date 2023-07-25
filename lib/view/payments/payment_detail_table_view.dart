@@ -38,63 +38,6 @@ class TransactionListWidget extends StatelessWidget {
   }
 }
 
-class GeneralInforOfFundMemberWidget extends StatelessWidget {
-  final List<FundBillModel> fundBills;
-  final List<PlutoColumn> columns = [
-    PlutoColumn(
-      title: 'Hụi chết',
-      field: 'totalDeadFund',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    PlutoColumn(
-      title: 'Hụi sống',
-      field: 'totalAliveFund',
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      type: PlutoColumnType.text(),
-    ),
-    PlutoColumn(
-      title: 'Âm / Dương',
-      field: 'ratioAliveAndDead',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    PlutoColumn(
-      title: 'Lợi nhuận',
-      field: 'finance',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    )
-  ];
-
-  GeneralInforOfFundMemberWidget({super.key, required this.fundBills});
-
-  @override
-  Widget build(BuildContext context) {
-    double totalDead = fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == 'Dead') ? element.fromSessionDetail.payCost : 0));
-    double totalAlive = fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == 'Alive') ? element.fromSessionDetail.payCost : 0));
-
-    double finance = fundBills.fold(
-      0,
-      (previousValue, element) => previousValue + ((element.fromSessionDetail.type == 'Alive') ? element.fromFund.fundPrice - element.fromSessionDetail.payCost : 0),
-    );
-    List<PlutoRow> rows = [
-      PlutoRow(cells: {
-        'totalDeadFund': PlutoCell(value: '${Utils.moneyFormat.format(totalDead)}đ'),
-        'totalAliveFund': PlutoCell(value: '${Utils.moneyFormat.format(totalAlive)}đ'),
-        'ratioAliveAndDead': PlutoCell(value: '${Utils.moneyFormat.format(totalAlive - totalDead)}đ'),
-        'finance': PlutoCell(value: '${Utils.moneyFormat.format(finance)}đ'),
-      })
-    ];
-
-    return PlutoGrid(mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
-  }
-}
-
 class FundSessionDetailWidget extends StatelessWidget {
   final List<FundBillModel> fundBills;
 
@@ -208,10 +151,6 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
               ),
               const SizedBox(
                 height: 4,
-              ),
-              SizedBox(
-                height: 100,
-                child: GeneralInforOfFundMemberWidget(fundBills: payment.fundBills),
               ),
               const SizedBox(
                 height: 10,

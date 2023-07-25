@@ -5,9 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/helper/authorizeHttp.dart';
-import 'package:hui_management/helper/mocking.dart';
-import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/service/login_service.dart';
 import 'package:hui_management/service/setup_service.dart';
@@ -64,9 +61,9 @@ class LoginWidget extends StatelessWidget {
                     onPressed: () async {
                       await EasyLoading.show(status: 'Đang đăng nhập...');
 
-                      final authenticationEither = await getIt<LoginService>().login("0862106650", "123123aaa").run();
+                      //final authenticationEither = await getIt<LoginService>().login("0862106650", "123123aaa").run();
+                      final authenticationEither = await getIt<LoginService>().login("09123235323", "123123aaa").run();
 
-                      
                       authenticationEither.match(
                         (error) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Lỗi đăng nhập, vui lòng thử lại'),
@@ -77,7 +74,7 @@ class LoginWidget extends StatelessWidget {
 
                           SetupService.setupAuthorizeServiced(authentication.token);
 
-                          navigate.pushReplacementNamed('/dashboard');
+                          navigate.pushReplacementNamed(DashboardWidget.routeName);
                         },
                       );
 

@@ -5,12 +5,13 @@ import 'package:get_it/get_it.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
-import 'package:hui_management/service/fund_service.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/dialog.dart';
 
 class DashboardWidget extends StatelessWidget {
+  static const routeName = "/dashboard";
+
   final getIt = GetIt.instance;
 
   DashboardWidget({super.key});
@@ -68,7 +69,6 @@ class DashboardWidget extends StatelessWidget {
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên: $l');
                 }, (r) {
-                  print(r.length);
                   Navigator.of(context).pushNamed('/funds/payments', arguments: r);
                 }).run();
               },
