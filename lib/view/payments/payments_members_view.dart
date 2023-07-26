@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/user_model.dart';
-import 'package:hui_management/provider/users_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/payment_provider.dart';

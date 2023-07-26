@@ -17,8 +17,6 @@ class FundNewTakeWidget extends StatelessWidget {
   final _ownerCostKey = GlobalKey<FormBuilderState>();
   final _remainCostKey = GlobalKey<FormBuilderState>();
 
-  List<String> genderOptions = ['Male', 'Female', 'Other'];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

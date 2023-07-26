@@ -1,8 +1,5 @@
 import 'dart:convert';
-
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 class AuthorizeHttp extends http.BaseClient {
   final _http = http.Client();

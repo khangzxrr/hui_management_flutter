@@ -112,11 +112,7 @@ class FundSessionDetailWidget extends StatelessWidget {
 class PaymentDetailTableViewWidget extends StatelessWidget {
   final PaymentModel payment;
 
-  List<PlutoColumn> columns = [];
-
-  List<PlutoRow> rows = [];
-
-  PaymentDetailTableViewWidget({super.key, required this.payment});
+  const PaymentDetailTableViewWidget({super.key, required this.payment});
 
   @override
   Widget build(BuildContext context) {
