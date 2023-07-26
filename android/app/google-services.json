@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "976834930137",
+    "project_id": "test-1d90e",
+    "storage_bucket": "test-1d90e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976834930137:android:010e07d3d27935ca15e5c8",
+        "android_client_info": {
+          "package_name": "com.example.hui_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976834930137-u9hbb4b62057ptrld24e81jl0etiqv88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAYifflKQnjxexsd89VH19c9XVVFGmF7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976834930137-pasc5i12n9lv7uevk3fl64gbo9g923a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
