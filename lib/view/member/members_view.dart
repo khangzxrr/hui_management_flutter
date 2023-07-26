@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../service/image_service.dart';
 import 'member_edit.dart';
 
 class MemberWidget extends StatelessWidget {
@@ -61,9 +63,17 @@ class MemberWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(50.0),
-                child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+              leading: FutureBuilder(
+                future: GetIt.I<ImageService>().getImagePathFromFireStorage(user.imageUrl),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return CircleAvatar(
+                      backgroundImage: NetworkImage(snapshot.data as String),
+                    );
+                  } else {
+                    return const CircleAvatar();
+                  }
+                },
               ),
               title: Text(user.name),
               subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
@@ -81,12 +91,6 @@ class MembersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usersProvider = Provider.of<UsersProvider>(context);
-
-    usersProvider.getAllUsers().getOrElse((l) {
-      DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-      Navigator.of(context).pop();
-    }).run();
-
     final List<Widget> userWidgets = [];
 
     userWidgets.addAll(

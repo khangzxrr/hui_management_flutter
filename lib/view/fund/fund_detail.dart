@@ -17,16 +17,41 @@ class FundDetailWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dây hụi ${fundProvider.fund.name}'),
+        title: Text('DÂY HỤI ${fundProvider.fund.name}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(15),
           child: Column(
             children: [
-              Text(
-                'Tên: ${fundProvider.fund.name}\nNgày mở hụi: ${fundProvider.fund.openDateText}\nDây hụi ${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ\nHoa hồng: ${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ\nNgày tạo hụi: ${Utils.dateFormat.format(fundProvider.fund.openDate)}',
-                textAlign: TextAlign.center,
+              // Text(
+              //   'Tên: ${fundProvider.fund.name}\nNgày mở hụi: ${fundProvider.fund.openDateText}\nDây hụi ${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ\nHoa hồng: ${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ\nNgày tạo hụi: ${Utils.dateFormat.format(fundProvider.fund.openDate)}',
+              //   textAlign: TextAlign.center,
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('Tên: ', textAlign: TextAlign.right),
+                      Text('Ngày mở hụi: ', textAlign: TextAlign.right),
+                      Text('Dây hụi: ', textAlign: TextAlign.right),
+                      Text('Hoa hồng: ', textAlign: TextAlign.right),
+                      Text('Ngày tạo hụi: ', textAlign: TextAlign.right),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(fundProvider.fund.name),
+                      Text(fundProvider.fund.openDateText),
+                      Text('${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ'),
+                      Text('${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ'),
+                      Text(Utils.dateFormat.format(fundProvider.fund.openDate)),
+                    ],
+                  )
+                ],
               ),
               const SizedBox(height: 10),
               Card(
@@ -43,7 +68,7 @@ class FundDetailWidget extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(
-                            'Quản lí hụi viên',
+                            'Quản LÍ HỤI VIÊN',
                             style: TextStyle(fontSize: 24, color: Colors.grey[800]),
                           ),
                           Container(height: 10),
@@ -71,7 +96,7 @@ class FundDetailWidget extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(
-                            'Quản lí các kì',
+                            'QUẢN LÍ CÁC KÌ',
                             style: TextStyle(fontSize: 24, color: Colors.grey[800]),
                           ),
                           Container(height: 10),

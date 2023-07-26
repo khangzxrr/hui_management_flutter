@@ -117,7 +117,12 @@ class DashboardWidget extends StatelessWidget {
           const SizedBox(height: 10, width: 10),
           ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/members');
+                usersProvider.getAllUsers().match((l) {
+                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
+                  Navigator.of(context).pop();
+                }, (r) {
+                  Navigator.of(context).pushNamed('/members');
+                }).run();
               },
               child: const Text('Quản lí người dùng')),
           const SizedBox(width: 30, height: 30),
