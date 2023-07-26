@@ -12,15 +12,18 @@ class SetupService {
 
   static void setup() {
     getIt.registerFactory(() => LoginService());
+    getIt.registerFactory(() => UserService());
+    getIt.registerFactory(() => FundService());
+    getIt.registerFactory(() => PaymentService());
   }
 
   static void setupAuthorizeServiced(String token) {
+    if (getIt.isRegistered<AuthorizeHttp>()) {
+      getIt.unregister<AuthorizeHttp>();
+    }
     log('regis authorize service..');
     log(token);
 
     getIt.registerFactory(() => AuthorizeHttp(token: token));
-    getIt.registerFactory(() => UserService());
-    getIt.registerFactory(() => FundService());
-    getIt.registerFactory(() => PaymentService());
   }
 }

@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/model/authentication_model.dart';
+import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/view/member/member_edit.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/dialog.dart';
@@ -25,15 +28,45 @@ class DashboardWidget extends StatelessWidget {
 
     final generalFundProvider = Provider.of<GeneralFundProvider>(context);
 
-    if (authenticationProvider.model == null) {
-      Navigator.of(context).popAndPushNamed('/login');
-    }
-
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('Xin chào ${authenticationProvider.model!.name}'),
+        title: Text('Xin chào ${authenticationProvider.model.user.name}'),
+
+        actions: [
+          //setting icon button
+          IconButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .push(
+                MaterialPageRoute(
+                  builder: (context) => MemberEditWidget(
+                    isCreateNew: false,
+                    user: authenticationProvider.model.user,
+                  ),
+                ),
+              )
+                  .then((value) {
+                if (value != null) {
+                  final newAuthenModel = AuthenticationModel(token: authenticationProvider.model.token, user: value as UserModel);
+                  authenticationProvider.setAuthentication(newAuthenModel);
+                  //update user info
+                }
+              });
+            },
+            icon: const Icon(Icons.settings),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).popAndPushNamed('/');
+            },
+            icon: const Icon(Icons.logout),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(30),

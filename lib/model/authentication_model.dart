@@ -1,17 +1,21 @@
+import 'user_model.dart';
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'authentication_model.g.dart';
+
+@JsonSerializable()
 class AuthenticationModel {
   final String token;
-  final String name;
-  final String phonenumber;
-  final String email;
+  final UserModel user;
 
-  AuthenticationModel({required this.token, required this.name, required this.phonenumber, required this.email});
+  AuthenticationModel({required this.token, required this.user});
 
-  factory AuthenticationModel.fromJson(Map<String, dynamic> json) {
-    return AuthenticationModel(token: json['token'], name: json['name'], phonenumber: json['phonenumber'], email: json['email']);
-  }
+  factory AuthenticationModel.fromJson(Map<String, dynamic> json) => _$AuthenticationModelFromJson(json);
+  Map<String, dynamic> toJson() => _$AuthenticationModelToJson(this);
 
   @override
   String toString() {
-    return '{$email $name $phonenumber $token}';
+    return '$token ${user.toString()}';
   }
 }

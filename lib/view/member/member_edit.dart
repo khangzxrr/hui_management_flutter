@@ -11,8 +11,8 @@ import 'package:hui_management/service/user_service.dart';
 import 'package:provider/provider.dart';
 
 class MemberEditWidget extends StatelessWidget {
-  late final bool isCreateNew;
-  late UserModel? user;
+  final bool isCreateNew;
+  final UserModel? user;
 
   MemberEditWidget({super.key, required this.isCreateNew, required this.user});
 
@@ -49,6 +49,11 @@ class MemberEditWidget extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
+                FormBuilderImagePicker(
+                  name: 'photos',
+                  decoration: const InputDecoration(labelText: 'Pick Photos'),
+                  maxImages: 1,
+                ),
                 FormBuilderTextField(
                   key: _nameFieldKey,
                   name: 'name',
@@ -174,9 +179,9 @@ class MemberEditWidget extends StatelessWidget {
                               (r) => log("ok"),
                             )
                             .run();
-                      }
 
-                      navigator.pop();
+                        navigator.pop(updateUser);
+                      }
                     },
                     child: Text(isCreateNew ? 'Đăng kí thành viên mới' : 'Lưu chỉnh sửa'))
               ],
