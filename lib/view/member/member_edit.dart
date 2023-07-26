@@ -1,14 +1,21 @@
 import 'dart:developer';
 
+import 'package:cross_file/cross_file.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/service/image_service.dart';
 import 'package:hui_management/service/user_service.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as image_lib;
+
+import '../../helper/utils.dart';
 
 class MemberEditWidget extends StatelessWidget {
   final bool isCreateNew;
@@ -17,7 +24,7 @@ class MemberEditWidget extends StatelessWidget {
   MemberEditWidget({super.key, required this.isCreateNew, required this.user});
 
   final _formKey = GlobalKey<FormBuilderState>();
-  final _emailFieldKey = GlobalKey<FormBuilderFieldState>();
+  final _identityFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _nameFieldKey = GlobalKey<FormBuilderFieldState>();
 
@@ -32,12 +39,17 @@ class MemberEditWidget extends StatelessWidget {
 
   final _additionalFieldKey = GlobalKey<FormBuilderFieldState>();
 
+  final _photoFieldKey = GlobalKey<FormBuilderFieldState>();
+
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
 
     final usersProvider = Provider.of<UsersProvider>(context, listen: false);
 
+    if (!isCreateNew) {
+      GetIt.I<ImageService>().getImagePathFromFireStorage(user!.imageUrl).then((value) => _photoFieldKey.currentState!.didChange([value]));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
@@ -51,8 +63,11 @@ class MemberEditWidget extends StatelessWidget {
               children: [
                 FormBuilderImagePicker(
                   name: 'photos',
+                  key: _photoFieldKey,
                   decoration: const InputDecoration(labelText: 'Pick Photos'),
+                  availableImageSources: const [ImageSourceOption.gallery],
                   maxImages: 1,
+                  initialValue: [Constants.randomAvatarPath],
                 ),
                 FormBuilderTextField(
                   key: _nameFieldKey,
@@ -105,20 +120,20 @@ class MemberEditWidget extends StatelessWidget {
                   ),
                 ),
                 FormBuilderTextField(
-                  key: _emailFieldKey,
-                  name: 'email',
-                  initialValue: isCreateNew ? "" : user!.email,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  key: _identityFieldKey,
+                  name: 'identity',
+                  initialValue: isCreateNew ? "" : user!.identity,
+                  decoration: const InputDecoration(labelText: 'CMND/CCCD'),
                   autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.email()],
+                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
                 ),
                 FormBuilderTextField(
                   key: _passwordFieldKey,
                   name: 'password',
                   initialValue: isCreateNew ? "" : user!.password,
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Mật khẩu'),
                   autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
@@ -128,7 +143,7 @@ class MemberEditWidget extends StatelessWidget {
                   key: _additionalFieldKey,
                   name: 'additional',
                   initialValue: isCreateNew ? "" : user!.additionalInfo,
-                  decoration: const InputDecoration(labelText: 'additional'),
+                  decoration: const InputDecoration(labelText: 'Thông tin thêm'),
                   autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [],
@@ -141,11 +156,31 @@ class MemberEditWidget extends StatelessWidget {
                         return;
                       }
 
+                      List<dynamic>? images = _photoFieldKey.currentState!.value;
+
+                      String imageUrl = isCreateNew ? Constants.randomAvatarPath : user!.imageUrl;
+                      
+                      if (images != null && images.isNotEmpty && images[0] is XFile) {
+                        final file = images[0] as XFile;
+                        final bytes = await file.readAsBytes();
+                        image_lib.Image image = image_lib.decodeImage(bytes)!;
+                        //size image to 120
+                        image_lib.Image resizedImage = image_lib.copyResize(image, width: 300);
+
+                        final firebaseStorage = FirebaseStorage.instanceFor(bucket: 'gs://test-1d90e.appspot.com').ref('public');
+
+                        imageUrl = '${Utils.getRandomString(30)}.jpg';
+                        final imageRef = firebaseStorage.child(imageUrl);
+
+                        await imageRef.putData(image_lib.encodeJpg(resizedImage), SettableMetadata(contentType: 'image/jpg'));
+                      }
+
                       if (isCreateNew) {
                         final user = await GetIt.I<UserService>().createNew(
+                          imageUrl: imageUrl,
                           name: _nameFieldKey.currentState!.value,
                           password: _passwordFieldKey.currentState!.value,
-                          email: _emailFieldKey.currentState!.value,
+                          identity: _identityFieldKey.currentState!.value,
                           phonenumber: _phonenumberFieldKey.currentState!.value,
                           bankname: _bankNameFieldKey.currentState!.value,
                           banknumber: _bankNumberFieldKey.currentState!.value,
@@ -161,8 +196,9 @@ class MemberEditWidget extends StatelessWidget {
                       } else {
                         final updateUser = UserModel(
                           id: user!.id,
+                          imageUrl: imageUrl,
                           name: _nameFieldKey.currentState!.value,
-                          email: _emailFieldKey.currentState!.value,
+                          identity: _identityFieldKey.currentState!.value,
                           password: _passwordFieldKey.currentState!.value,
                           phonenumber: _phonenumberFieldKey.currentState!.value,
                           bankname: _bankNameFieldKey.currentState!.value,

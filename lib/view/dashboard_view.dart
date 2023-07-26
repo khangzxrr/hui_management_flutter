@@ -11,6 +11,7 @@ import 'package:hui_management/view/member/member_edit.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/dialog.dart';
+import '../service/image_service.dart';
 
 class DashboardWidget extends StatelessWidget {
   static const routeName = "/dashboard";
@@ -57,7 +58,7 @@ class DashboardWidget extends StatelessWidget {
             },
             icon: const Icon(Icons.settings),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           IconButton(
@@ -68,47 +69,85 @@ class DashboardWidget extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(30),
-        child: Flex(
-          crossAxisAlignment: isWideScreen ? CrossAxisAlignment.center : CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          direction: isWideScreen ? Axis.horizontal : Axis.vertical,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/members');
-                },
-                child: const Text('Quản lí người dùng')),
-            const SizedBox(width: 30, height: 30),
-            ElevatedButton(
-                onPressed: () {
-                  generalFundProvider
-                      .fetchFunds()
-                      .match(
-                        (l) => log(l),
-                        (r) => Navigator.of(context).pushNamed('/funds'),
-                      )
-                      .run();
-                },
-                child: const Text('Quản lí dây hụi')),
-            const SizedBox(
-              width: 30,
-              height: 30,
-            ),
-            ElevatedButton(
+        children: [
+          FutureBuilder(
+            future: GetIt.I<ImageService>().getImagePathFromFireStorage(authenticationProvider.model.user.imageUrl),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Center(
+                  child: CircleAvatar(
+                    radius: 100,
+                    foregroundImage: NetworkImage(snapshot.data as String),
+                  ),
+                );
+              } else {
+                return const CircleAvatar(
+                  radius: 100,
+                  backgroundImage: AssetImage('images/member.jpg'),
+                );
+              }
+            },
+          ),
+          const SizedBox(height: 10, width: 10),
+          Text(
+            textAlign: TextAlign.center,
+            authenticationProvider.model.user.name,
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5, width: 5),
+          Text(
+            textAlign: TextAlign.center,
+            authenticationProvider.model.user.address,
+            style: const TextStyle(fontSize: 20),
+          ),
+          const SizedBox(height: 5, width: 5),
+          Text(
+            textAlign: TextAlign.center,
+            authenticationProvider.model.user.phonenumber,
+            style: const TextStyle(fontSize: 20),
+          ),
+          const SizedBox(height: 5, width: 5),
+          Text(
+            textAlign: TextAlign.center,
+            '${authenticationProvider.model.user.bankname} - ${authenticationProvider.model.user.banknumber}',
+            style: TextStyle(fontSize: 20, backgroundColor: Colors.red.shade600, color: Colors.white),
+          ),
+          const SizedBox(height: 10, width: 10),
+          ElevatedButton(
               onPressed: () {
-                usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên: $l');
-                }, (r) {
-                  Navigator.of(context).pushNamed('/funds/payments', arguments: r);
-                }).run();
+                Navigator.of(context).pushNamed('/members');
               },
-              child: const Text('Quản lí thanh toán'),
-            )
-          ],
-        ),
+              child: const Text('Quản lí người dùng')),
+          const SizedBox(width: 30, height: 30),
+          ElevatedButton(
+              onPressed: () {
+                generalFundProvider
+                    .fetchFunds()
+                    .match(
+                      (l) => log(l),
+                      (r) => Navigator.of(context).pushNamed('/funds'),
+                    )
+                    .run();
+              },
+              child: const Text('Quản lí dây hụi')),
+          const SizedBox(
+            width: 30,
+            height: 30,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match((l) {
+                log(l);
+                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên: $l');
+              }, (r) {
+                Navigator.of(context).pushNamed('/funds/payments', arguments: r);
+              }).run();
+            },
+            child: const Text('Quản lí thanh toán'),
+          )
+        ],
       ),
     );
   }

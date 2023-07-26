@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
@@ -21,7 +22,9 @@ import 'view/payments/payments_members_view.dart';
 void main() {
   Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ).then((value) {
+    FirebaseStorage.instanceFor(app: value);
+  });
 
   SetupService.setup();
 

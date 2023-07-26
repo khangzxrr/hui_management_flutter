@@ -32,9 +32,10 @@ class UserService {
   }
 
   Future<UserModel?> createNew({
+    required String imageUrl,
     required String name,
     required String password,
-    required String email,
+    required String identity,
     required String phonenumber,
     required String bankname,
     required String banknumber,
@@ -43,9 +44,10 @@ class UserService {
   }) async {
     final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/users'),
         body: jsonEncode({
+          "imageUrl": imageUrl,
           "name": name,
           "password": password,
-          "email": email,
+          "identity": identity,
           "phonenumber": phonenumber,
           "bankname": bankname,
           "banknumber": banknumber,

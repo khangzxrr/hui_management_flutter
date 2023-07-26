@@ -66,7 +66,7 @@ class MemberWidget extends StatelessWidget {
                 child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
               ),
               title: Text(user.name),
-              subtitle: Text('${user.email}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
+              subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
             )
           ],
         ),
