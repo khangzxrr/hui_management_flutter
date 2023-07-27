@@ -41,16 +41,16 @@ class LoginWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _emailFieldKey,
                   name: 'email',
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Số điện thoại'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required(), FormBuilderValidators.email()],
+                    [FormBuilderValidators.required()],
                   ),
                 ),
                 FormBuilderTextField(
                   key: _passwordFieldKey,
                   name: 'password',
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Mật khẩu'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
@@ -61,12 +61,22 @@ class LoginWidget extends StatelessWidget {
                     onPressed: () async {
                       await EasyLoading.show(status: 'Đang đăng nhập...');
 
-                      //final authenticationEither = await getIt<LoginService>().login("0862106650", "123123aaa").run();
-                      final authenticationEither = await getIt<LoginService>().login("09123235323", "123123aaa").run();
+                      _emailFieldKey.currentState!.save();
+                      _passwordFieldKey.currentState!.save();
+
+                      if (_emailFieldKey.currentState?.value == null || _passwordFieldKey.currentState?.value == null) {
+                        await EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Vui lòng nhập tài khoản và mật khẩu'),
+                        ));
+                        return;
+                      }
+
+                      final authenticationEither = await getIt<LoginService>().login(_emailFieldKey.currentState?.value as String, _passwordFieldKey.currentState?.value as String).run();
 
                       authenticationEither.match(
                         (error) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Lỗi đăng nhập, vui lòng thử lại'),
+                          content: Text('Sai tài khoản hoặc mật khẩu'),
                         )),
                         (authentication) {
                           log(authentication.toString());

@@ -67,7 +67,6 @@ class MemberEditWidget extends StatelessWidget {
                   decoration: const InputDecoration(labelText: 'Pick Photos'),
                   availableImageSources: const [ImageSourceOption.gallery],
                   maxImages: 1,
-                  initialValue: [Constants.randomAvatarPath],
                 ),
                 FormBuilderTextField(
                   key: _nameFieldKey,
@@ -159,7 +158,7 @@ class MemberEditWidget extends StatelessWidget {
                       List<dynamic>? images = _photoFieldKey.currentState!.value;
 
                       String imageUrl = isCreateNew ? Constants.randomAvatarPath : user!.imageUrl;
-                      
+
                       if (images != null && images.isNotEmpty && images[0] is XFile) {
                         final file = images[0] as XFile;
                         final bytes = await file.readAsBytes();
