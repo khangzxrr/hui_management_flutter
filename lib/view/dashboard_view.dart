@@ -22,8 +22,6 @@ class DashboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isWideScreen = MediaQuery.of(context).size.width >= 1080;
-
     final authenticationProvider = Provider.of<AuthenticationProvider>(context);
     final usersProvider = Provider.of<UsersProvider>(context);
 

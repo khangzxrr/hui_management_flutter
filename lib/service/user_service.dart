@@ -77,7 +77,13 @@ class UserService {
       queryParams['filterByNotFinishedPayment'] = 'true';
     }
 
-    final uri = Uri.https(Constants.domain, '/users', queryParams);
+    Uri uri;
+
+    if (Constants.apiHostName.contains("https")) {
+      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/users', queryParams);
+    } else {
+      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/users', queryParams);
+    }
 
     final response = await httpClient.get(uri);
 
