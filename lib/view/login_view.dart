@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -14,7 +12,6 @@ import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/login_service.dart';
 import 'package:hui_management/service/setup_service.dart';
-import 'package:hui_management/view/dashboard_view.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()

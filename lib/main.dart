@@ -10,16 +10,11 @@ import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/storage/hive_configuration.dart';
-import 'package:hui_management/view/dashboard_view.dart';
 
 import 'package:hui_management/view/login_view.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
-import 'view/fund/funds_view.dart';
-import 'view/member/members_view.dart';
-import 'view/payments/payment_summaries_view.dart';
-import 'view/payments/payments_members_view.dart';
 
 void main() async {
   final fireApp = await Firebase.initializeApp(
