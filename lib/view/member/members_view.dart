@@ -52,51 +52,159 @@ class MemberWidget extends StatelessWidget {
       // The child of the Slidable is what the user sees when the
       // component is not dragged.
       child: Card(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: CachedNetworkImage(
-                imageUrl: user.absoluteImageUrl!,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 80.0,
-                  height: 80.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+        child: InkWell(
+          onTap: () => context.router.push(MemberEditRoute(isCreateNew: false, user: user)),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: CachedNetworkImage(
+                  imageUrl: user.absoluteImageUrl!,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                    ),
                   ),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-              title: Text(user.name),
-              subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
-            )
-          ],
+                title: Text(user.name),
+                subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
+class MembersListView extends StatelessWidget {
+  final List<UserModel> users;
+
+  const MembersListView({super.key, required this.users});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: users.map((user) => MemberWidget(user: user)).toList(),
+    );
+  }
+}
+
 @RoutePage()
-class MembersScreen extends StatelessWidget {
+class MembersScreen extends StatefulWidget {
   const MembersScreen({super.key});
+
+  @override
+  State<MembersScreen> createState() => _MembersScreenState();
+}
+
+class _MembersScreenState extends State<MembersScreen> {
+  String filterText = '';
 
   @override
   Widget build(BuildContext context) {
     final usersProvider = Provider.of<UsersProvider>(context);
-    final List<Widget> userWidgets = [];
 
-    userWidgets.addAll(
-      usersProvider.users.map((user) => MemberWidget(user: user)),
-    );
+    if (filterText.isNotEmpty) {
+      ;
+    }
+
+    final userWidgets = usersProvider.users
+        .where(
+          (user) {
+            if (filterText == '') {
+              return true;
+            }
+
+            if (user.additionalInfo.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.address.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.bankname.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.banknumber.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.identity.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.name.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.phonenumber.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.identity.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.identityAddress.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            if (user.nickName.toLowerCase().contains(filterText.toLowerCase())) {
+              return true;
+            }
+
+            return false;
+          },
+        )
+        .map((user) => MemberWidget(user: user))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
       ),
       body: ListView(
-        children: userWidgets,
+        padding: const EdgeInsets.all(10.0),
+        children: [
+          Text('Tổng số thành viên: ${usersProvider.users.length}', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(
+            height: 10.0,
+            width: 10.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      filterText = text;
+                    });
+                  },
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    filterText = '';
+                  });
+                },
+                icon: const Icon(Icons.clear),
+              ),
+            ],
+          ),
+          ...userWidgets,
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.router.push(MemberEditRoute(isCreateNew: true, user: null)),

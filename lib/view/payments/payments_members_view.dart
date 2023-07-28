@@ -1,12 +1,15 @@
 import 'dart:developer';
 
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/payment_provider.dart';
+import '../../routes/app_route.dart';
 import 'payment_summaries_view.dart';
 
 class SingleMemberScreen extends StatelessWidget {
@@ -21,9 +24,18 @@ class SingleMemberScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(50.0),
-                  child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+                leading: CachedNetworkImage(
+                  imageUrl: user.absoluteImageUrl!,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                    ),
+                  ),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 title: Text(user.name),
                 subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
@@ -36,9 +48,7 @@ class SingleMemberScreen extends StatelessWidget {
             Provider.of<PaymentProvider>(context, listen: false).getPayments(user.id).match((l) {
               log(l);
               DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
-            }, (r) {
-              Navigator.of(context).pushNamed(PaymentSummariesWidget.routeName, arguments: user);
-            }).run();
+            }, (r) => context.router.push(PaymentListOfUserRoute(user: user))).run();
           }),
     );
   }

@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -9,17 +11,19 @@ import 'package:hui_management/view/fund_session/fund_sessions_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
+import '../../routes/app_route.dart';
 
-class SessionCreateEnterInfoWidget extends StatefulWidget {
+@RoutePage()
+class CreateSessionEnterInfoScreen extends StatefulWidget {
   final FundMember fundMember;
 
-  const SessionCreateEnterInfoWidget({super.key, required this.fundMember});
+  const CreateSessionEnterInfoScreen({super.key, required this.fundMember});
 
   @override
-  State<SessionCreateEnterInfoWidget> createState() => _SessionCreateEnterInfoWidget();
+  State<CreateSessionEnterInfoScreen> createState() => _SessionCreateEnterInfoWidget();
 }
 
-class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> {
+class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> {
   bool isValid = false;
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -157,17 +161,10 @@ class _SessionCreateEnterInfoWidget extends State<SessionCreateEnterInfoWidget> 
                           .andThen(
                             () => fundProvider.getFund(fundProvider.fund.id),
                           )
-                          .match(
-                        (l) {
-                          log(l);
-                          DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
-                        },
-                        (r) => Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (buildContext) => const FundSessionsWidget()),
-                          ModalRoute.withName('/funds'),
-                        ),
-                      ).run();
+                          .match((l) {
+                        log(l);
+                        DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
+                      }, (r) => context.router.push(const FundSessionListRoute())).run();
                     }
                   : null,
               style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),

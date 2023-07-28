@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
@@ -11,6 +12,7 @@ import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:provider/provider.dart';
 
+import '../../routes/app_route.dart';
 import 'fund_detail.dart';
 import 'fund_edit.dart';
 
@@ -51,7 +53,7 @@ class SingleFundScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FundEditWidget(isNew: false, fund: fund),
+                  builder: (context) => FundEditScreen(isNew: false, fund: fund),
                 ),
               );
             },
@@ -72,22 +74,44 @@ class SingleFundScreen extends StatelessWidget {
                 .getFund(fund.id)
                 .match(
                   (l) => log(l.toString()),
-                  (r) => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const FundDetailWidget()),
-                  ),
+                  (r) => context.router.push(const FundDetailRoute()),
                 )
                 .run();
             ;
           },
+          //get primary color of context
+
           child: Column(
             children: <Widget>[
               ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: const Color.fromARGB(255, 237, 44, 218),
-                  child: Text('${fund.id}'),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Text('D${generalFundProvider.getFunds().indexOf(fund) + 1}'),
                 ),
-                title: Text('Tên: ${fund.name}\nNgày mở hụi: ${fund.openDateText}\nDây hụi ${Utils.moneyFormat.format(fund.fundPrice)}đ\nHoa hồng: ${Utils.moneyFormat.format(fund.serviceCost)}đ\nSố phần: ${fund.membersCount}\nNgày tạo hụi: ${Utils.dateFormat.format(fund.openDate)}'),
+                title: Row(
+                  children: [
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('Tên dây hụi: ', textAlign: TextAlign.right),
+                        Text('Ngày mở hụi: ', textAlign: TextAlign.right),
+                        Text('Mệnh giá: ', textAlign: TextAlign.right),
+                        Text('Hoa hồng: ', textAlign: TextAlign.right),
+                        Text('Ngày tạo hụi: ', textAlign: TextAlign.right),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(fund.name, textAlign: TextAlign.right),
+                        Text(fund.openDateText, textAlign: TextAlign.right),
+                        Text('${Utils.moneyFormat.format(fund.fundPrice)}đ', textAlign: TextAlign.right),
+                        Text('${Utils.moneyFormat.format(fund.serviceCost)}đ', textAlign: TextAlign.right),
+                        Text(Utils.dateFormat.format(fund.openDate), textAlign: TextAlign.right),
+                      ],
+                    ),
+                  ],
+                ),
                 subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
               ),
             ],
@@ -119,14 +143,7 @@ class MultipleFundsScreen extends StatelessWidget {
       ),
       body: ListView(children: generalFundWigets),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FundEditWidget(isNew: true, fund: null),
-            ),
-          );
-        },
+        onPressed: () => context.router.push(FundEditRoute(isNew: true, fund: null)),
         child: const Icon(Icons.add),
       ),
     );

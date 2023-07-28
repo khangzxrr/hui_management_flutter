@@ -1,3 +1,5 @@
+import 'package:auto_route/annotations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
@@ -15,15 +17,24 @@ class TakenSessionDetailWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(50.0),
-              child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+            leading: CachedNetworkImage(
+              imageUrl: takenSessionDetail.fundMember.user.absoluteImageUrl!,
+              imageBuilder: (context, imageProvider) => Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             title: Text(
               takenSessionDetail.fundMember.nickName,
               style: const TextStyle(color: Colors.white),
             ),
-            subtitle: Text('Tiền hụi: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
+            subtitle: Text('Tổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
           )
         ],
       ),
@@ -50,9 +61,18 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(50.0),
-              child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+            leading: CachedNetworkImage(
+              imageUrl: normalSessionDetail.fundMember.user.absoluteImageUrl!,
+              imageBuilder: (context, imageProvider) => Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             title: Text(normalSessionDetail.fundMember.nickName),
             subtitle: Text('$fundSessionType: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
@@ -63,10 +83,12 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
   }
 }
 
-class SessionDetailWidget extends StatelessWidget {
+@RoutePage()
+class SessionDetailScreen extends StatelessWidget {
   final FundSession session;
+  final String fundName;
 
-  const SessionDetailWidget({super.key, required this.session});
+  const SessionDetailScreen({super.key, required this.fundName, required this.session});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +104,7 @@ class SessionDetailWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('dây hụi abc Kì 1'),
+        title: Text('dây hụi $fundName kỳ ${session.sessionNumber}'),
       ),
       body: SingleChildScrollView(
         child: Padding(

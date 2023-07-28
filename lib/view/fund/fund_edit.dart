@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -9,11 +10,12 @@ import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:provider/provider.dart';
 
-class FundEditWidget extends StatelessWidget {
+@RoutePage()
+class FundEditScreen extends StatelessWidget {
   final bool isNew;
   final GeneralFundModel? fund;
 
-  FundEditWidget({super.key, required this.isNew, required this.fund});
+  FundEditScreen({super.key, required this.isNew, required this.fund});
 
   final _formKey = GlobalKey<FormBuilderState>();
 
@@ -92,6 +94,7 @@ class FundEditWidget extends StatelessWidget {
                 const SizedBox(height: 30.0),
                 ElevatedButton(
                     onPressed: () {
+                      _formKey.currentState?.saveAndValidate();
                       if (!_formKey.currentState!.isValid) {
                         return;
                       }
@@ -129,7 +132,7 @@ class FundEditWidget extends StatelessWidget {
                         ).run();
                       }
                     },
-                    child: const Text('Tạo dây hụi mới'))
+                    child: Text((isNew) ? 'Tạo dây hụi mới' : 'Cập nhật dây hụi'))
               ],
             ),
           ),

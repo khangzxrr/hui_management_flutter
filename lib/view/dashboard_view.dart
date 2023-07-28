@@ -148,25 +148,25 @@ class _DashboardInfoState extends State<DashboardInfo> {
         Text(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.name,
-          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.address,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 10),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.phonenumber,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 10),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
           '${authenticationProvider.model!.user.bankname} - ${authenticationProvider.model!.user.banknumber}',
-          style: TextStyle(fontSize: 20, backgroundColor: Colors.red.shade600, color: Colors.white),
+          style: TextStyle(fontSize: 10, backgroundColor: Colors.red.shade600, color: Colors.white),
         ),
         const SizedBox(height: 10, width: 10),
         ElevatedButton(

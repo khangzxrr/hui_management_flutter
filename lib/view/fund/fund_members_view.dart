@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/user_model.dart';
@@ -35,16 +38,18 @@ class FundMemberWidget extends StatelessWidget {
                 // A SlidableAction can have an icon and/or a label.
                 SlidableAction(
                   onPressed: (context) async {
-                    fundProvider
-                        .removeMember(fundMember.id)
-                        .andThen(() => fundProvider.getFund(fundProvider.fund.id))
-                        .match(
-                          (l) => log(l),
-                          (r) => log("OK"),
-                        )
-                        .run();
+                    fundProvider.removeMember(fundMember.id).andThen(() => fundProvider.getFund(fundProvider.fund.id)).match(
+                      (l) {
+                        log(l);
+                        DialogHelper.showSnackBar(context, 'Có lỗi khi xóa thành viên');
+                      },
+                      (r) {
+                        log("OK");
+                        DialogHelper.showSnackBar(context, 'Xóa thành viên thành công');
+                      },
+                    ).run();
                   },
-                  backgroundColor: Color(0xFFFE4A49),
+                  backgroundColor: const Color(0xFFFE4A49),
                   foregroundColor: Colors.white,
                   icon: Icons.delete,
                   label: 'Xóa',
@@ -58,9 +63,18 @@ class FundMemberWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(50.0),
-                child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg'),
+              leading: CachedNetworkImage(
+                imageUrl: fundMember.user.absoluteImageUrl!,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                  ),
+                ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               title: Text(fundMember.nickName),
               subtitle: Text('${fundMember.user.identity}\n${fundMember.user.phonenumber}\n${fundMember.user.bankname} - ${fundMember.user.banknumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
@@ -126,10 +140,12 @@ class AddMemberWidget extends StatelessWidget {
                   )
                   .andThen(() => generalFundProvider.fetchFunds())
                   .match(
-                    (l) => log(l),
-                    (r) => log("OK"),
-                  )
-                  .run();
+                (l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
+                },
+                (r) => log("OK"),
+              ).run();
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 18.0),
@@ -142,8 +158,9 @@ class AddMemberWidget extends StatelessWidget {
   }
 }
 
-class FundMembersWidget extends StatelessWidget {
-  const FundMembersWidget({super.key});
+@RoutePage()
+class FundMembersScreen extends StatelessWidget {
+  const FundMembersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +185,7 @@ class FundMembersWidget extends StatelessWidget {
         title: const Text('Quản lí thành viên'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: ListView(
           children: widgets,
         ),

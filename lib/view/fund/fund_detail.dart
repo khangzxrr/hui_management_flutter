@@ -1,15 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/utils.dart';
+import '../../routes/app_route.dart';
 import '../fund_session/fund_sessions_view.dart';
-import '../fund_session/session_create_select_member.dart';
-import 'fund_members_view.dart';
 
-class FundDetailWidget extends StatelessWidget {
-  const FundDetailWidget({super.key});
+@RoutePage()
+class FundDetailScreen extends StatelessWidget {
+  const FundDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,6 @@ class FundDetailWidget extends StatelessWidget {
           padding: EdgeInsets.all(15),
           child: Column(
             children: [
-              // Text(
-              //   'Tên: ${fundProvider.fund.name}\nNgày mở hụi: ${fundProvider.fund.openDateText}\nDây hụi ${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ\nHoa hồng: ${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ\nNgày tạo hụi: ${Utils.dateFormat.format(fundProvider.fund.openDate)}',
-              //   textAlign: TextAlign.center,
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -36,7 +33,7 @@ class FundDetailWidget extends StatelessWidget {
                     children: [
                       Text('Tên: ', textAlign: TextAlign.right),
                       Text('Ngày mở hụi: ', textAlign: TextAlign.right),
-                      Text('Dây hụi: ', textAlign: TextAlign.right),
+                      Text('Mệnh giá: ', textAlign: TextAlign.right),
                       Text('Hoa hồng: ', textAlign: TextAlign.right),
                       Text('Ngày tạo hụi: ', textAlign: TextAlign.right),
                     ],
@@ -44,11 +41,11 @@ class FundDetailWidget extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(fundProvider.fund.name),
-                      Text(fundProvider.fund.openDateText),
-                      Text('${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ'),
-                      Text('${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ'),
-                      Text(Utils.dateFormat.format(fundProvider.fund.openDate)),
+                      Text(fundProvider.fund.name, textAlign: TextAlign.right),
+                      Text(fundProvider.fund.openDateText, textAlign: TextAlign.right),
+                      Text('${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ', textAlign: TextAlign.right),
+                      Text('${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ', textAlign: TextAlign.right),
+                      Text(Utils.dateFormat.format(fundProvider.fund.openDate), textAlign: TextAlign.right),
                     ],
                   )
                 ],
@@ -58,9 +55,7 @@ class FundDetailWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: InkWell(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const FundMembersWidget()),
-                  ),
+                  onTap: () => context.router.push(const FundMembersRoute()),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -68,7 +63,7 @@ class FundDetailWidget extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(
-                            'Quản LÍ HỤI VIÊN',
+                            'QUẢN LÍ HỤI VIÊN',
                             style: TextStyle(fontSize: 24, color: Colors.grey[800]),
                           ),
                           Container(height: 10),
@@ -86,9 +81,7 @@ class FundDetailWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: InkWell(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const FundSessionsWidget()),
-                  ),
+                  onTap: () => context.router.push(const FundSessionListRoute()),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -96,7 +89,7 @@ class FundDetailWidget extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text(
-                            'QUẢN LÍ CÁC KÌ',
+                            'QUẢN LÍ CÁC KỲ HỤI',
                             style: TextStyle(fontSize: 24, color: Colors.grey[800]),
                           ),
                           Container(height: 10),
@@ -120,11 +113,7 @@ class FundDetailWidget extends StatelessWidget {
           : ExpandableFab(
               children: [
                 FloatingActionButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const SessionCreateSelectMemberWidget()),
-                    );
-                  },
+                  onPressed: () => context.router.push(const CreateSessionSelectMemberRoute()),
                   heroTag: null,
                   child: const Icon(Icons.paid),
                 ),

@@ -1,22 +1,24 @@
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/provider/payment_provider.dart';
-import 'package:hui_management/view/payments/payment_summaries_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/utils.dart';
+import '../../routes/app_route.dart';
 
-class PaymentPaycheckWidget extends StatelessWidget {
+@RoutePage()
+class PaycheckScreen extends StatelessWidget {
   final PaymentModel payment;
 
   final formKey = GlobalKey<FormBuilderState>();
 
-  PaymentPaycheckWidget({super.key, required this.payment});
+  PaycheckScreen({super.key, required this.payment});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,8 @@ class PaymentPaycheckWidget extends StatelessWidget {
                       log('OK');
                       DialogHelper.showSnackBar(context, 'Thanh toán bill thành công');
 
-                      Navigator.popUntil(context, ModalRoute.withName(PaymentSummariesWidget.routeName));
+                      //Navigator.popUntil(context, ModalRoute.withName(PaymentListOfUserScreen.routeName));
+                      context.router.popUntil((route) => route.settings.name == PaymentListOfUserRoute.name);
                     },
                   ).run();
                 },

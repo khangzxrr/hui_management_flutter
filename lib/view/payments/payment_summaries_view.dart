@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_model.dart';
@@ -34,15 +35,13 @@ class PaymentWidget extends StatelessWidget {
   }
 }
 
-class PaymentSummariesWidget extends StatelessWidget {
-  static const routeName = "/payment-summaries";
-
-  const PaymentSummariesWidget({super.key});
+@RoutePage()
+class PaymentListOfUserScreen extends StatelessWidget {
+  final UserModel user;
+  const PaymentListOfUserScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    final user = ModalRoute.of(context)!.settings.arguments as UserModel?;
-
     final paymentProvider = Provider.of<PaymentProvider>(context);
 
     final List<Widget> processingBillsWidget = paymentProvider.payments
@@ -70,16 +69,16 @@ class PaymentSummariesWidget extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Bill của ${user!.name}'),
+          title: Text('Bill của ${user.name}'),
           bottom: const TabBar(tabs: [
             Tab(
               text: 'Bill đang xử lí',
             ),
             Tab(
-              text: 'Bill đang nợ',
+              text: 'nợ',
             ),
             Tab(
-              text: 'Bill đã thành công',
+              text: 'thành công',
             )
           ]),
         ),

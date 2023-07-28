@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
 import '../../helper/utils.dart';
+import '../../routes/app_route.dart';
 
 class SessionViewWidget extends StatelessWidget {
   final FundSession session;
@@ -40,13 +42,6 @@ class SessionViewWidget extends StatelessWidget {
                 log(l);
                 DialogHelper.showSnackBar(context, l);
               }, (r) => DialogHelper.showSnackBar(context, "Xóa kì hụi thành công!")).run();
-
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => MemberEditWidget(),
-              //   ),
-              // );
             },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
@@ -60,18 +55,15 @@ class SessionViewWidget extends StatelessWidget {
       // component is not dragged.
       child: Card(
         child: InkWell(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SessionDetailWidget(session: session)),
-          ),
+          onTap: () => context.router.push(SessionDetailRoute(fundName: fundProvider.fund.name, session: session)),
           child: Column(
             children: <Widget>[
               ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: const Color.fromARGB(255, 237, 44, 218),
+                  backgroundColor: Theme.of(context).primaryColor,
                   child: Text('K${session.sessionNumber}'),
                 ),
-                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTiền hụi: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right),
+                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right),
               ),
             ],
           ),
@@ -81,8 +73,9 @@ class SessionViewWidget extends StatelessWidget {
   }
 }
 
-class FundSessionsWidget extends StatelessWidget {
-  const FundSessionsWidget({super.key});
+@RoutePage()
+class FundSessionListScreen extends StatelessWidget {
+  const FundSessionListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

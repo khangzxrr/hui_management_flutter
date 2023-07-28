@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
@@ -8,14 +10,17 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/view/fund_session/session_create_enter_info.dart';
 import 'package:provider/provider.dart';
 
-class SessionCreateSelectMemberWidget extends StatefulWidget {
-  const SessionCreateSelectMemberWidget({super.key});
+import '../../routes/app_route.dart';
+
+@RoutePage()
+class CreateSessionSelectMemberScreen extends StatefulWidget {
+  const CreateSessionSelectMemberScreen({super.key});
 
   @override
-  State<SessionCreateSelectMemberWidget> createState() => _SessionCreateSelectMemberWidgetState();
+  State<CreateSessionSelectMemberScreen> createState() => _CreateSessionSelectMemberScreenState();
 }
 
-class _SessionCreateSelectMemberWidgetState extends State<SessionCreateSelectMemberWidget> {
+class _CreateSessionSelectMemberScreenState extends State<CreateSessionSelectMemberScreen> {
   FundMember? fundMember;
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -74,11 +79,11 @@ class _SessionCreateSelectMemberWidgetState extends State<SessionCreateSelectMem
             Container(height: 10),
             ElevatedButton(
               onPressed: fundMember != null
-                  ? () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (b) => SessionCreateEnterInfoWidget(fundMember: fundMember!)),
-                      );
-                    }
+                  ? () => context.router.push(
+                        CreateSessionEnterInfoRoute(
+                          fundMember: fundMember!,
+                        ),
+                      )
                   : null,
               style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),
               child: const Text('Hốt hụi'),

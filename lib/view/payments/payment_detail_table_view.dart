@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_fund_bill_model.dart';
@@ -5,6 +6,7 @@ import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/payment_transaction_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import '../../routes/app_route.dart';
 import 'payment_paycheck_view.dart';
 
 class TransactionListWidget extends StatelessWidget {
@@ -13,10 +15,38 @@ class TransactionListWidget extends StatelessWidget {
   TransactionListWidget({super.key, required this.transactions});
 
   final List<PlutoColumn> columns = [
-    PlutoColumn(title: 'Số tiền', field: 'amount', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
-    PlutoColumn(title: 'Ghi chú', field: 'note', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
-    PlutoColumn(title: 'Phương thức', field: 'paymentMethod', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
-    PlutoColumn(title: 'Ngày thanh toán', field: 'createAt', type: PlutoColumnType.text(), textAlign: PlutoColumnTextAlign.right, titleTextAlign: PlutoColumnTextAlign.center),
+    PlutoColumn(
+      title: 'Số tiền',
+      field: 'amount',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
+    PlutoColumn(
+      title: 'Ghi chú',
+      field: 'note',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
+    PlutoColumn(
+      title: 'Phương thức',
+      field: 'paymentMethod',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
+    PlutoColumn(
+      title: 'Ngày thanh toán',
+      field: 'createAt',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 130,
+    ),
   ];
 
   @override
@@ -43,18 +73,28 @@ class FundSessionDetailWidget extends StatelessWidget {
 
   final List<PlutoColumn> columns = [
     PlutoColumn(
+      title: 'Kỳ',
+      field: 'sessionNumber',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
+    PlutoColumn(
       title: 'Ngày mở',
       field: 'fundOpenDate',
       type: PlutoColumnType.text(),
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
     ),
     PlutoColumn(
-      title: 'Dây hụi',
+      title: 'Mệnh giá',
       field: 'fundPrice',
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
       type: PlutoColumnType.text(),
+      width: 100,
     ),
     PlutoColumn(
       title: 'Khui',
@@ -62,20 +102,7 @@ class FundSessionDetailWidget extends StatelessWidget {
       type: PlutoColumnType.text(),
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    PlutoColumn(
-      title: 'Kỳ',
-      field: 'sessionNumber',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-    ),
-    PlutoColumn(
-      title: 'Tiền hốt',
-      field: 'takeFromOwnerPrice',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
     ),
     PlutoColumn(
       title: 'Tiền đóng',
@@ -83,6 +110,15 @@ class FundSessionDetailWidget extends StatelessWidget {
       type: PlutoColumnType.text(),
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
+    PlutoColumn(
+      title: 'Tiền hốt',
+      field: 'takeFromOwnerPrice',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
     ),
   ];
 
@@ -121,9 +157,11 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
 
     double ratio = totalTaken - totalAliveOrDead;
 
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
+        title: isSmallScreen ? Text('Bill của ${payment.owner.name}\nngày ${Utils.dateFormat.format(payment.createAt)}') : Text('Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
       ),
       body: Container(
           padding: const EdgeInsets.all(14),
@@ -137,7 +175,7 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
                     const TextSpan(text: 'Tên hụi viên: '),
                     TextSpan(text: '${payment.owner.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Tên ngân hàng: '),
-                    TextSpan(text: '${payment.owner.bankname} ', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${payment.owner.bankname}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số tài khoản: '),
                     TextSpan(text: '${payment.owner.banknumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số điện thoại: '),
@@ -158,20 +196,27 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const Column(
+                    children: [
+                      Text('Tổng tiền phải đóng:  \nTổng tiền hốt:  \nTổng còn lại phải thanh toán:  \nTổng tiền đã hoàn thành:  ', textAlign: TextAlign.right),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text('${Utils.moneyFormat.format(totalAliveOrDead)}đ\n${Utils.moneyFormat.format(totalTaken)}đ\n${Utils.moneyFormat.format(ratio.abs())}đ\n${Utils.moneyFormat.format(payment.totalTransactionCost)}đ', textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   style: Theme.of(context).textTheme.titleLarge,
                   children: <TextSpan>[
-                    const TextSpan(text: 'Tổng tiền phải đóng: '),
-                    TextSpan(text: '${Utils.moneyFormat.format(totalAliveOrDead)}đ\n', style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const TextSpan(text: 'Tổng tiền hốt: '),
-                    TextSpan(text: '${Utils.moneyFormat.format(totalTaken)}đ\n', style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const TextSpan(text: 'Tổng còn lại phải '),
-                    TextSpan(text: (ratio > 0) ? 'giao: ' : 'thu: '),
-                    TextSpan(text: '${Utils.moneyFormat.format(ratio.abs())}đ\n', style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const TextSpan(text: 'Tổng tiền đã thanh toán: '),
-                    TextSpan(text: '${Utils.moneyFormat.format(payment.totalTransactionCost)}đ\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade600)),
                     TextSpan(
                       text: (ratio > 0) ? 'Chủ hụi phải chi tiền cho hụi viên' : 'Chủ hụi phải thu tiền từ hụi viên',
                       style: TextStyle(fontWeight: FontWeight.bold, backgroundColor: ratio > 0 ? Colors.green : Colors.blue),
@@ -192,7 +237,7 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () => (payment.status == 'Finish') ? {} : Navigator.of(context).push(MaterialPageRoute(builder: (_) => PaymentPaycheckWidget(payment: payment))),
+                  onPressed: () => (payment.status == 'Finish') ? {} : context.router.push(PaycheckRoute(payment: payment)),
                   child: Text(payment.status == 'Finish' ? 'Đã thanh toán thành công' : 'Thanh toán bill này'),
                 ),
               )
