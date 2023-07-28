@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -11,7 +10,6 @@ import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
-import 'package:hui_management/view/member/member_edit.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/dialog.dart';
@@ -43,16 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
           //setting icon button
           IconButton(
             onPressed: () {
-              Navigator.of(context)
-                  .push(
-                MaterialPageRoute(
-                  builder: (context) => MemberEditWidget(
-                    isCreateNew: false,
-                    user: authenticationProvider.model!.user,
-                  ),
-                ),
-              )
-                  .then((value) {
+              context.router.push(MemberEditRoute(isCreateNew: true, user: authenticationProvider.model!.user)).then((value) {
                 if (value != null) {
                   final newAuthenModel = AuthenticationModel(token: authenticationProvider.model!.token, user: value as UserModel);
                   authenticationProvider.setAuthentication(newAuthenModel);
@@ -168,22 +157,20 @@ class DashboardInfo extends StatelessWidget {
             onPressed: () {
               usersProvider.getAllUsers().match((l) {
                 DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                Navigator.of(context).pop();
-              }, (r) {
-                Navigator.of(context).pushNamed('/members');
-              }).run();
+                context.router.pop();
+              }, (r) => context.router.push(const MembersRoute())).run();
             },
             child: const Text('Quản lí người dùng')),
         const SizedBox(width: 30, height: 30),
         ElevatedButton(
             onPressed: () {
-              generalFundProvider
-                  .fetchFunds()
-                  .match(
-                    (l) => log(l),
-                    (r) => Navigator.of(context).pushNamed('/funds'),
-                  )
-                  .run();
+              generalFundProvider.fetchFunds().match(
+                (l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
+                },
+                (r) => context.router.push(const MultipleFundsRoute()),
+              ).run();
             },
             child: const Text('Quản lí dây hụi')),
         const SizedBox(
@@ -192,12 +179,13 @@ class DashboardInfo extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match((l) {
-              log(l);
-              DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên: $l');
-            }, (r) {
-              Navigator.of(context).pushNamed('/funds/payments', arguments: r);
-            }).run();
+            usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match(
+              (l) {
+                log(l);
+                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
+              },
+              (r) => context.router.push(MultiplePaymentMembersRoute(users: r)),
+            ).run();
           },
           child: const Text('Quản lí thanh toán'),
         )

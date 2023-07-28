@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/user_model.dart';
@@ -8,10 +9,10 @@ import 'package:provider/provider.dart';
 import '../../provider/payment_provider.dart';
 import 'payment_summaries_view.dart';
 
-class MemberWidget extends StatelessWidget {
+class SingleMemberScreen extends StatelessWidget {
   final UserModel user;
 
-  const MemberWidget({super.key, required this.user});
+  const SingleMemberScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +44,15 @@ class MemberWidget extends StatelessWidget {
   }
 }
 
-class PaymentMembersViewWidget extends StatelessWidget {
-  const PaymentMembersViewWidget({super.key});
+@RoutePage()
+class MultiplePaymentMembersScreen extends StatelessWidget {
+  final List<UserModel> users;
+
+  const MultiplePaymentMembersScreen({super.key, required this.users});
 
   @override
   Widget build(BuildContext context) {
-    final List<UserModel> users = ModalRoute.of(context)!.settings.arguments as List<UserModel>;
-
-    final List<Widget> userWidgets = users.map((e) => MemberWidget(user: e)).toList();
+    final List<Widget> userWidgets = users.map((e) => SingleMemberScreen(user: e)).toList();
 
     return Scaffold(
       appBar: AppBar(

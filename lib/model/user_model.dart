@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:hui_management/helper/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
@@ -11,6 +12,8 @@ class UserModel {
 
   @HiveField(1)
   final String imageUrl;
+
+  String? get absoluteImageUrl => (imageUrl.isEmpty) ? null : '${Constants.apiHostName}/$imageUrl';
 
   @HiveField(2)
   final String name;
@@ -44,9 +47,11 @@ class UserModel {
 
   @HiveField(12)
   final String identityImageFrontUrl;
+  String? get absoluteIdentityImageFrontUrl => (identityImageFrontUrl.isEmpty) ? null : '${Constants.apiHostName}/$identityImageFrontUrl';
 
   @HiveField(13)
   final String identityImageBackUrl;
+  String? get absoluteIdentityImageBackUrl => (identityImageBackUrl.isEmpty) ? null : '${Constants.apiHostName}/$identityImageBackUrl';
 
   UserModel({
     required this.id,

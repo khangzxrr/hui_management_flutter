@@ -1,33 +1,39 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
 import 'package:cross_file/cross_file.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
-import 'package:hui_management/service/image_service.dart';
-import 'package:hui_management/service/user_service.dart';
 import 'package:provider/provider.dart';
-import 'package:image/image.dart' as image_lib;
 
-import '../../helper/utils.dart';
+import '../../helper/formHelper.dart';
 
-class MemberEditWidget extends StatelessWidget {
+@RoutePage()
+class MemberEditScreen extends StatefulWidget {
   final bool isCreateNew;
   final UserModel? user;
 
-  MemberEditWidget({super.key, required this.isCreateNew, required this.user});
+  const MemberEditScreen({super.key, required this.isCreateNew, required this.user});
+
+  @override
+  State<MemberEditScreen> createState() => _MemberEditScreenState();
+}
+
+class _MemberEditScreenState extends State<MemberEditScreen> {
+  bool isLoading = false;
 
   final _formKey = GlobalKey<FormBuilderState>();
 
   final _identityFieldKey = GlobalKey<FormBuilderFieldState>();
+
   final _identityCreateDateFieldKey = GlobalKey<FormBuilderFieldState>();
+
   final _identityAddressFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _nameFieldKey = GlobalKey<FormBuilderFieldState>();
@@ -35,6 +41,7 @@ class MemberEditWidget extends StatelessWidget {
   final _addressFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _bankNumberFieldKey = GlobalKey<FormBuilderFieldState>();
+
   final _bankNameFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _phonenumberFieldKey = GlobalKey<FormBuilderFieldState>();
@@ -46,7 +53,10 @@ class MemberEditWidget extends StatelessWidget {
   final _photoFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _identityFrontImageKey = GlobalKey<FormBuilderFieldState>();
+
   final _identityBackImageKey = GlobalKey<FormBuilderFieldState>();
+
+  void makeRequest(UserModel user, UsersProvider provider) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +64,6 @@ class MemberEditWidget extends StatelessWidget {
 
     final usersProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    if (!isCreateNew) {
-      GetIt.I<ImageService>().getImagePathFromFireStorage(user!.imageUrl).then((value) => _photoFieldKey.currentState!.didChange([value]));
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
@@ -69,18 +76,21 @@ class MemberEditWidget extends StatelessWidget {
             child: Column(
               children: [
                 FormBuilderImagePicker(
-                  name: 'avatar',
-                  key: _photoFieldKey,
-                  decoration: const InputDecoration(labelText: 'Pick Photos'),
-                  availableImageSources: const [ImageSourceOption.gallery],
-                  maxImages: 1,
-                ),
+                    name: 'avatar',
+                    key: _photoFieldKey,
+                    decoration: const InputDecoration(labelText: 'Pick Photos'),
+                    availableImageSources: const [ImageSourceOption.gallery],
+                    maxImages: 1,
+                    initialValue: [widget.isCreateNew ? Constants.randomAvatarPath : widget.user!.absoluteImageUrl],
+                    validator: FormBuilderValidators.compose(
+                      [FormBuilderValidators.required()],
+                    )),
                 FormBuilderTextField(
                   key: _nameFieldKey,
                   name: 'name',
-                  initialValue: isCreateNew ? "" : user!.name,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.name,
                   decoration: const InputDecoration(labelText: 'Tên thành viên'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -88,9 +98,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _bankNameFieldKey,
                   name: 'bankName',
-                  initialValue: isCreateNew ? "" : user!.bankname,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.bankname,
                   decoration: const InputDecoration(labelText: 'Bank name'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -98,9 +108,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _bankNumberFieldKey,
                   name: 'bankNumber',
-                  initialValue: isCreateNew ? "" : user!.banknumber,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.banknumber,
                   decoration: const InputDecoration(labelText: 'Số tài khoản'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
@@ -109,8 +119,8 @@ class MemberEditWidget extends StatelessWidget {
                   key: _addressFieldKey,
                   name: 'address',
                   decoration: const InputDecoration(labelText: 'Địa chỉ thành viên'),
-                  initialValue: isCreateNew ? "" : user!.address,
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.address,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -118,9 +128,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _phonenumberFieldKey,
                   name: 'phonenumber',
-                  initialValue: isCreateNew ? "" : user!.phonenumber,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.phonenumber,
                   decoration: const InputDecoration(labelText: 'Số điện thoại thành viên'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
@@ -128,9 +138,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _passwordFieldKey,
                   name: 'password',
-                  initialValue: isCreateNew ? "" : user!.password,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.password,
                   decoration: const InputDecoration(labelText: 'Mật khẩu'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -138,9 +148,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _additionalFieldKey,
                   name: 'additional',
-                  initialValue: isCreateNew ? "" : user!.additionalInfo,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.additionalInfo,
                   decoration: const InputDecoration(labelText: 'Thông tin thêm'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [],
                   ),
@@ -148,9 +158,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _identityFieldKey,
                   name: 'identity',
-                  initialValue: isCreateNew ? "" : user!.identity,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.identity,
                   decoration: const InputDecoration(labelText: 'CMND/CCCD'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
@@ -160,8 +170,8 @@ class MemberEditWidget extends StatelessWidget {
                   name: 'identityCreateDate',
                   inputType: InputType.date,
                   decoration: const InputDecoration(labelText: 'Ngày cấp CMND/CCCD'),
-                  initialValue: isCreateNew ? DateTime.now() : user!.identityCreateDate,
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  initialValue: widget.isCreateNew ? DateTime.now() : widget.user!.identityCreateDate,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -169,9 +179,9 @@ class MemberEditWidget extends StatelessWidget {
                 FormBuilderTextField(
                   key: _identityAddressFieldKey,
                   name: 'identityAddress',
-                  initialValue: isCreateNew ? "" : user!.identityAddress,
+                  initialValue: widget.isCreateNew ? "" : widget.user!.identityAddress,
                   decoration: const InputDecoration(labelText: 'Nơi cấp CMND/CCCD'),
-                  autovalidateMode: isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -181,6 +191,7 @@ class MemberEditWidget extends StatelessWidget {
                   key: _identityFrontImageKey,
                   decoration: const InputDecoration(labelText: 'Anh mặt trước CMND/CCCD'),
                   availableImageSources: const [ImageSourceOption.gallery],
+                  initialValue: [widget.isCreateNew ? null : widget.user!.absoluteIdentityImageFrontUrl],
                   maxImages: 1,
                 ),
                 FormBuilderImagePicker(
@@ -188,78 +199,95 @@ class MemberEditWidget extends StatelessWidget {
                   key: _identityBackImageKey,
                   decoration: const InputDecoration(labelText: 'Anh mặt sau CMND/CCCD'),
                   availableImageSources: const [ImageSourceOption.gallery],
+                  initialValue: [widget.isCreateNew ? "" : widget.user!.absoluteIdentityImageBackUrl],
                   maxImages: 1,
                 ),
                 const SizedBox(height: 30.0),
-                ElevatedButton(
-                    onPressed: () async {
-                      if (!_formKey.currentState!.isValid) {
-                        return;
-                      }
+                (isLoading)
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: () async {
+                          _formKey.currentState?.saveAndValidate();
 
-                      List<dynamic>? images = _photoFieldKey.currentState!.value;
+                          if (!_formKey.currentState!.isValid) {
+                            return;
+                          }
 
-                      String imageUrl = isCreateNew ? Constants.randomAvatarPath : user!.imageUrl;
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                      if (images != null && images.isNotEmpty && images[0] is XFile) {
-                        final file = images[0] as XFile;
-                        final bytes = await file.readAsBytes();
-                        image_lib.Image image = image_lib.decodeImage(bytes)!;
-                        //size image to 120
-                        image_lib.Image resizedImage = image_lib.copyResize(image, width: 300);
+                          List<dynamic> avatar = _photoFieldKey.currentState!.value;
 
-                        final firebaseStorage = FirebaseStorage.instanceFor(bucket: 'gs://test-1d90e.appspot.com').ref('public');
+                          String imageUrl = '';
 
-                        imageUrl = '${Utils.getRandomString(30)}.jpg';
-                        final imageRef = firebaseStorage.child(imageUrl);
+                          if (avatar.first is XFile) {
+                            imageUrl = await FormHelper.upload(avatar.first);
+                          } else {
+                            imageUrl = avatar.first;
+                          }
 
-                        await imageRef.putData(image_lib.encodeJpg(resizedImage), SettableMetadata(contentType: 'image/jpg'));
-                      }
+                          List<dynamic> identityFrontImages = _identityFrontImageKey.currentState!.value;
+                          String identityFrontImageUrl = '';
 
-                      final modifyUser = UserModel(
-                        id: isCreateNew ? 0 : user!.id,
-                        imageUrl: imageUrl,
-                        name: _nameFieldKey.currentState!.value,
-                        identity: _identityFieldKey.currentState!.value,
-                        identityCreateDate: _identityCreateDateFieldKey.currentState!.value!,
-                        identityAddress: _identityAddressFieldKey.currentState!.value,
-                        password: _passwordFieldKey.currentState!.value,
-                        phonenumber: _phonenumberFieldKey.currentState!.value,
-                        bankname: _bankNameFieldKey.currentState!.value,
-                        banknumber: _bankNumberFieldKey.currentState!.value,
-                        address: _addressFieldKey.currentState!.value,
-                        additionalInfo: _additionalFieldKey.currentState!.value,
-                        identityImageFrontUrl: "",
-                        identityImageBackUrl: "",
-                      );
+                          if (identityFrontImages.isNotEmpty && identityFrontImages.first is XFile) {
+                            identityFrontImageUrl = await FormHelper.upload(identityFrontImages.first);
+                          }
+                          List<dynamic> identityBackImages = _identityBackImageKey.currentState!.value;
+                          String identityBackImageUrl = '';
 
-                      if (isCreateNew) {
-                        usersProvider.createUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
-                          (l) {
-                            log(l);
-                            DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo thành viên mới CODE: $l');
-                          },
-                          (r) {
-                            log('ok');
-                            DialogHelper.showSnackBar(context, 'Tạo thành viên mới thành công');
-                            navigator.pop();
-                          },
-                        ).run();
-                      } else {
-                        usersProvider.updateUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
-                          (l) {
-                            log(l);
-                            DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi cập nhật thông tin CODE: $l');
-                          },
-                          (r) {
-                            log('ok');
-                            DialogHelper.showSnackBar(context, 'Cập nhật thành viên thành công');
-                            navigator.pop(modifyUser);
-                          },
-                        ).run();
-                      }
-                    },
-                    child: Text(isCreateNew ? 'Đăng kí thành viên mới' : 'Lưu chỉnh sửa'))
+                          if (identityBackImages.isNotEmpty && identityBackImages.first is XFile) {
+                            identityBackImageUrl = await FormHelper.upload(identityBackImages.first);
+                          }
+
+                          final modifyUser = UserModel(
+                            id: widget.isCreateNew ? 0 : widget.user!.id,
+                            imageUrl: FormHelper.getRelativeUrlFromPicker(imageUrl),
+                            name: _nameFieldKey.currentState!.value,
+                            identity: _identityFieldKey.currentState!.value,
+                            identityCreateDate: _identityCreateDateFieldKey.currentState!.value!,
+                            identityAddress: _identityAddressFieldKey.currentState!.value,
+                            password: _passwordFieldKey.currentState!.value,
+                            phonenumber: _phonenumberFieldKey.currentState!.value,
+                            bankname: _bankNameFieldKey.currentState!.value,
+                            banknumber: _bankNumberFieldKey.currentState!.value,
+                            address: _addressFieldKey.currentState!.value,
+                            additionalInfo: _additionalFieldKey.currentState!.value,
+                            identityImageFrontUrl: FormHelper.getRelativeUrlFromPicker(identityFrontImageUrl),
+                            identityImageBackUrl: FormHelper.getRelativeUrlFromPicker(identityBackImageUrl),
+                          );
+
+                          if (widget.isCreateNew) {
+                            usersProvider.createUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
+                              (l) {
+                                log(l);
+                                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo thành viên mới CODE: $l');
+                              },
+                              (r) {
+                                log('ok');
+                                DialogHelper.showSnackBar(context, 'Tạo thành viên mới thành công');
+                                navigator.pop();
+                              },
+                            ).run();
+                          } else {
+                            usersProvider.updateUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
+                              (l) {
+                                log(l);
+                                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi cập nhật thông tin CODE: $l');
+                              },
+                              (r) {
+                                log('ok');
+                                DialogHelper.showSnackBar(context, 'Cập nhật thành viên thành công');
+                                navigator.pop(modifyUser);
+                              },
+                            ).run();
+                          }
+
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: Text(widget.isCreateNew ? 'Đăng kí thành viên mới' : 'Lưu chỉnh sửa'))
               ],
             ),
           ),

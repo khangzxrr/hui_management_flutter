@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
@@ -13,10 +14,10 @@ import 'package:provider/provider.dart';
 import 'fund_detail.dart';
 import 'fund_edit.dart';
 
-class FundWidget extends StatelessWidget {
+class SingleFundScreen extends StatelessWidget {
   final GeneralFundModel fund;
 
-  const FundWidget({super.key, required this.fund});
+  const SingleFundScreen({super.key, required this.fund});
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +98,9 @@ class FundWidget extends StatelessWidget {
   }
 }
 
-class FundsWidget extends StatelessWidget {
-  const FundsWidget({super.key});
+@RoutePage()
+class MultipleFundsScreen extends StatelessWidget {
+  const MultipleFundsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,7 @@ class FundsWidget extends StatelessWidget {
     List<Widget> generalFundWigets = generalFundProvider
         .getFunds()
         .map(
-          (e) => FundWidget(fund: e),
+          (e) => SingleFundScreen(fund: e),
         )
         .toList();
 

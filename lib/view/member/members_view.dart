@@ -1,19 +1,23 @@
 import 'dart:developer';
 
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/routes/app_route.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/image_service.dart';
 import 'member_edit.dart';
 
 class MemberWidget extends StatelessWidget {
-  late final UserModel user;
+  final UserModel user;
 
-  MemberWidget({super.key, required this.user});
+  const MemberWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +38,13 @@ class MemberWidget extends StatelessWidget {
                 log(l);
               }).run();
             },
-            backgroundColor: Color(0xFFFE4A49),
+            backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Xóa',
           ),
           SlidableAction(
-            onPressed: (context) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MemberEditWidget(isCreateNew: false, user: user),
-                ),
-              );
-            },
+            onPressed: (context) => context.router.push(MemberEditRoute(isCreateNew: false, user: user)),
             backgroundColor: const Color.fromARGB(255, 31, 132, 248),
             foregroundColor: Colors.white,
             icon: Icons.edit,
@@ -62,17 +59,18 @@ class MemberWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ListTile(
-              leading: FutureBuilder(
-                future: GetIt.I<ImageService>().getImagePathFromFireStorage(user.imageUrl),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return CircleAvatar(
-                      backgroundImage: NetworkImage(snapshot.data as String),
-                    );
-                  } else {
-                    return const CircleAvatar();
-                  }
-                },
+              leading: CachedNetworkImage(
+                imageUrl: user.absoluteImageUrl!,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               title: Text(user.name),
               subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
@@ -84,8 +82,9 @@ class MemberWidget extends StatelessWidget {
   }
 }
 
-class MembersWidget extends StatelessWidget {
-  const MembersWidget({super.key});
+@RoutePage()
+class MembersScreen extends StatelessWidget {
+  const MembersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +104,12 @@ class MembersWidget extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MemberEditWidget(isCreateNew: true, user: null),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => cosnt MemberEditWidget(isCreateNew: true, user: null),
+          //   ),
+          // );
         },
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
