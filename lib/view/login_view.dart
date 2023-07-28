@@ -1,29 +1,54 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:after_layout/after_layout.dart';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
+import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/login_service.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/dashboard_view.dart';
 import 'package:provider/provider.dart';
 
-class LoginWidget extends StatelessWidget {
-  LoginWidget({super.key});
+@RoutePage()
+class LoginScreen extends StatefulWidget {
+  LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
+
   final _emailFieldKey = GlobalKey<FormBuilderFieldState>();
+
   final _passwordFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final getIt = GetIt.instance;
 
   @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    //check login
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+
+    if (authenticationProvider.loadAuthenticationFromCache() != null) {
+      SetupService.setupAuthorizeServiced(authenticationProvider.model!.token);
+      //navigate.popAndPushNamed(DashboardWidget.routeName);
+      context.router.navigate(const DashboardRoute());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-    final navigate = Navigator.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +109,7 @@ class LoginWidget extends StatelessWidget {
 
                           SetupService.setupAuthorizeServiced(authentication.token);
 
-                          navigate.pushReplacementNamed(DashboardWidget.routeName);
+                          context.router.navigate(const DashboardRoute());
                         },
                       );
 

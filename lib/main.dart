@@ -7,7 +7,9 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/payment_provider.dart';
 import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/setup_service.dart';
+import 'package:hui_management/storage/hive_configuration.dart';
 import 'package:hui_management/view/dashboard_view.dart';
 
 import 'package:hui_management/view/login_view.dart';
@@ -19,13 +21,14 @@ import 'view/member/members_view.dart';
 import 'view/payments/payment_summaries_view.dart';
 import 'view/payments/payments_members_view.dart';
 
-void main() {
-  Firebase.initializeApp(
+void main() async {
+  final fireApp = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  ).then((value) {
-    FirebaseStorage.instanceFor(app: value);
-  });
+  );
 
+  FirebaseStorage.instanceFor(app: fireApp);
+
+  await HiveConfiguration.setup();
   SetupService.setup();
 
   runApp(MultiProvider(
@@ -36,31 +39,34 @@ void main() {
       ChangeNotifierProvider(create: (context) => FundProvider()),
       ChangeNotifierProvider(create: (context) => PaymentProvider()),
     ],
-    child: const MyApp(),
+    child: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _appRouter = AppRouter();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Quản lí hụi',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      routerConfig: _appRouter.config(),
       builder: EasyLoading.init(),
-      routes: {
-        '/': (context) => const MyHomePage(title: 'Quản lí hụi'),
-        DashboardWidget.routeName: (context) => DashboardWidget(),
-        '/members': (context) => const MembersWidget(),
-        '/funds': (context) => const FundsWidget(),
-        '/funds/payments': (context) => const PaymentMembersViewWidget(),
-        '/members/payments': (context) => const PaymentMembersViewWidget(),
-        PaymentSummariesWidget.routeName: (context) => const PaymentSummariesWidget(),
-      },
+      // routes: {
+      //   '/': (context) => const MyHomePage(title: 'Quản lí hụi'),
+      //   DashboardWidget.routeName: (context) => DashboardWidget(),
+      //   '/members': (context) => const MembersWidget(),
+      //   '/funds': (context) => const FundsWidget(),
+      //   '/funds/payments': (context) => const PaymentMembersViewWidget(),
+      //   '/members/payments': (context) => const PaymentMembersViewWidget(),
+      //   PaymentSummariesWidget.routeName: (context) => const PaymentSummariesWidget(),
+      // },
     );
   }
 }
@@ -77,6 +83,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return LoginWidget();
+    return LoginScreen();
   }
 }

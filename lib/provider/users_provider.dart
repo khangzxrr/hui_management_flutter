@@ -27,12 +27,20 @@ class UsersProvider with ChangeNotifier {
         notifyListeners();
       }, (error, stackTrace) => error.toString());
 
+  TaskEither<String, UserModel> createUser(UserModel user) => TaskEither.tryCatch(
+        () async => await GetIt.I<UserService>().createNew(user),
+        (error, stackTrace) => error.toString(),
+      );
+
   TaskEither<String, void> removeUser(int userId) => TaskEither.tryCatch(
         () async => await GetIt.I<UserService>().delete(userId),
         (error, stackTrace) => error.toString(),
       );
 
-  TaskEither<String, void> updateUser(UserModel user) => TaskEither.tryCatch(() async => await GetIt.I<UserService>().update(user), (error, stackTrace) => error.toString());
+  TaskEither<String, void> updateUser(UserModel user) => TaskEither.tryCatch(
+        () async => await GetIt.I<UserService>().update(user),
+        (error, stackTrace) => error.toString(),
+      );
 
   void addUser(UserModel user) {
     users.add(user);

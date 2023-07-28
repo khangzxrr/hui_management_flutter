@@ -31,29 +31,8 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<UserModel?> createNew({
-    required String imageUrl,
-    required String name,
-    required String password,
-    required String identity,
-    required String phonenumber,
-    required String bankname,
-    required String banknumber,
-    required String address,
-    required String additionalInfo,
-  }) async {
-    final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/users'),
-        body: jsonEncode({
-          "imageUrl": imageUrl,
-          "name": name,
-          "password": password,
-          "identity": identity,
-          "phonenumber": phonenumber,
-          "bankname": bankname,
-          "banknumber": banknumber,
-          "address": address,
-          "additionalInfo": additionalInfo,
-        }));
+  Future<UserModel> createNew(UserModel user) async {
+    final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/users'), body: jsonEncode(user.toJson()));
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body)['user'];
