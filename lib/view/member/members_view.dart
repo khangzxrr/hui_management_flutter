@@ -10,7 +10,6 @@ import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:provider/provider.dart';
 
-
 class MemberWidget extends StatelessWidget {
   final UserModel user;
 
@@ -100,14 +99,7 @@ class MembersScreen extends StatelessWidget {
         children: userWidgets,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => cosnt MemberEditWidget(isCreateNew: true, user: null),
-          //   ),
-          // );
-        },
+        onPressed: () => context.router.push(MemberEditRoute(isCreateNew: true, user: null)),
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
       ),

@@ -211,7 +211,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                   key: _identityBackImageKey,
                   decoration: const InputDecoration(labelText: 'Anh mặt sau CMND/CCCD'),
                   availableImageSources: const [ImageSourceOption.gallery],
-                  initialValue: [widget.isCreateNew ? "" : widget.user!.absoluteIdentityImageBackUrl],
+                  initialValue: [widget.isCreateNew ? null : widget.user!.absoluteIdentityImageBackUrl],
                   maxImages: 1,
                 ),
                 const SizedBox(height: 30.0),
