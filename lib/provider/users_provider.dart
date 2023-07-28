@@ -21,6 +21,7 @@ class UsersProvider with ChangeNotifier {
       }, (error, stackTrace) => error.toString());
 
   TaskEither<String, void> getAllUsers() => TaskEither.tryCatch(() async {
+        await Future.delayed(Duration(seconds: 3));
         final users = await GetIt.I<UserService>().getAll();
         this.users = users;
 

@@ -31,13 +31,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       additionalInfo: fields[11] as String,
       identityImageFrontUrl: fields[12] as String,
       identityImageBackUrl: fields[13] as String,
+      nickName: fields[14] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -65,7 +66,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(12)
       ..write(obj.identityImageFrontUrl)
       ..writeByte(13)
-      ..write(obj.identityImageBackUrl);
+      ..write(obj.identityImageBackUrl)
+      ..writeByte(14)
+      ..write(obj.nickName);
   }
 
   @override
@@ -98,6 +101,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       additionalInfo: json['additionalInfo'] as String,
       identityImageFrontUrl: json['identityImageFrontUrl'] as String,
       identityImageBackUrl: json['identityImageBackUrl'] as String,
+      nickName: json['nickName'] as String,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -115,4 +119,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'additionalInfo': instance.additionalInfo,
       'identityImageFrontUrl': instance.identityImageFrontUrl,
       'identityImageBackUrl': instance.identityImageBackUrl,
+      'nickName': instance.nickName,
     };

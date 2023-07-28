@@ -53,6 +53,9 @@ class UserModel {
   final String identityImageBackUrl;
   String? get absoluteIdentityImageBackUrl => (identityImageBackUrl.isEmpty) ? null : '${Constants.apiHostName}/$identityImageBackUrl';
 
+  @HiveField(14)
+  final String nickName;
+
   UserModel({
     required this.id,
     required this.imageUrl,
@@ -68,6 +71,7 @@ class UserModel {
     required this.additionalInfo,
     required this.identityImageFrontUrl,
     required this.identityImageBackUrl,
+    required this.nickName,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

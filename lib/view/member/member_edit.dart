@@ -38,6 +38,8 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
 
   final _nameFieldKey = GlobalKey<FormBuilderFieldState>();
 
+  final _nicknameFieldKey = GlobalKey<FormBuilderFieldState>();
+
   final _addressFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _bankNumberFieldKey = GlobalKey<FormBuilderFieldState>();
@@ -90,6 +92,16 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                   name: 'name',
                   initialValue: widget.isCreateNew ? "" : widget.user!.name,
                   decoration: const InputDecoration(labelText: 'Tên thành viên'),
+                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required()],
+                  ),
+                ),
+                FormBuilderTextField(
+                  key: _nicknameFieldKey,
+                  name: 'nickname',
+                  initialValue: widget.isCreateNew ? "" : widget.user!.nickName,
+                  decoration: const InputDecoration(labelText: 'Biệt danh thành viên (zalo, fb,...)'),
                   autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
@@ -205,7 +217,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                 const SizedBox(height: 30.0),
                 (isLoading)
                     ? const CircularProgressIndicator()
-                    : ElevatedButton(
+                    : FilledButton(
                         onPressed: () async {
                           _formKey.currentState?.saveAndValidate();
 
@@ -244,6 +256,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                             id: widget.isCreateNew ? 0 : widget.user!.id,
                             imageUrl: FormHelper.getRelativeUrlFromPicker(imageUrl),
                             name: _nameFieldKey.currentState!.value,
+                            nickName: _nicknameFieldKey.currentState!.value,
                             identity: _identityFieldKey.currentState!.value,
                             identityCreateDate: _identityCreateDateFieldKey.currentState!.value!,
                             identityAddress: _identityAddressFieldKey.currentState!.value,

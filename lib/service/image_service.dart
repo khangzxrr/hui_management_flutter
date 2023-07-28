@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cross_file/cross_file.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:image/image.dart' as image_lib;
@@ -10,18 +9,6 @@ import 'package:image/image.dart' as image_lib;
 import '../helper/constants.dart';
 
 class ImageService {
-  Future<String> getImagePathFromFireStorage(String imageUrl) async {
-    if (imageUrl.isEmpty) {
-      return '';
-    }
-
-    final firebaseStorage = FirebaseStorage.instanceFor(bucket: 'gs://test-1d90e.appspot.com').ref('public');
-
-    final imageRef = firebaseStorage.child(imageUrl);
-
-    return await imageRef.getDownloadURL();
-  }
-
   Future<Uint8List> resizeAndEncodeImage(XFile file) async {
     final bytes = await file.readAsBytes();
     image_lib.Image image = image_lib.decodeImage(bytes)!;

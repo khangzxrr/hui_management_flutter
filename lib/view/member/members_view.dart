@@ -5,14 +5,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:provider/provider.dart';
 
-import '../../service/image_service.dart';
-import 'member_edit.dart';
 
 class MemberWidget extends StatelessWidget {
   final UserModel user;
@@ -66,11 +63,11 @@ class MemberWidget extends StatelessWidget {
                   height: 80.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
                   ),
                 ),
                 placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               title: Text(user.name),
               subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),

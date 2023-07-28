@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/authentication_model.dart';
@@ -14,7 +15,6 @@ import 'package:provider/provider.dart';
 
 import '../helper/dialog.dart';
 import '../routes/app_route.dart';
-import '../service/image_service.dart';
 
 @RoutePage()
 class DashboardScreen extends StatefulWidget {
@@ -35,19 +35,15 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
       appBar: AppBar(
         // // Here we take the value from the MyHomePage object that was created by
         // // the App.build method, and use it to set our appbar title.
-        title: Text('Menu quản lí hụi'),
+        title: const Text('Menu quản lí hụi'),
 
         actions: [
           //setting icon button
           IconButton(
             onPressed: () {
-              context.router.push(MemberEditRoute(isCreateNew: true, user: authenticationProvider.model!.user)).then((value) {
+              context.router.push(MemberEditRoute(isCreateNew: false, user: authenticationProvider.model!.user)).then((value) {
                 if (value != null) {
-                  final newAuthenModel = AuthenticationModel(token: authenticationProvider.model!.token, user: value as UserModel);
-                  authenticationProvider.setAuthentication(newAuthenModel);
-
-                  Navigator.of(context).popAndPushNamed('/dashboard');
-                  //update user info
+                  authenticationProvider.setAuthentication(AuthenticationModel(user: value as UserModel, token: authenticationProvider.model!.token));
                 }
               });
             },
@@ -95,12 +91,31 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
   }
 }
 
-class DashboardInfo extends StatelessWidget {
+class DashboardInfo extends StatefulWidget {
   const DashboardInfo({super.key});
 
   @override
+  State<DashboardInfo> createState() => _DashboardInfoState();
+}
+
+class _DashboardInfoState extends State<DashboardInfo> {
+  bool loading = false;
+
+  void enableLoading() async {
+    setState(() {
+      loading = true;
+    });
+  }
+
+  void disableLoading() async {
+    setState(() {
+      loading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false); //must not listen to avoid infinite loop
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop
 
     final usersProvider = Provider.of<UsersProvider>(context, listen: false);
 
@@ -109,24 +124,25 @@ class DashboardInfo extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(30),
       children: [
-        //must check before using model (it can be null exception)
-        FutureBuilder(
-          future: GetIt.I<ImageService>().getImagePathFromFireStorage(authenticationProvider.model!.user.imageUrl),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Center(
-                child: CircleAvatar(
-                  radius: 100,
-                  foregroundImage: NetworkImage(snapshot.data as String),
-                ),
-              );
-            } else {
-              return const CircleAvatar(
-                radius: 100,
-                backgroundImage: AssetImage('images/member.jpg'),
-              );
-            }
-          },
+        loading ? const LinearProgressIndicator() : const SizedBox(),
+        const SizedBox(height: 5, width: 5),
+        SizedBox(
+          width: 200,
+          height: 200,
+          child: CachedNetworkImage(
+            imageUrl: authenticationProvider.model!.user.absoluteImageUrl!,
+            imageBuilder: (context, imageProvider) => Container(
+              width: 100.0,
+              height: 100.0,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+              ),
+            ),
+            placeholder: (context, url) => const LinearProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
         ),
         const SizedBox(height: 10, width: 10),
         Text(
@@ -155,21 +171,33 @@ class DashboardInfo extends StatelessWidget {
         const SizedBox(height: 10, width: 10),
         ElevatedButton(
             onPressed: () {
+              enableLoading();
+
               usersProvider.getAllUsers().match((l) {
                 DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
                 context.router.pop();
-              }, (r) => context.router.push(const MembersRoute())).run();
+                disableLoading();
+              }, (r) {
+                disableLoading();
+                context.router.push(const MembersRoute());
+              }).run();
             },
             child: const Text('Quản lí người dùng')),
         const SizedBox(width: 30, height: 30),
         ElevatedButton(
             onPressed: () {
+              enableLoading();
+
               generalFundProvider.fetchFunds().match(
                 (l) {
+                  disableLoading();
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
                 },
-                (r) => context.router.push(const MultipleFundsRoute()),
+                (r) {
+                  disableLoading();
+                  context.router.push(const MultipleFundsRoute());
+                },
               ).run();
             },
             child: const Text('Quản lí dây hụi')),
@@ -179,12 +207,18 @@ class DashboardInfo extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
+            enableLoading();
+
             usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match(
               (l) {
+                disableLoading();
                 log(l);
                 DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
               },
-              (r) => context.router.push(MultiplePaymentMembersRoute(users: r)),
+              (r) {
+                disableLoading();
+                context.router.push(MultiplePaymentMembersRoute(users: r));
+              },
             ).run();
           },
           child: const Text('Quản lí thanh toán'),
