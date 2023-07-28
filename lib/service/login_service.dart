@@ -6,6 +6,8 @@ import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/authentication_model.dart';
 
 class LoginService {
+  static bool isAuthenticated = false;
+
   TaskEither<String, AuthenticationModel> login(String phonenumber, String password) => TaskEither.tryCatch(() async {
         final body = jsonEncode({
           "phonenumber": phonenumber,
@@ -22,6 +24,7 @@ class LoginService {
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
+          isAuthenticated = true;
           return AuthenticationModel.fromJson(data);
         }
 

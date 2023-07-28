@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/service/login_service.dart';
+import 'package:provider/provider.dart';
 
 import '../model/fund_member.dart';
 import '../model/fund_model.dart';
@@ -8,6 +10,7 @@ import '../model/fund_session_model.dart';
 import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
 import '../model/user_model.dart';
+import '../provider/authentication_provider.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
@@ -27,7 +30,7 @@ import '../view/payments/payments_members_view.dart';
 part 'app_route.gr.dart';
 
 @AutoRouterConfig()
-class AppRouter extends _$AppRouter {
+class AppRouter extends _$AppRouter implements AutoRouteGuard {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page, initial: true),
@@ -46,4 +49,15 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: PaymentListOfUserRoute.page),
         AutoRoute(page: PaycheckRoute.page),
       ];
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
+    resolver.next();
+
+    // if (authenticationProvider.model != null) {
+    //   resolver.next();
+    // } else {
+    //   resolver.redirect(LoginRoute());
+    // }
+  }
 }

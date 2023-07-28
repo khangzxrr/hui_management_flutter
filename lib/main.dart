@@ -39,19 +39,22 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final appRouter = AppRouter();
 
-  final _appRouter = AppRouter();
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true);
+
     return MaterialApp.router(
       title: 'Quản lí hụi',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerConfig: _appRouter.config(),
+      routerConfig: appRouter.config(),
+
       builder: EasyLoading.init(),
       // routes: {
       //   '/': (context) => const MyHomePage(title: 'Quản lí hụi'),

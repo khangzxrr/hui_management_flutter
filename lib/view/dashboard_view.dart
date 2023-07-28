@@ -82,13 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
   }
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false); //must not listen to avoid infinite loop
-
-    if (authenticationProvider.model == null) {
-      context.router.navigate(LoginRoute());
-    }
-  }
+  FutureOr<void> afterFirstLayout(BuildContext context) {}
 }
 
 class DashboardInfo extends StatefulWidget {
@@ -148,19 +142,19 @@ class _DashboardInfoState extends State<DashboardInfo> {
         Text(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.name,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.address,
-          style: const TextStyle(fontSize: 10),
+          style: const TextStyle(fontSize: 13),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.phonenumber,
-          style: const TextStyle(fontSize: 10),
+          style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
@@ -168,7 +162,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
           '${authenticationProvider.model!.user.bankname} - ${authenticationProvider.model!.user.banknumber}',
           style: TextStyle(fontSize: 10, backgroundColor: Colors.red.shade600, color: Colors.white),
         ),
-        const SizedBox(height: 10, width: 10),
+        const SizedBox(height: 10, width: 15),
         ElevatedButton(
             onPressed: () {
               enableLoading();
