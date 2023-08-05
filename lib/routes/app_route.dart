@@ -1,16 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:hui_management/service/login_service.dart';
-import 'package:provider/provider.dart';
 
 import '../model/fund_member.dart';
-import '../model/fund_model.dart';
-import '../model/fund_normal_session_detail_model.dart';
 import '../model/fund_session_model.dart';
 import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
 import '../model/user_model.dart';
-import '../provider/authentication_provider.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
@@ -23,6 +18,7 @@ import '../view/fund_session/session_detail_view.dart';
 import '../view/login_view.dart';
 import '../view/member/member_edit.dart';
 import '../view/member/members_view.dart';
+import '../view/payments/payment_detail_table_view.dart';
 import '../view/payments/payment_paycheck_view.dart';
 import '../view/payments/payment_summaries_view.dart';
 import '../view/payments/payments_members_view.dart';
@@ -48,6 +44,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
         AutoRoute(page: SessionDetailRoute.page),
         AutoRoute(page: PaymentListOfUserRoute.page),
         AutoRoute(page: PaycheckRoute.page),
+        AutoRoute(page: PaymentDetailRoute.page),
       ];
 
   @override

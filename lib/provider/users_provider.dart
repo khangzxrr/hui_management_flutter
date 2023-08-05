@@ -9,12 +9,14 @@ class UsersProvider with ChangeNotifier {
 
   TaskEither<String, List<UserModel>> fetchAndFilterUsers({
     bool filterByAnyPayment = false,
+    bool getFundRatio = false,
     bool filterByNotFinishedPayment = false,
   }) =>
       TaskEither.tryCatch(() async {
         final users = await GetIt.I<UserService>().getAll(
           filterByAnyPayment: filterByAnyPayment,
           filterByNotFinishedPayment: filterByNotFinishedPayment,
+          getFundRatio: getFundRatio,
         );
 
         return users;

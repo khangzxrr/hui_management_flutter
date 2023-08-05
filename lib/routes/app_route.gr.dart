@@ -118,6 +118,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    PaymentDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<PaymentDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PaymentDetailScreen(
+          key: args.key,
+          payment: args.payment,
+        ),
+      );
+    },
     PaycheckRoute.name: (routeData) {
       final args = routeData.argsAs<PaycheckRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -471,6 +481,44 @@ class MultiplePaymentMembersRouteArgs {
   @override
   String toString() {
     return 'MultiplePaymentMembersRouteArgs{key: $key, users: $users}';
+  }
+}
+
+/// generated route for
+/// [PaymentDetailScreen]
+class PaymentDetailRoute extends PageRouteInfo<PaymentDetailRouteArgs> {
+  PaymentDetailRoute({
+    Key? key,
+    required PaymentModel payment,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PaymentDetailRoute.name,
+          args: PaymentDetailRouteArgs(
+            key: key,
+            payment: payment,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PaymentDetailRoute';
+
+  static const PageInfo<PaymentDetailRouteArgs> page =
+      PageInfo<PaymentDetailRouteArgs>(name);
+}
+
+class PaymentDetailRouteArgs {
+  const PaymentDetailRouteArgs({
+    this.key,
+    required this.payment,
+  });
+
+  final Key? key;
+
+  final PaymentModel payment;
+
+  @override
+  String toString() {
+    return 'PaymentDetailRouteArgs{key: $key, payment: $payment}';
   }
 }
 

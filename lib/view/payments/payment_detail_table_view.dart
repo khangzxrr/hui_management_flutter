@@ -7,7 +7,6 @@ import 'package:hui_management/model/payment_transaction_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import '../../routes/app_route.dart';
-import 'payment_paycheck_view.dart';
 
 class TransactionListWidget extends StatelessWidget {
   final List<PaymentTransaction> transactions;
@@ -73,6 +72,14 @@ class FundSessionDetailWidget extends StatelessWidget {
 
   final List<PlutoColumn> columns = [
     PlutoColumn(
+      title: 'Tên hụi',
+      field: 'fundName',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
+    PlutoColumn(
       title: 'Kỳ',
       field: 'sessionNumber',
       type: PlutoColumnType.text(),
@@ -81,11 +88,11 @@ class FundSessionDetailWidget extends StatelessWidget {
       width: 100,
     ),
     PlutoColumn(
-      title: 'Ngày mở',
-      field: 'fundOpenDate',
-      type: PlutoColumnType.text(),
+      title: 'Thăm kêu',
+      field: 'predictedPrice',
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
+      type: PlutoColumnType.text(),
       width: 100,
     ),
     PlutoColumn(
@@ -120,6 +127,14 @@ class FundSessionDetailWidget extends StatelessWidget {
       titleTextAlign: PlutoColumnTextAlign.center,
       width: 100,
     ),
+    PlutoColumn(
+      title: 'Ngày mở',
+      field: 'fundOpenDate',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
   ];
 
   FundSessionDetailWidget({super.key, required this.fundBills});
@@ -130,6 +145,8 @@ class FundSessionDetailWidget extends StatelessWidget {
         .map(
           (e) => PlutoRow(
             cells: {
+              'fundName': PlutoCell(value: e.fromFund.name),
+              'predictedPrice': PlutoCell(value: (e.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.predictedPrice)}đ' : ''),
               'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(e.fromFund.openDate)),
               'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(e.fromFund.fundPrice)}đ'),
               'fundOpenText': PlutoCell(value: e.fromFund.openDateText),
@@ -145,10 +162,11 @@ class FundSessionDetailWidget extends StatelessWidget {
   }
 }
 
-class PaymentDetailTableViewWidget extends StatelessWidget {
+@RoutePage()
+class PaymentDetailScreen extends StatelessWidget {
   final PaymentModel payment;
 
-  const PaymentDetailTableViewWidget({super.key, required this.payment});
+  const PaymentDetailScreen({super.key, required this.payment});
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +190,9 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
                 text: TextSpan(
                   style: Theme.of(context).textTheme.titleLarge,
                   children: <TextSpan>[
-                    const TextSpan(text: 'Tên hụi viên: '),
+                    const TextSpan(
+                      text: 'Tên hụi viên: ',
+                    ),
                     TextSpan(text: '${payment.owner.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Tên ngân hàng: '),
                     TextSpan(text: '${payment.owner.bankname}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -201,11 +221,16 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tổng tiền phải đóng:  \nTổng tiền hốt:  \nTổng còn lại phải thanh toán:  \nTổng tiền đã hoàn thành:  ', textAlign: TextAlign.right),
+                      Text('Tổng tiền phải đóng:\t'),
+                      Text('Tổng tiền hốt:\t'),
+                      Text('Tổng còn lại phải thanh toán:\t'),
+                      Text('Tổng tiền đã hoàn thành:\t'),
                     ],
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text('${Utils.moneyFormat.format(totalAliveOrDead)}đ\n${Utils.moneyFormat.format(totalTaken)}đ\n${Utils.moneyFormat.format(ratio.abs())}đ\n${Utils.moneyFormat.format(payment.totalTransactionCost)}đ', textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.bold)),
                     ],
@@ -217,10 +242,15 @@ class PaymentDetailTableViewWidget extends StatelessWidget {
                 text: TextSpan(
                   style: Theme.of(context).textTheme.titleLarge,
                   children: <TextSpan>[
+                    const TextSpan(text: 'Chủ hụi phải '),
                     TextSpan(
-                      text: (ratio > 0) ? 'Chủ hụi phải chi tiền cho hụi viên' : 'Chủ hụi phải thu tiền từ hụi viên',
-                      style: TextStyle(fontWeight: FontWeight.bold, backgroundColor: ratio > 0 ? Colors.green : Colors.blue),
+                      text: (ratio > 0) ? 'chi tiền' : 'thu tiền',
+                      style: const TextStyle(fontWeight: FontWeight.bold, backgroundColor: Colors.red, color: Colors.white),
                     ),
+                    TextSpan(
+                      text: (ratio > 0) ? ' cho ' : ' từ ',
+                    ),
+                    const TextSpan(text: 'hụi viên'),
                   ],
                 ),
               ),

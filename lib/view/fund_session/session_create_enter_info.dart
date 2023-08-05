@@ -7,7 +7,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/provider/fund_provider.dart';
-import 'package:hui_management/view/fund_session/fund_sessions_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
@@ -66,10 +65,10 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
           children: [
             Card(
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Text(
                   widget.fundMember.nickName,
-                  style: TextStyle(fontSize: 26),
+                  style: const TextStyle(fontSize: 26),
                 ),
               ),
             ),
@@ -164,7 +163,10 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                           .match((l) {
                         log(l);
                         DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
-                      }, (r) => context.router.push(const FundSessionListRoute())).run();
+                      }, (r) {
+                        DialogHelper.showSnackBar(context, 'Tạo kì hụi mới thành công');
+                        context.router.push(const FundSessionListRoute());
+                      }).run();
                     }
                   : null,
               style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),

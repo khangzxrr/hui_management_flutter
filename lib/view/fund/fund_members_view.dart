@@ -64,7 +64,7 @@ class FundMemberWidget extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CachedNetworkImage(
-                imageUrl: fundMember.user.absoluteImageUrl!,
+                imageUrl: fundMember.user.imageUrl,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 80.0,
                   height: 80.0,
@@ -144,7 +144,9 @@ class AddMemberWidget extends StatelessWidget {
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
                 },
-                (r) => log("OK"),
+                (r) {
+                  DialogHelper.showSnackBar(context, 'Thêm thành viên mới thành công');
+                },
               ).run();
             },
             child: const Padding(

@@ -16,6 +16,7 @@ NormalSessionDetail _$NormalSessionDetailFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       fundMember:
           FundMember.fromJson(json['fundMember'] as Map<String, dynamic>),
+      lossCost: (json['lossCost'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$NormalSessionDetailToJson(
@@ -24,6 +25,7 @@ Map<String, dynamic> _$NormalSessionDetailToJson(
       'id': instance.id,
       'predictedPrice': instance.predictedPrice,
       'fundAmount': instance.fundAmount,
+      'lossCost': instance.lossCost,
       'serviceCost': instance.serviceCost,
       'payCost': instance.payCost,
       'type': instance.type,

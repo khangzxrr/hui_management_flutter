@@ -95,7 +95,9 @@ class PaycheckScreen extends StatelessWidget {
                       DialogHelper.showSnackBar(context, 'Thanh toán bill thành công');
 
                       //Navigator.popUntil(context, ModalRoute.withName(PaymentListOfUserScreen.routeName));
-                      context.router.popUntil((route) => route.settings.name == PaymentListOfUserRoute.name);
+                      final updatedPayment = paymentProvider.payments.firstWhere((p) => p.id == payment.id);
+
+                      context.router.pushAndPopUntil(PaymentDetailRoute(payment: updatedPayment), predicate: (route) => route.settings.name == PaymentListOfUserRoute.name);
                     },
                   ).run();
                 },

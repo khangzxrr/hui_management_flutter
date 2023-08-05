@@ -46,8 +46,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true);
-
     return MaterialApp.router(
       title: 'Quản lí hụi',
       theme: ThemeData(

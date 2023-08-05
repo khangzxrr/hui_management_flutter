@@ -4,8 +4,9 @@ import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/user_model.dart';
 import 'package:hui_management/provider/payment_provider.dart';
-import 'package:hui_management/view/payments/payment_detail_table_view.dart';
 import 'package:provider/provider.dart';
+
+import '../../routes/app_route.dart';
 
 class PaymentWidget extends StatelessWidget {
   final PaymentModel payment;
@@ -26,10 +27,7 @@ class PaymentWidget extends StatelessWidget {
             ),
           ],
         ),
-        onTap: () => Navigator.of(context).push(
-          //MaterialPageRoute(builder: (context) => PaymentDetailWidget(payment: payment)),
-          MaterialPageRoute(builder: (context) => PaymentDetailTableViewWidget(payment: payment)),
-        ),
+        onTap: () => context.router.push(PaymentDetailRoute(payment: payment)),
       ),
     );
   }
@@ -75,10 +73,10 @@ class PaymentListOfUserScreen extends StatelessWidget {
               text: 'Bill đang xử lí',
             ),
             Tab(
-              text: 'nợ',
+              text: 'Bill nợ',
             ),
             Tab(
-              text: 'thành công',
+              text: 'Bill thành công',
             )
           ]),
         ),

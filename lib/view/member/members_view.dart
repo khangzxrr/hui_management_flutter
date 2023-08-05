@@ -58,7 +58,7 @@ class MemberWidget extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: CachedNetworkImage(
-                  imageUrl: user.absoluteImageUrl!,
+                  imageUrl: user.imageUrl,
                   imageBuilder: (context, imageProvider) => Container(
                     width: 80.0,
                     height: 80.0,

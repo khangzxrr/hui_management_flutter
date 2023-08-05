@@ -30,7 +30,7 @@ class ImageService {
     var body = await response.stream.bytesToString();
 
     if (response.statusCode == 200) {
-      return '${Constants.apiHostName}/${jsonDecode(body)['mediaUrl']}';
+      return jsonDecode(body)['mediaUrl'];
     }
 
     throw Exception('Failed to upload image CODE: ${response.statusCode} REASON: $body');

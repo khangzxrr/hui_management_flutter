@@ -13,8 +13,6 @@ class UserModel {
   @HiveField(1)
   final String imageUrl;
 
-  String? get absoluteImageUrl => (imageUrl.isEmpty) ? null : '${Constants.apiHostName}/$imageUrl';
-
   @HiveField(2)
   final String name;
 
@@ -46,12 +44,10 @@ class UserModel {
   final String additionalInfo;
 
   @HiveField(12)
-  final String identityImageFrontUrl;
-  String? get absoluteIdentityImageFrontUrl => (identityImageFrontUrl.isEmpty) ? null : '${Constants.apiHostName}/$identityImageFrontUrl';
+  final String? identityImageFrontUrl;
 
   @HiveField(13)
-  final String identityImageBackUrl;
-  String? get absoluteIdentityImageBackUrl => (identityImageBackUrl.isEmpty) ? null : '${Constants.apiHostName}/$identityImageBackUrl';
+  final String? identityImageBackUrl;
 
   @HiveField(14)
   final String nickName;

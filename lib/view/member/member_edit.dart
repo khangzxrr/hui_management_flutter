@@ -83,7 +83,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                     decoration: const InputDecoration(labelText: 'Pick Photos'),
                     availableImageSources: const [ImageSourceOption.gallery],
                     maxImages: 1,
-                    initialValue: [widget.isCreateNew ? Constants.randomAvatarPath : widget.user!.absoluteImageUrl],
+                    initialValue: [widget.isCreateNew ? Constants.randomAvatarPath : widget.user!.imageUrl],
                     validator: FormBuilderValidators.compose(
                       [FormBuilderValidators.required()],
                     )),
@@ -203,7 +203,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                   key: _identityFrontImageKey,
                   decoration: const InputDecoration(labelText: 'Anh mặt trước CMND/CCCD'),
                   availableImageSources: const [ImageSourceOption.gallery],
-                  initialValue: [widget.isCreateNew ? null : widget.user!.absoluteIdentityImageFrontUrl],
+                  initialValue: [widget.isCreateNew ? null : widget.user!.identityImageFrontUrl],
                   maxImages: 1,
                 ),
                 FormBuilderImagePicker(
@@ -211,7 +211,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                   key: _identityBackImageKey,
                   decoration: const InputDecoration(labelText: 'Anh mặt sau CMND/CCCD'),
                   availableImageSources: const [ImageSourceOption.gallery],
-                  initialValue: [widget.isCreateNew ? null : widget.user!.absoluteIdentityImageBackUrl],
+                  initialValue: [widget.isCreateNew ? null : widget.user!.identityImageBackUrl],
                   maxImages: 1,
                 ),
                 const SizedBox(height: 30.0),
@@ -240,13 +240,13 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                           }
 
                           List<dynamic> identityFrontImages = _identityFrontImageKey.currentState!.value;
-                          String identityFrontImageUrl = '';
+                          String? identityFrontImageUrl;
 
                           if (identityFrontImages.isNotEmpty && identityFrontImages.first is XFile) {
                             identityFrontImageUrl = await FormHelper.upload(identityFrontImages.first);
                           }
                           List<dynamic> identityBackImages = _identityBackImageKey.currentState!.value;
-                          String identityBackImageUrl = '';
+                          String? identityBackImageUrl;
 
                           if (identityBackImages.isNotEmpty && identityBackImages.first is XFile) {
                             identityBackImageUrl = await FormHelper.upload(identityBackImages.first);
@@ -254,7 +254,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
 
                           final modifyUser = UserModel(
                             id: widget.isCreateNew ? 0 : widget.user!.id,
-                            imageUrl: FormHelper.getRelativeUrlFromPicker(imageUrl),
+                            imageUrl: imageUrl,
                             name: _nameFieldKey.currentState!.value,
                             nickName: _nicknameFieldKey.currentState!.value,
                             identity: _identityFieldKey.currentState!.value,
@@ -266,8 +266,8 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                             banknumber: _bankNumberFieldKey.currentState!.value,
                             address: _addressFieldKey.currentState!.value,
                             additionalInfo: _additionalFieldKey.currentState!.value,
-                            identityImageFrontUrl: FormHelper.getRelativeUrlFromPicker(identityFrontImageUrl),
-                            identityImageBackUrl: FormHelper.getRelativeUrlFromPicker(identityBackImageUrl),
+                            identityImageFrontUrl: identityFrontImageUrl,
+                            identityImageBackUrl: identityBackImageUrl,
                           );
 
                           if (widget.isCreateNew) {

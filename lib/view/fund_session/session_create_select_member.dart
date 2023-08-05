@@ -7,7 +7,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/provider/fund_provider.dart';
-import 'package:hui_management/view/fund_session/session_create_enter_info.dart';
 import 'package:provider/provider.dart';
 
 import '../../routes/app_route.dart';

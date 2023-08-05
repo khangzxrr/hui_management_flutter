@@ -29,8 +29,8 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       banknumber: fields[9] as String,
       address: fields[10] as String,
       additionalInfo: fields[11] as String,
-      identityImageFrontUrl: fields[12] as String,
-      identityImageBackUrl: fields[13] as String,
+      identityImageFrontUrl: fields[12] as String?,
+      identityImageBackUrl: fields[13] as String?,
       nickName: fields[14] as String,
     );
   }
@@ -99,8 +99,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       banknumber: json['banknumber'] as String,
       address: json['address'] as String,
       additionalInfo: json['additionalInfo'] as String,
-      identityImageFrontUrl: json['identityImageFrontUrl'] as String,
-      identityImageBackUrl: json['identityImageBackUrl'] as String,
+      identityImageFrontUrl: json['identityImageFrontUrl'] as String?,
+      identityImageBackUrl: json['identityImageBackUrl'] as String?,
       nickName: json['nickName'] as String,
     );
 

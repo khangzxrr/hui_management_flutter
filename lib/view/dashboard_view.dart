@@ -56,11 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
             onPressed: () {
               authenticationProvider.clearAuthentication();
               //context.router.navigate(LoginRoute());
-              if (context.router.canNavigateBack) {
-                context.router.navigate(LoginRoute());
-              } else {
-                context.router.popUntilRoot();
-              }
+              context.router.pushAndPopUntil(LoginRoute(), predicate: (_) => false);
             },
             icon: const Icon(Icons.logout),
           )
@@ -124,7 +120,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
           width: 200,
           height: 200,
           child: CachedNetworkImage(
-            imageUrl: authenticationProvider.model!.user.absoluteImageUrl!,
+            imageUrl: authenticationProvider.model!.user.imageUrl,
             imageBuilder: (context, imageProvider) => Container(
               width: 100.0,
               height: 100.0,
@@ -160,7 +156,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
         Text(
           textAlign: TextAlign.center,
           '${authenticationProvider.model!.user.bankname} - ${authenticationProvider.model!.user.banknumber}',
-          style: TextStyle(fontSize: 10, backgroundColor: Colors.red.shade600, color: Colors.white),
+          style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 10, width: 15),
         ElevatedButton(
@@ -203,7 +199,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
           onPressed: () {
             enableLoading();
 
-            usersProvider.fetchAndFilterUsers(filterByAnyPayment: true).match(
+            usersProvider.fetchAndFilterUsers(filterByAnyPayment: true, getFundRatio: true).match(
               (l) {
                 disableLoading();
                 log(l);

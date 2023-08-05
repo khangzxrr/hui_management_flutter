@@ -13,7 +13,6 @@ import 'package:hui_management/service/fund_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../routes/app_route.dart';
-import 'fund_detail.dart';
 import 'fund_edit.dart';
 
 class SingleFundScreen extends StatelessWidget {
@@ -43,7 +42,7 @@ class SingleFundScreen extends StatelessWidget {
                 generalFundProvider.removeFund(fund);
               }).run();
             },
-            backgroundColor: Color(0xFFFE4A49),
+            backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.archive,
             label: 'Lưu trữ',
@@ -57,7 +56,7 @@ class SingleFundScreen extends StatelessWidget {
                 ),
               );
             },
-            backgroundColor: Color.fromARGB(255, 31, 132, 248),
+            backgroundColor: const Color.fromARGB(255, 31, 132, 248),
             foregroundColor: Colors.white,
             icon: Icons.edit,
             label: 'Chỉnh sửa',
@@ -89,19 +88,20 @@ class SingleFundScreen extends StatelessWidget {
                   child: Text('D${generalFundProvider.getFunds().indexOf(fund) + 1}'),
                 ),
                 title: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tên dây hụi: ', textAlign: TextAlign.right),
-                        Text('Ngày mở hụi: ', textAlign: TextAlign.right),
-                        Text('Mệnh giá: ', textAlign: TextAlign.right),
-                        Text('Hoa hồng: ', textAlign: TextAlign.right),
-                        Text('Ngày tạo hụi: ', textAlign: TextAlign.right),
+                        Text('Tên dây hụi: ', textAlign: TextAlign.left),
+                        Text('Ngày mở hụi: ', textAlign: TextAlign.left),
+                        Text('Mệnh giá: ', textAlign: TextAlign.left),
+                        Text('Hoa hồng: ', textAlign: TextAlign.left),
+                        Text('Ngày tạo hụi: ', textAlign: TextAlign.left),
                       ],
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(fund.name, textAlign: TextAlign.right),
                         Text(fund.openDateText, textAlign: TextAlign.right),

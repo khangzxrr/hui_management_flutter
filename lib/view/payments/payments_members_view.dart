@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import '../../provider/payment_provider.dart';
 import '../../routes/app_route.dart';
-import 'payment_summaries_view.dart';
 
 class SingleMemberScreen extends StatelessWidget {
   final UserModel user;
@@ -25,7 +23,7 @@ class SingleMemberScreen extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: CachedNetworkImage(
-                  imageUrl: user.absoluteImageUrl!,
+                  imageUrl: user.imageUrl,
                   imageBuilder: (context, imageProvider) => Container(
                     width: 80.0,
                     height: 80.0,

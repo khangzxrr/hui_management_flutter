@@ -46,6 +46,7 @@ class UserService {
   Future<List<UserModel>> getAll({
     bool filterByAnyPayment = false,
     bool filterByNotFinishedPayment = false,
+    bool getFundRatio = false,
   }) async {
     Map<String, String> queryParams = {};
 
@@ -54,6 +55,9 @@ class UserService {
     }
     if (filterByNotFinishedPayment) {
       queryParams['filterByNotFinishedPayment'] = 'true';
+    }
+    if (getFundRatio) {
+      queryParams['getFundRatio'] = 'true';
     }
 
     Uri uri;

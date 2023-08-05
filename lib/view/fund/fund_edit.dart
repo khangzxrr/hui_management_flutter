@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
@@ -74,7 +75,7 @@ class FundEditScreen extends StatelessWidget {
                 FormBuilderTextField(
                   key: _openDateTextKey,
                   name: 'openDateText',
-                  decoration: const InputDecoration(labelText: 'Ngày khui (ghi chú)'),
+                  decoration: const InputDecoration(labelText: 'Khui vào lúc (ghi chú)'),
                   initialValue: isNew ? "" : fund!.openDateText,
                   autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
@@ -86,6 +87,7 @@ class FundEditScreen extends StatelessWidget {
                   name: 'openDate',
                   decoration: const InputDecoration(labelText: 'Ngày mở dây hụi'),
                   initialValue: isNew ? DateTime.now() : fund!.openDate,
+                  format: Utils.dateFormat,
                   autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],

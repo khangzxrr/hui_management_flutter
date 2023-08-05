@@ -6,7 +6,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
-import 'package:hui_management/view/fund_session/session_detail_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
@@ -63,7 +62,38 @@ class SessionViewWidget extends StatelessWidget {
                   backgroundColor: Theme.of(context).primaryColor,
                   child: Text('K${session.sessionNumber}'),
                 ),
-                title: Text('Ngày mở hụi: ${Utils.dateFormat.format(session.takenDate)}\nKỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Ngày khui hụi: '),
+                        Text('Lần hốt (hiện tại/tổng số): '),
+                        Text('Thành viên hốt: '),
+                        Text('Thăm kêu: '),
+                        Text('Chịu lỗ: '),
+                        Text('Hiền hốt hụi: '),
+                        Text('Trừ hoa hồng: '),
+                        Text('Tiền hốt hụi còn lại: '),
+                        //Kỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right)
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(Utils.dateFormat.format(session.takenDate)),
+                        Text('${session.sessionNumber}/${fundProvider.fund.membersCount}'),
+                        Text(takenSessionDetail.fundMember.nickName),
+                        Text('${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ'),
+                        Text('${Utils.moneyFormat.format(takenSessionDetail.lossCost)}đ'),
+                        Text('${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ'),
+                        Text('${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ'),
+                        Text('${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ'),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -92,6 +122,12 @@ class FundSessionListScreen extends StatelessWidget {
         child: ListView(
           children: sesionViewWidgets,
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.router.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false),
+        heroTag: null,
+        label: const Text('Menu chính'),
+        icon: const Icon(Icons.home),
       ),
     );
   }
