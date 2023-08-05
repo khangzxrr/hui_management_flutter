@@ -148,6 +148,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    MemberReportRoute.name: (routeData) {
+      final args = routeData.argsAs<MemberReportRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MemberReportScreen(
+          key: args.key,
+          userReportModels: args.userReportModels,
+        ),
+      );
+    },
   };
 }
 
@@ -595,5 +605,43 @@ class PaymentListOfUserRouteArgs {
   @override
   String toString() {
     return 'PaymentListOfUserRouteArgs{key: $key, user: $user}';
+  }
+}
+
+/// generated route for
+/// [MemberReportScreen]
+class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
+  MemberReportRoute({
+    Key? key,
+    required List<UserReportModel> userReportModels,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MemberReportRoute.name,
+          args: MemberReportRouteArgs(
+            key: key,
+            userReportModels: userReportModels,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MemberReportRoute';
+
+  static const PageInfo<MemberReportRouteArgs> page =
+      PageInfo<MemberReportRouteArgs>(name);
+}
+
+class MemberReportRouteArgs {
+  const MemberReportRouteArgs({
+    this.key,
+    required this.userReportModels,
+  });
+
+  final Key? key;
+
+  final List<UserReportModel> userReportModels;
+
+  @override
+  String toString() {
+    return 'MemberReportRouteArgs{key: $key, userReportModels: $userReportModels}';
   }
 }

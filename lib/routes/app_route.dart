@@ -6,6 +6,7 @@ import '../model/fund_session_model.dart';
 import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
 import '../model/user_model.dart';
+import '../model/user_report_model.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
@@ -17,6 +18,7 @@ import '../view/fund_session/session_create_select_member.dart';
 import '../view/fund_session/session_detail_view.dart';
 import '../view/login_view.dart';
 import '../view/member/member_edit.dart';
+import '../view/member/members_report.dart';
 import '../view/member/members_view.dart';
 import '../view/payments/payment_detail_table_view.dart';
 import '../view/payments/payment_paycheck_view.dart';
@@ -45,6 +47,7 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
         AutoRoute(page: PaymentListOfUserRoute.page),
         AutoRoute(page: PaycheckRoute.page),
         AutoRoute(page: PaymentDetailRoute.page),
+        AutoRoute(page: MemberReportRoute.page),
       ];
 
   @override

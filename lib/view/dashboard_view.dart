@@ -25,6 +25,14 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin<DashboardScreen> {
+  int _currentIndex = 0;
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   final getIt = GetIt.instance;
 
   @override
@@ -74,6 +82,21 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
               },
               child: const Text('Bạn không có quyền xem trang này, nhấn vào đây để đăng nhập lại'),
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Cá nhân'),
+          BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Thành viên'),
+          BottomNavigationBarItem(icon: Icon(Icons.money_rounded), label: 'Dây hụi'),
+          BottomNavigationBarItem(icon: Icon(Icons.savings_rounded), label: 'Thanh toán'),
+        ],
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 0,
+        onTap: (index) {
+          
+        },
+      ),
     );
   }
 
