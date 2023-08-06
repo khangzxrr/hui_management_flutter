@@ -27,7 +27,6 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with AfterLayoutMixin<DashboardScreen> {
-
   final getIt = GetIt.instance;
 
   @override
@@ -35,7 +34,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     final authenticationProvider = Provider.of<AuthenticationProvider>(context,
         listen: true); //must not listen to avoid infinite loop
 
-    
     return Scaffold(
       appBar: AppBar(
         // // Here we take the value from the MyHomePage object that was created by
@@ -89,11 +87,10 @@ class _DashboardScreenState extends State<DashboardScreen>
             ),
     );
   }
-  
+
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
-    
-     final authenticationProvider = Provider.of<AuthenticationProvider>(context,
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context,
         listen: false); //must not listen to avoid infinite loop
 
     if (authenticationProvider.model == null) {
@@ -134,7 +131,8 @@ class _DashboardInfoState extends State<DashboardInfo> {
     final generalFundProvider =
         Provider.of<GeneralFundProvider>(context, listen: false);
 
-    final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
+    final userReportProvider =
+        Provider.of<UserReportProvider>(context, listen: false);
 
     return ListView(
       padding: const EdgeInsets.all(30),
@@ -227,10 +225,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
           onPressed: () {
             enableLoading();
 
-            usersProvider
-                .fetchAndFilterUsers(
-                    filterByAnyPayment: true, getFundRatio: true)
-                .match(
+            userReportProvider.getAllReport().match(
               (l) {
                 disableLoading();
                 log(l);
@@ -245,26 +240,26 @@ class _DashboardInfoState extends State<DashboardInfo> {
           },
           child: const Text('Quản lí thanh toán'),
         ),
-        const SizedBox(width: 30, height: 30),
-        ElevatedButton(
-          onPressed: () {
-            enableLoading();
+        // const SizedBox(width: 30, height: 30),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     enableLoading();
 
-            userReportProvider.getAllReport().match(
-              (l) {
-                disableLoading();
-                log(l);
-                DialogHelper.showSnackBar(context,
-                    'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
-              },
-              (r) {
-                disableLoading();
-                context.router.push(MemberReportRoute(userReportModels: r));
-              },
-            ).run();
-          },
-          child: const Text('Báo cáo thành viên'),
-        ),
+        //     userReportProvider.getAllReport().match(
+        //       (l) {
+        //         disableLoading();
+        //         log(l);
+        //         DialogHelper.showSnackBar(context,
+        //             'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
+        //       },
+        //       (r) {
+        //         disableLoading();
+        //         context.router.push(MemberReportRoute(userReportModels: r));
+        //       },
+        //     ).run();
+        //   },
+        //   child: const Text('Báo cáo thành viên'),
+        // ),
       ],
     );
   }

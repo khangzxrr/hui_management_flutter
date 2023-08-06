@@ -23,6 +23,8 @@ UserReportModel _$UserReportModelFromJson(Map<String, dynamic> json) =>
       identityImageBackUrl: json['identityImageBackUrl'] as String?,
       nickName: json['nickName'] as String,
       fundRatio: (json['fundRatio'] as num).toDouble(),
+      totalCost: (json['totalCost'] as num).toDouble(),
+      totalTransactionCost: (json['totalTransactionCost'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$UserReportModelToJson(UserReportModel instance) =>
@@ -42,4 +44,6 @@ Map<String, dynamic> _$UserReportModelToJson(UserReportModel instance) =>
       'identityImageBackUrl': instance.identityImageBackUrl,
       'nickName': instance.nickName,
       'fundRatio': instance.fundRatio,
+      'totalCost': instance.totalCost,
+      'totalTransactionCost': instance.totalTransactionCost,
     };

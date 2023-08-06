@@ -54,16 +54,19 @@ class TransactionListWidget extends StatelessWidget {
         .map(
           (t) => PlutoRow(
             cells: {
-              'amount': PlutoCell(value: '${Utils.moneyFormat.format(t.amount)}đ'),
+              'amount':
+                  PlutoCell(value: '${Utils.moneyFormat.format(t.amount)}đ'),
               'note': PlutoCell(value: t.description),
-              'paymentMethod': PlutoCell(value: t.method == 'ByCash' ? 'Tiền mặt' : 'Chuyển khoản'),
+              'paymentMethod': PlutoCell(
+                  value: t.method == 'ByCash' ? 'Tiền mặt' : 'Chuyển khoản'),
               'createAt': PlutoCell(value: Utils.dateFormat.format(t.createAt)),
             },
           ),
         )
         .toList();
 
-    return PlutoGrid(mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
+    return PlutoGrid(
+        mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
   }
 }
 
@@ -146,19 +149,33 @@ class FundSessionDetailWidget extends StatelessWidget {
           (e) => PlutoRow(
             cells: {
               'fundName': PlutoCell(value: e.fromFund.name),
-              'predictedPrice': PlutoCell(value: (e.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.predictedPrice)}đ' : ''),
-              'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(e.fromFund.openDate)),
-              'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(e.fromFund.fundPrice)}đ'),
+              'predictedPrice': PlutoCell(
+                  value: (e.fromSessionDetail.type == 'Taken')
+                      ? '${Utils.moneyFormat.format(e.fromSessionDetail.predictedPrice)}đ'
+                      : ''),
+              'fundOpenDate': PlutoCell(
+                  value: Utils.dateFormat.format(e.fromFund.openDate)),
+              'fundPrice': PlutoCell(
+                  value: '${Utils.moneyFormat.format(e.fromFund.fundPrice)}đ'),
               'fundOpenText': PlutoCell(value: e.fromFund.openDateText),
-              'sessionNumber': PlutoCell(value: '${e.fromSession.sessionNumber}/${e.fromFund.membersCount}'),
-              'takeFromOwnerPrice': PlutoCell(value: (e.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.payCost)}đ' : ''),
-              'takeFromFundMemberPrice': PlutoCell(value: (e.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.payCost)}đ' : ''),
+              'sessionNumber': PlutoCell(
+                  value:
+                      '${e.fromSession.sessionNumber}/${e.fromFund.membersCount}'),
+              'takeFromOwnerPrice': PlutoCell(
+                  value: (e.fromSessionDetail.type == 'Taken')
+                      ? '${Utils.moneyFormat.format(e.fromSessionDetail.payCost)}đ'
+                      : ''),
+              'takeFromFundMemberPrice': PlutoCell(
+                  value: (e.fromSessionDetail.type != 'Taken')
+                      ? '${Utils.moneyFormat.format(e.fromSessionDetail.payCost)}đ'
+                      : ''),
             },
           ),
         )
         .toList();
 
-    return PlutoGrid(mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
+    return PlutoGrid(
+        mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
   }
 }
 
@@ -170,8 +187,20 @@ class PaymentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double totalTaken = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == 'Taken') ? element.fromSessionDetail.payCost : 0));
-    double totalAliveOrDead = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type != 'Taken') ? element.fromSessionDetail.payCost : 0));
+    double totalTaken = payment.fundBills.fold(
+        0,
+        (previousValue, element) =>
+            previousValue +
+            ((element.fromSessionDetail.type == 'Taken')
+                ? element.fromSessionDetail.payCost
+                : 0));
+    double totalAliveOrDead = payment.fundBills.fold(
+        0,
+        (previousValue, element) =>
+            previousValue +
+            ((element.fromSessionDetail.type != 'Taken')
+                ? element.fromSessionDetail.payCost
+                : 0));
 
     double ratio = totalTaken - totalAliveOrDead;
 
@@ -179,7 +208,11 @@ class PaymentDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: isSmallScreen ? Text('Bill của ${payment.owner.name}\nngày ${Utils.dateFormat.format(payment.createAt)}') : Text('Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
+        title: isSmallScreen
+            ? Text(
+                'Bill của ${payment.owner.name}\nngày ${Utils.dateFormat.format(payment.createAt)}')
+            : Text(
+                'Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
       ),
       body: Container(
           padding: const EdgeInsets.all(14),
@@ -193,13 +226,21 @@ class PaymentDetailScreen extends StatelessWidget {
                     const TextSpan(
                       text: 'Tên hụi viên: ',
                     ),
-                    TextSpan(text: '${payment.owner.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: '${payment.owner.name}\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Tên ngân hàng: '),
-                    TextSpan(text: '${payment.owner.bankname}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: '${payment.owner.bankname}\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số tài khoản: '),
-                    TextSpan(text: '${payment.owner.banknumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: '${payment.owner.banknumber}\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số điện thoại: '),
-                    TextSpan(text: '${payment.owner.phonenumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: '${payment.owner.phonenumber}\n',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -220,19 +261,24 @@ class PaymentDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tổng tiền phải đóng:\t'),
-                      Text('Tổng tiền hốt:\t'),
-                      Text('Tổng còn lại phải thanh toán:\t'),
-                      Text('Tổng tiền đã hoàn thành:\t'),
+                      const Text('Tổng tiền phải đóng:\t'),
+                      const Text('Tổng tiền hốt:\t'),
+                      const Text('Tổng tiền đã hoàn thành:\t'),
+                      Text(payment.status == 'debting'
+                          ? 'Nợ còn lại: '
+                          : 'Tổng còn lại phải thanh toán: '),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('${Utils.moneyFormat.format(totalAliveOrDead)}đ\n${Utils.moneyFormat.format(totalTaken)}đ\n${Utils.moneyFormat.format(ratio.abs())}đ\n${Utils.moneyFormat.format(payment.totalTransactionCost)}đ', textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Text(
+                          '${Utils.moneyFormat.format(totalAliveOrDead)}đ\n${Utils.moneyFormat.format(totalTaken)}đ\n${Utils.moneyFormat.format(ratio.abs())}đ\n${Utils.moneyFormat.format(payment.totalTransactionCost)}đ',
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ],
@@ -245,7 +291,10 @@ class PaymentDetailScreen extends StatelessWidget {
                     const TextSpan(text: 'Chủ hụi phải '),
                     TextSpan(
                       text: (ratio > 0) ? 'chi tiền' : 'thu tiền',
-                      style: const TextStyle(fontWeight: FontWeight.bold, backgroundColor: Colors.red, color: Colors.white),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          backgroundColor: Colors.red,
+                          color: Colors.white),
                     ),
                     TextSpan(
                       text: (ratio > 0) ? ' cho ' : ' từ ',
@@ -259,7 +308,8 @@ class PaymentDetailScreen extends StatelessWidget {
               ),
               SizedBox(
                 height: 50.0 * (payment.paymentTransactions.length + 1),
-                child: TransactionListWidget(transactions: payment.paymentTransactions),
+                child: TransactionListWidget(
+                    transactions: payment.paymentTransactions),
               ),
               const SizedBox(
                 height: 4,
@@ -267,8 +317,12 @@ class PaymentDetailScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () => (payment.status == 'Finish') ? {} : context.router.push(PaycheckRoute(payment: payment)),
-                  child: Text(payment.status == 'Finish' ? 'Đã thanh toán thành công' : 'Thanh toán bill này'),
+                  onPressed: () => (payment.status == 'Finish')
+                      ? {}
+                      : context.router.push(PaycheckRoute(payment: payment)),
+                  child: Text(payment.status == 'Finish'
+                      ? 'Đã thanh toán thành công'
+                      : 'Thanh toán bill này'),
                 ),
               )
             ],

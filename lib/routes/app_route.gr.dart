@@ -167,7 +167,7 @@ class MultiplePaymentMembersRoute
     extends PageRouteInfo<MultiplePaymentMembersRouteArgs> {
   MultiplePaymentMembersRoute({
     Key? key,
-    required List<UserModel> users,
+    required List<UserReportModel> users,
     List<PageRouteInfo>? children,
   }) : super(
           MultiplePaymentMembersRoute.name,
@@ -192,7 +192,7 @@ class MultiplePaymentMembersRouteArgs {
 
   final Key? key;
 
-  final List<UserModel> users;
+  final List<UserReportModel> users;
 
   @override
   String toString() {
@@ -243,7 +243,7 @@ class PaycheckRouteArgs {
 class PaymentListOfUserRoute extends PageRouteInfo<PaymentListOfUserRouteArgs> {
   PaymentListOfUserRoute({
     Key? key,
-    required UserModel user,
+    required UserReportModel user,
     List<PageRouteInfo>? children,
   }) : super(
           PaymentListOfUserRoute.name,
@@ -268,7 +268,7 @@ class PaymentListOfUserRouteArgs {
 
   final Key? key;
 
-  final UserModel user;
+  final UserReportModel user;
 
   @override
   String toString() {

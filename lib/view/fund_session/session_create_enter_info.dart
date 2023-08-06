@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -19,10 +18,12 @@ class CreateSessionEnterInfoScreen extends StatefulWidget {
   const CreateSessionEnterInfoScreen({super.key, required this.fundMember});
 
   @override
-  State<CreateSessionEnterInfoScreen> createState() => _SessionCreateEnterInfoWidget();
+  State<CreateSessionEnterInfoScreen> createState() =>
+      _SessionCreateEnterInfoWidget();
 }
 
-class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> {
+class _SessionCreateEnterInfoWidget
+    extends State<CreateSessionEnterInfoScreen> {
   bool isValid = false;
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -32,7 +33,11 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
   double serviceCost = 0;
   double remainPrice = 0;
 
-  void setData({required double predictPrice, required double totalFundPrice, required double serviceCost, required remainPrice}) {
+  void setData(
+      {required double predictPrice,
+      required double totalFundPrice,
+      required double serviceCost,
+      required remainPrice}) {
     setState(() {
       this.predictPrice = predictPrice;
       this.totalFundPrice = totalFundPrice;
@@ -81,7 +86,10 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                     decoration: const InputDecoration(labelText: 'Thăm kêu'),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: FormBuilderValidators.compose(
-                      [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                      [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.numeric()
+                      ],
                     ),
                     onChanged: (predictedPriceStr) {
                       setState(() {
@@ -92,24 +100,32 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                         return;
                       }
 
-                      double? predictedPrice = double.tryParse(predictedPriceStr);
+                      double? predictedPrice =
+                          double.tryParse(predictedPriceStr);
 
                       if (predictedPrice == null) {
                         return;
                       }
 
-                      double totalDeadFund = fundProvider.fund.sessions.length * fundProvider.fund.fundPrice;
-                      double totalAliveFund = (fundProvider.fund.membersCount - fundProvider.fund.sessions.length - 1) * (fundProvider.fund.fundPrice - predictedPrice);
+                      double totalDeadFund = fundProvider.fund.sessions.length *
+                          fundProvider.fund.fundPrice;
+                      double totalAliveFund = (fundProvider.fund.membersCount -
+                              fundProvider.fund.sessions.length -
+                              1) *
+                          (fundProvider.fund.fundPrice - predictedPrice);
 
                       double totalFund = totalDeadFund + totalAliveFund;
 
                       if (predictedPrice > totalFund) {
-                        _formKey.currentState?.fields['predictedPrice']?.invalidate('Thăm kêu không được lớn hơn tiền hụi');
+                        _formKey.currentState?.fields['predictedPrice']
+                            ?.invalidate(
+                                'Thăm kêu không được lớn hơn tiền hụi');
 
                         return;
                       }
 
-                      _formKey.currentState?.fields['predictedPrice']?.validate();
+                      _formKey.currentState?.fields['predictedPrice']
+                          ?.validate();
 
                       setData(
                         predictPrice: predictedPrice,
@@ -124,25 +140,36 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                     decoration: const InputDecoration(labelText: 'Tiền hụi'),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: FormBuilderValidators.compose(
-                      [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                      [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.numeric()
+                      ],
                     ),
                     readOnly: true,
                   ),
                   FormBuilderTextField(
                     name: 'serviceCost',
-                    decoration: const InputDecoration(labelText: 'Trừ tiền thảo'),
+                    decoration:
+                        const InputDecoration(labelText: 'Trừ tiền thảo'),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: FormBuilderValidators.compose(
-                      [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                      [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.numeric()
+                      ],
                     ),
                     readOnly: true,
                   ),
                   FormBuilderTextField(
                     name: 'remainPrice',
-                    decoration: const InputDecoration(labelText: 'Tổng tiền còn lại'),
+                    decoration:
+                        const InputDecoration(labelText: 'Tổng tiền còn lại'),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: FormBuilderValidators.compose(
-                      [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                      [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.numeric()
+                      ],
                     ),
                     readOnly: true,
                   ),
@@ -150,7 +177,8 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
               ),
             ),
             Container(height: 10),
-            const Text('Lưu ý: những hụi viên đã hốt rồi sẽ không hiển thị trên danh sách'),
+            const Text(
+                'Lưu ý: những hụi viên đã hốt rồi sẽ không hiển thị trên danh sách'),
             Container(height: 10),
             ElevatedButton(
               onPressed: isValid
@@ -162,14 +190,20 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                           )
                           .match((l) {
                         log(l);
-                        DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
+                        DialogHelper.showSnackBar(
+                            context, 'Có lỗi xảy ra khi tạo kì hụi mới');
                       }, (r) {
-                        DialogHelper.showSnackBar(context, 'Tạo kì hụi mới thành công');
-                        context.router.push(const FundSessionListRoute());
+                        DialogHelper.showSnackBar(
+                            context, 'Tạo kì hụi mới thành công');
+                        context.router.pushAndPopUntil(
+                            const FundSessionListRoute(),
+                            predicate: (route) =>
+                                route.settings.name == FundDetailRoute.name);
                       }).run();
                     }
                   : null,
-              style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),
+              style: ElevatedButton.styleFrom(
+                  disabledForegroundColor: Colors.blue),
               child: const Text('Hốt hụi'),
             )
           ],

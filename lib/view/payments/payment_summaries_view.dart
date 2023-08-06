@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_model.dart';
-import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/user_report_model.dart';
 import 'package:hui_management/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +22,10 @@ class PaymentWidget extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.request_quote),
-              title: Text('Bill thanh toán ngày ${Utils.dateFormat.format(payment.createAt)}'),
-              subtitle: Text('Loại: ${payment.totalCost < 0 ? 'Chủ hụi phải thanh toán' : 'Thành viên phải thanh toán'}\nTổng tiền thanh toán: ${Utils.moneyFormat.format(payment.totalCost.abs())}đ'),
+              title: Text(
+                  'Bill thanh toán ngày ${Utils.dateFormat.format(payment.createAt)}'),
+              subtitle: Text(
+                  'Loại: ${payment.totalCost < 0 ? 'Chủ hụi phải thanh toán' : 'Thành viên phải thanh toán'}\nTổng tiền thanh toán: ${Utils.moneyFormat.format(payment.totalCost.abs())}đ'),
             ),
           ],
         ),
@@ -35,7 +37,7 @@ class PaymentWidget extends StatelessWidget {
 
 @RoutePage()
 class PaymentListOfUserScreen extends StatelessWidget {
-  final UserModel user;
+  final UserReportModel user;
   const PaymentListOfUserScreen({super.key, required this.user});
 
   @override

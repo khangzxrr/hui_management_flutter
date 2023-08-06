@@ -21,7 +21,8 @@ class SessionViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context);
 
-    NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == "Taken").first;
+    NormalSessionDetail takenSessionDetail =
+        session.normalSessionDetails.where((d) => d.type == "Taken").first;
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -40,7 +41,9 @@ class SessionViewWidget extends StatelessWidget {
                   .match((l) {
                 log(l);
                 DialogHelper.showSnackBar(context, l);
-              }, (r) => DialogHelper.showSnackBar(context, "Xóa kì hụi thành công!")).run();
+              },
+                      (r) => DialogHelper.showSnackBar(
+                          context, "Xóa kì hụi thành công!")).run();
             },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
@@ -54,7 +57,8 @@ class SessionViewWidget extends StatelessWidget {
       // component is not dragged.
       child: Card(
         child: InkWell(
-          onTap: () => context.router.push(SessionDetailRoute(fundName: fundProvider.fund.name, session: session)),
+          onTap: () => context.router.push(SessionDetailRoute(
+              fundName: fundProvider.fund.name, session: session)),
           child: Column(
             children: <Widget>[
               ListTile(
@@ -73,7 +77,7 @@ class SessionViewWidget extends StatelessWidget {
                         Text('Thành viên hốt: '),
                         Text('Thăm kêu: '),
                         Text('Chịu lỗ: '),
-                        Text('Hiền hốt hụi: '),
+                        Text('Tiền hốt hụi: '),
                         Text('Trừ hoa hồng: '),
                         Text('Tiền hốt hụi còn lại: '),
                         //Kỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right)
@@ -83,13 +87,19 @@ class SessionViewWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(Utils.dateFormat.format(session.takenDate)),
-                        Text('${session.sessionNumber}/${fundProvider.fund.membersCount}'),
+                        Text(
+                            '${session.sessionNumber}/${fundProvider.fund.membersCount}'),
                         Text(takenSessionDetail.fundMember.nickName),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.lossCost)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ'),
+                        Text(
+                            '${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ'),
+                        Text(
+                            '${Utils.moneyFormat.format(takenSessionDetail.lossCost)}đ'),
+                        Text(
+                            '${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ'),
+                        Text(
+                            '${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ'),
+                        Text(
+                            '${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ'),
                       ],
                     )
                   ],
@@ -111,7 +121,9 @@ class FundSessionListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context);
 
-    final sesionViewWidgets = fundProvider.fund.sessions.map((session) => SessionViewWidget(session: session)).toList();
+    final sesionViewWidgets = fundProvider.fund.sessions
+        .map((session) => SessionViewWidget(session: session))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -124,7 +136,8 @@ class FundSessionListScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.router.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false),
+        onPressed: () => context.router
+            .pushAndPopUntil(const DashboardRoute(), predicate: (_) => false),
         heroTag: null,
         label: const Text('Menu chính'),
         icon: const Icon(Icons.home),

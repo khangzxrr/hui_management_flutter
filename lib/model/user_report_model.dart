@@ -34,6 +34,9 @@ class UserReportModel {
 
   final double fundRatio;
 
+  final double totalCost;
+  final double totalTransactionCost;
+
   UserReportModel({
     required this.id,
     required this.imageUrl,
@@ -50,6 +53,8 @@ class UserReportModel {
     required this.identityImageBackUrl,
     required this.nickName,
     required this.fundRatio,
+    required this.totalCost,
+    required this.totalTransactionCost,
   });
 
   //toString
@@ -58,8 +63,7 @@ class UserReportModel {
     return 'UserReportModel{id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName, fundRatio: $fundRatio}';
   }
 
-  factory UserReportModel.fromJson(Map<String, dynamic> json) => _$UserReportModelFromJson(json);
+  factory UserReportModel.fromJson(Map<String, dynamic> json) =>
+      _$UserReportModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserReportModelToJson(this);
-  
-
 }
