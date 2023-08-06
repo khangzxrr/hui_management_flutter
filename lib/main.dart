@@ -39,10 +39,16 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
-  final appRouter = AppRouter();
+class MyApp extends StatefulWidget {
 
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final appRouter = AppRouter();
 
   // This widget is the root of your application.
   @override

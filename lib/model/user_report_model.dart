@@ -16,13 +16,11 @@ class UserReportModel {
 
   final String identityAddress;
 
-  final String password;
+  final String phoneNumber;
 
-  final String phonenumber;
+  final String bankName;
 
-  final String bankname;
-
-  final String banknumber;
+  final String bankNumber;
 
   final String address;
 
@@ -43,10 +41,9 @@ class UserReportModel {
     required this.identity,
     required this.identityCreateDate,
     required this.identityAddress,
-    required this.password,
-    required this.phonenumber,
-    required this.bankname,
-    required this.banknumber,
+    required this.phoneNumber,
+    required this.bankName,
+    required this.bankNumber,
     required this.address,
     required this.additionalInfo,
     required this.identityImageFrontUrl,
@@ -54,6 +51,12 @@ class UserReportModel {
     required this.nickName,
     required this.fundRatio,
   });
+
+  //toString
+  @override
+  String toString() {
+    return 'UserReportModel{id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName, fundRatio: $fundRatio}';
+  }
 
   factory UserReportModel.fromJson(Map<String, dynamic> json) => _$UserReportModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserReportModelToJson(this);

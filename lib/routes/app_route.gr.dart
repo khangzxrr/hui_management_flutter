@@ -15,45 +15,85 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    MultiplePaymentMembersRoute.name: (routeData) {
+      final args = routeData.argsAs<MultiplePaymentMembersRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MultiplePaymentMembersScreen(
+          key: args.key,
+          users: args.users,
+        ),
+      );
+    },
+    PaycheckRoute.name: (routeData) {
+      final args = routeData.argsAs<PaycheckRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PaycheckScreen(
+          key: args.key,
+          payment: args.payment,
+        ),
+      );
+    },
+    PaymentListOfUserRoute.name: (routeData) {
+      final args = routeData.argsAs<PaymentListOfUserRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PaymentListOfUserScreen(
+          key: args.key,
+          user: args.user,
+        ),
+      );
+    },
+    PaymentDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<PaymentDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PaymentDetailScreen(
+          key: args.key,
+          payment: args.payment,
+        ),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginRouteArgs>(
+          orElse: () => const LoginRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LoginScreen(key: args.key),
+      );
+    },
+    MembersRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MembersScreen(),
+      );
+    },
+    MemberEditRoute.name: (routeData) {
+      final args = routeData.argsAs<MemberEditRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MemberEditScreen(
+          key: args.key,
+          isCreateNew: args.isCreateNew,
+          user: args.user,
+        ),
+      );
+    },
+    MemberReportRoute.name: (routeData) {
+      final args = routeData.argsAs<MemberReportRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MemberReportScreen(
+          key: args.key,
+          userReportModels: args.userReportModels,
+        ),
+      );
+    },
     DashboardRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const DashboardScreen(),
-      );
-    },
-    MultipleFundsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const MultipleFundsScreen(),
-      );
-    },
-    FundDetailRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const FundDetailScreen(),
-      );
-    },
-    FundEditRoute.name: (routeData) {
-      final args = routeData.argsAs<FundEditRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: FundEditScreen(
-          key: args.key,
-          isNew: args.isNew,
-          fund: args.fund,
-        ),
-      );
-    },
-    FundMembersRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const FundMembersScreen(),
-      );
-    },
-    FundSessionListRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const FundSessionListScreen(),
       );
     },
     CreateSessionEnterInfoRoute.name: (routeData) {
@@ -83,82 +123,318 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    LoginRoute.name: (routeData) {
-      final args = routeData.argsAs<LoginRouteArgs>(
-          orElse: () => const LoginRouteArgs());
+    FundSessionListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: LoginScreen(key: args.key),
+        child: const FundSessionListScreen(),
       );
     },
-    MembersRoute.name: (routeData) {
+    FundEditRoute.name: (routeData) {
+      final args = routeData.argsAs<FundEditRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MembersScreen(),
-      );
-    },
-    MemberEditRoute.name: (routeData) {
-      final args = routeData.argsAs<MemberEditRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MemberEditScreen(
+        child: FundEditScreen(
           key: args.key,
-          isCreateNew: args.isCreateNew,
-          user: args.user,
+          isNew: args.isNew,
+          fund: args.fund,
         ),
       );
     },
-    MultiplePaymentMembersRoute.name: (routeData) {
-      final args = routeData.argsAs<MultiplePaymentMembersRouteArgs>();
+    FundMembersRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MultiplePaymentMembersScreen(
-          key: args.key,
-          users: args.users,
-        ),
+        child: const FundMembersScreen(),
       );
     },
-    PaymentDetailRoute.name: (routeData) {
-      final args = routeData.argsAs<PaymentDetailRouteArgs>();
+    FundDetailRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: PaymentDetailScreen(
-          key: args.key,
-          payment: args.payment,
-        ),
+        child: const FundDetailScreen(),
       );
     },
-    PaycheckRoute.name: (routeData) {
-      final args = routeData.argsAs<PaycheckRouteArgs>();
+    MultipleFundsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: PaycheckScreen(
-          key: args.key,
-          payment: args.payment,
-        ),
-      );
-    },
-    PaymentListOfUserRoute.name: (routeData) {
-      final args = routeData.argsAs<PaymentListOfUserRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PaymentListOfUserScreen(
-          key: args.key,
-          user: args.user,
-        ),
-      );
-    },
-    MemberReportRoute.name: (routeData) {
-      final args = routeData.argsAs<MemberReportRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MemberReportScreen(
-          key: args.key,
-          userReportModels: args.userReportModels,
-        ),
+        child: const MultipleFundsScreen(),
       );
     },
   };
+}
+
+/// generated route for
+/// [MultiplePaymentMembersScreen]
+class MultiplePaymentMembersRoute
+    extends PageRouteInfo<MultiplePaymentMembersRouteArgs> {
+  MultiplePaymentMembersRoute({
+    Key? key,
+    required List<UserModel> users,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MultiplePaymentMembersRoute.name,
+          args: MultiplePaymentMembersRouteArgs(
+            key: key,
+            users: users,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MultiplePaymentMembersRoute';
+
+  static const PageInfo<MultiplePaymentMembersRouteArgs> page =
+      PageInfo<MultiplePaymentMembersRouteArgs>(name);
+}
+
+class MultiplePaymentMembersRouteArgs {
+  const MultiplePaymentMembersRouteArgs({
+    this.key,
+    required this.users,
+  });
+
+  final Key? key;
+
+  final List<UserModel> users;
+
+  @override
+  String toString() {
+    return 'MultiplePaymentMembersRouteArgs{key: $key, users: $users}';
+  }
+}
+
+/// generated route for
+/// [PaycheckScreen]
+class PaycheckRoute extends PageRouteInfo<PaycheckRouteArgs> {
+  PaycheckRoute({
+    Key? key,
+    required PaymentModel payment,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PaycheckRoute.name,
+          args: PaycheckRouteArgs(
+            key: key,
+            payment: payment,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PaycheckRoute';
+
+  static const PageInfo<PaycheckRouteArgs> page =
+      PageInfo<PaycheckRouteArgs>(name);
+}
+
+class PaycheckRouteArgs {
+  const PaycheckRouteArgs({
+    this.key,
+    required this.payment,
+  });
+
+  final Key? key;
+
+  final PaymentModel payment;
+
+  @override
+  String toString() {
+    return 'PaycheckRouteArgs{key: $key, payment: $payment}';
+  }
+}
+
+/// generated route for
+/// [PaymentListOfUserScreen]
+class PaymentListOfUserRoute extends PageRouteInfo<PaymentListOfUserRouteArgs> {
+  PaymentListOfUserRoute({
+    Key? key,
+    required UserModel user,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PaymentListOfUserRoute.name,
+          args: PaymentListOfUserRouteArgs(
+            key: key,
+            user: user,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PaymentListOfUserRoute';
+
+  static const PageInfo<PaymentListOfUserRouteArgs> page =
+      PageInfo<PaymentListOfUserRouteArgs>(name);
+}
+
+class PaymentListOfUserRouteArgs {
+  const PaymentListOfUserRouteArgs({
+    this.key,
+    required this.user,
+  });
+
+  final Key? key;
+
+  final UserModel user;
+
+  @override
+  String toString() {
+    return 'PaymentListOfUserRouteArgs{key: $key, user: $user}';
+  }
+}
+
+/// generated route for
+/// [PaymentDetailScreen]
+class PaymentDetailRoute extends PageRouteInfo<PaymentDetailRouteArgs> {
+  PaymentDetailRoute({
+    Key? key,
+    required PaymentModel payment,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PaymentDetailRoute.name,
+          args: PaymentDetailRouteArgs(
+            key: key,
+            payment: payment,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PaymentDetailRoute';
+
+  static const PageInfo<PaymentDetailRouteArgs> page =
+      PageInfo<PaymentDetailRouteArgs>(name);
+}
+
+class PaymentDetailRouteArgs {
+  const PaymentDetailRouteArgs({
+    this.key,
+    required this.payment,
+  });
+
+  final Key? key;
+
+  final PaymentModel payment;
+
+  @override
+  String toString() {
+    return 'PaymentDetailRouteArgs{key: $key, payment: $payment}';
+  }
+}
+
+/// generated route for
+/// [LoginScreen]
+class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LoginRoute.name,
+          args: LoginRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginRoute';
+
+  static const PageInfo<LoginRouteArgs> page = PageInfo<LoginRouteArgs>(name);
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [MembersScreen]
+class MembersRoute extends PageRouteInfo<void> {
+  const MembersRoute({List<PageRouteInfo>? children})
+      : super(
+          MembersRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MembersRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MemberEditScreen]
+class MemberEditRoute extends PageRouteInfo<MemberEditRouteArgs> {
+  MemberEditRoute({
+    Key? key,
+    required bool isCreateNew,
+    required UserModel? user,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MemberEditRoute.name,
+          args: MemberEditRouteArgs(
+            key: key,
+            isCreateNew: isCreateNew,
+            user: user,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MemberEditRoute';
+
+  static const PageInfo<MemberEditRouteArgs> page =
+      PageInfo<MemberEditRouteArgs>(name);
+}
+
+class MemberEditRouteArgs {
+  const MemberEditRouteArgs({
+    this.key,
+    required this.isCreateNew,
+    required this.user,
+  });
+
+  final Key? key;
+
+  final bool isCreateNew;
+
+  final UserModel? user;
+
+  @override
+  String toString() {
+    return 'MemberEditRouteArgs{key: $key, isCreateNew: $isCreateNew, user: $user}';
+  }
+}
+
+/// generated route for
+/// [MemberReportScreen]
+class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
+  MemberReportRoute({
+    Key? key,
+    required List<UserReportModel> userReportModels,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MemberReportRoute.name,
+          args: MemberReportRouteArgs(
+            key: key,
+            userReportModels: userReportModels,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MemberReportRoute';
+
+  static const PageInfo<MemberReportRouteArgs> page =
+      PageInfo<MemberReportRouteArgs>(name);
+}
+
+class MemberReportRouteArgs {
+  const MemberReportRouteArgs({
+    this.key,
+    required this.userReportModels,
+  });
+
+  final Key? key;
+
+  final List<UserReportModel> userReportModels;
+
+  @override
+  String toString() {
+    return 'MemberReportRouteArgs{key: $key, userReportModels: $userReportModels}';
+  }
 }
 
 /// generated route for
@@ -171,105 +447,6 @@ class DashboardRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DashboardRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [MultipleFundsScreen]
-class MultipleFundsRoute extends PageRouteInfo<void> {
-  const MultipleFundsRoute({List<PageRouteInfo>? children})
-      : super(
-          MultipleFundsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MultipleFundsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [FundDetailScreen]
-class FundDetailRoute extends PageRouteInfo<void> {
-  const FundDetailRoute({List<PageRouteInfo>? children})
-      : super(
-          FundDetailRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'FundDetailRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [FundEditScreen]
-class FundEditRoute extends PageRouteInfo<FundEditRouteArgs> {
-  FundEditRoute({
-    Key? key,
-    required bool isNew,
-    required GeneralFundModel? fund,
-    List<PageRouteInfo>? children,
-  }) : super(
-          FundEditRoute.name,
-          args: FundEditRouteArgs(
-            key: key,
-            isNew: isNew,
-            fund: fund,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'FundEditRoute';
-
-  static const PageInfo<FundEditRouteArgs> page =
-      PageInfo<FundEditRouteArgs>(name);
-}
-
-class FundEditRouteArgs {
-  const FundEditRouteArgs({
-    this.key,
-    required this.isNew,
-    required this.fund,
-  });
-
-  final Key? key;
-
-  final bool isNew;
-
-  final GeneralFundModel? fund;
-
-  @override
-  String toString() {
-    return 'FundEditRouteArgs{key: $key, isNew: $isNew, fund: $fund}';
-  }
-}
-
-/// generated route for
-/// [FundMembersScreen]
-class FundMembersRoute extends PageRouteInfo<void> {
-  const FundMembersRoute({List<PageRouteInfo>? children})
-      : super(
-          FundMembersRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'FundMembersRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [FundSessionListScreen]
-class FundSessionListRoute extends PageRouteInfo<void> {
-  const FundSessionListRoute({List<PageRouteInfo>? children})
-      : super(
-          FundSessionListRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'FundSessionListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -371,277 +548,100 @@ class SessionDetailRouteArgs {
 }
 
 /// generated route for
-/// [LoginScreen]
-class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
-  LoginRoute({
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          LoginRoute.name,
-          args: LoginRouteArgs(key: key),
-          initialChildren: children,
-        );
-
-  static const String name = 'LoginRoute';
-
-  static const PageInfo<LoginRouteArgs> page = PageInfo<LoginRouteArgs>(name);
-}
-
-class LoginRouteArgs {
-  const LoginRouteArgs({this.key});
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'LoginRouteArgs{key: $key}';
-  }
-}
-
-/// generated route for
-/// [MembersScreen]
-class MembersRoute extends PageRouteInfo<void> {
-  const MembersRoute({List<PageRouteInfo>? children})
+/// [FundSessionListScreen]
+class FundSessionListRoute extends PageRouteInfo<void> {
+  const FundSessionListRoute({List<PageRouteInfo>? children})
       : super(
-          MembersRoute.name,
+          FundSessionListRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MembersRoute';
+  static const String name = 'FundSessionListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [MemberEditScreen]
-class MemberEditRoute extends PageRouteInfo<MemberEditRouteArgs> {
-  MemberEditRoute({
+/// [FundEditScreen]
+class FundEditRoute extends PageRouteInfo<FundEditRouteArgs> {
+  FundEditRoute({
     Key? key,
-    required bool isCreateNew,
-    required UserModel? user,
+    required bool isNew,
+    required GeneralFundModel? fund,
     List<PageRouteInfo>? children,
   }) : super(
-          MemberEditRoute.name,
-          args: MemberEditRouteArgs(
+          FundEditRoute.name,
+          args: FundEditRouteArgs(
             key: key,
-            isCreateNew: isCreateNew,
-            user: user,
+            isNew: isNew,
+            fund: fund,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'MemberEditRoute';
+  static const String name = 'FundEditRoute';
 
-  static const PageInfo<MemberEditRouteArgs> page =
-      PageInfo<MemberEditRouteArgs>(name);
+  static const PageInfo<FundEditRouteArgs> page =
+      PageInfo<FundEditRouteArgs>(name);
 }
 
-class MemberEditRouteArgs {
-  const MemberEditRouteArgs({
+class FundEditRouteArgs {
+  const FundEditRouteArgs({
     this.key,
-    required this.isCreateNew,
-    required this.user,
+    required this.isNew,
+    required this.fund,
   });
 
   final Key? key;
 
-  final bool isCreateNew;
+  final bool isNew;
 
-  final UserModel? user;
+  final GeneralFundModel? fund;
 
   @override
   String toString() {
-    return 'MemberEditRouteArgs{key: $key, isCreateNew: $isCreateNew, user: $user}';
+    return 'FundEditRouteArgs{key: $key, isNew: $isNew, fund: $fund}';
   }
 }
 
 /// generated route for
-/// [MultiplePaymentMembersScreen]
-class MultiplePaymentMembersRoute
-    extends PageRouteInfo<MultiplePaymentMembersRouteArgs> {
-  MultiplePaymentMembersRoute({
-    Key? key,
-    required List<UserModel> users,
-    List<PageRouteInfo>? children,
-  }) : super(
-          MultiplePaymentMembersRoute.name,
-          args: MultiplePaymentMembersRouteArgs(
-            key: key,
-            users: users,
-          ),
+/// [FundMembersScreen]
+class FundMembersRoute extends PageRouteInfo<void> {
+  const FundMembersRoute({List<PageRouteInfo>? children})
+      : super(
+          FundMembersRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MultiplePaymentMembersRoute';
+  static const String name = 'FundMembersRoute';
 
-  static const PageInfo<MultiplePaymentMembersRouteArgs> page =
-      PageInfo<MultiplePaymentMembersRouteArgs>(name);
-}
-
-class MultiplePaymentMembersRouteArgs {
-  const MultiplePaymentMembersRouteArgs({
-    this.key,
-    required this.users,
-  });
-
-  final Key? key;
-
-  final List<UserModel> users;
-
-  @override
-  String toString() {
-    return 'MultiplePaymentMembersRouteArgs{key: $key, users: $users}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [PaymentDetailScreen]
-class PaymentDetailRoute extends PageRouteInfo<PaymentDetailRouteArgs> {
-  PaymentDetailRoute({
-    Key? key,
-    required PaymentModel payment,
-    List<PageRouteInfo>? children,
-  }) : super(
-          PaymentDetailRoute.name,
-          args: PaymentDetailRouteArgs(
-            key: key,
-            payment: payment,
-          ),
+/// [FundDetailScreen]
+class FundDetailRoute extends PageRouteInfo<void> {
+  const FundDetailRoute({List<PageRouteInfo>? children})
+      : super(
+          FundDetailRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'PaymentDetailRoute';
+  static const String name = 'FundDetailRoute';
 
-  static const PageInfo<PaymentDetailRouteArgs> page =
-      PageInfo<PaymentDetailRouteArgs>(name);
-}
-
-class PaymentDetailRouteArgs {
-  const PaymentDetailRouteArgs({
-    this.key,
-    required this.payment,
-  });
-
-  final Key? key;
-
-  final PaymentModel payment;
-
-  @override
-  String toString() {
-    return 'PaymentDetailRouteArgs{key: $key, payment: $payment}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [PaycheckScreen]
-class PaycheckRoute extends PageRouteInfo<PaycheckRouteArgs> {
-  PaycheckRoute({
-    Key? key,
-    required PaymentModel payment,
-    List<PageRouteInfo>? children,
-  }) : super(
-          PaycheckRoute.name,
-          args: PaycheckRouteArgs(
-            key: key,
-            payment: payment,
-          ),
+/// [MultipleFundsScreen]
+class MultipleFundsRoute extends PageRouteInfo<void> {
+  const MultipleFundsRoute({List<PageRouteInfo>? children})
+      : super(
+          MultipleFundsRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'PaycheckRoute';
+  static const String name = 'MultipleFundsRoute';
 
-  static const PageInfo<PaycheckRouteArgs> page =
-      PageInfo<PaycheckRouteArgs>(name);
-}
-
-class PaycheckRouteArgs {
-  const PaycheckRouteArgs({
-    this.key,
-    required this.payment,
-  });
-
-  final Key? key;
-
-  final PaymentModel payment;
-
-  @override
-  String toString() {
-    return 'PaycheckRouteArgs{key: $key, payment: $payment}';
-  }
-}
-
-/// generated route for
-/// [PaymentListOfUserScreen]
-class PaymentListOfUserRoute extends PageRouteInfo<PaymentListOfUserRouteArgs> {
-  PaymentListOfUserRoute({
-    Key? key,
-    required UserModel user,
-    List<PageRouteInfo>? children,
-  }) : super(
-          PaymentListOfUserRoute.name,
-          args: PaymentListOfUserRouteArgs(
-            key: key,
-            user: user,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'PaymentListOfUserRoute';
-
-  static const PageInfo<PaymentListOfUserRouteArgs> page =
-      PageInfo<PaymentListOfUserRouteArgs>(name);
-}
-
-class PaymentListOfUserRouteArgs {
-  const PaymentListOfUserRouteArgs({
-    this.key,
-    required this.user,
-  });
-
-  final Key? key;
-
-  final UserModel user;
-
-  @override
-  String toString() {
-    return 'PaymentListOfUserRouteArgs{key: $key, user: $user}';
-  }
-}
-
-/// generated route for
-/// [MemberReportScreen]
-class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
-  MemberReportRoute({
-    Key? key,
-    required List<UserReportModel> userReportModels,
-    List<PageRouteInfo>? children,
-  }) : super(
-          MemberReportRoute.name,
-          args: MemberReportRouteArgs(
-            key: key,
-            userReportModels: userReportModels,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'MemberReportRoute';
-
-  static const PageInfo<MemberReportRouteArgs> page =
-      PageInfo<MemberReportRouteArgs>(name);
-}
-
-class MemberReportRouteArgs {
-  const MemberReportRouteArgs({
-    this.key,
-    required this.userReportModels,
-  });
-
-  final Key? key;
-
-  final List<UserReportModel> userReportModels;
-
-  @override
-  String toString() {
-    return 'MemberReportRouteArgs{key: $key, userReportModels: $userReportModels}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

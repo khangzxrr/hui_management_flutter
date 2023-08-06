@@ -53,7 +53,6 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     resolver.next();
-
     // if (authenticationProvider.model != null) {
     //   resolver.next();
     // } else {

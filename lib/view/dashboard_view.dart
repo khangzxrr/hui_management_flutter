@@ -35,6 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     final authenticationProvider = Provider.of<AuthenticationProvider>(context,
         listen: true); //must not listen to avoid infinite loop
 
+    
     return Scaffold(
       appBar: AppBar(
         // // Here we take the value from the MyHomePage object that was created by
@@ -88,9 +89,17 @@ class _DashboardScreenState extends State<DashboardScreen>
             ),
     );
   }
-
+  
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {}
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    
+     final authenticationProvider = Provider.of<AuthenticationProvider>(context,
+        listen: false); //must not listen to avoid infinite loop
+
+    if (authenticationProvider.model == null) {
+      context.router.pushAndPopUntil(LoginRoute(), predicate: (_) => false);
+    }
+  }
 }
 
 class DashboardInfo extends StatefulWidget {
