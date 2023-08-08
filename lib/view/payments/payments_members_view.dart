@@ -30,7 +30,7 @@ class SingleMemberScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * (isOnPhone ? 0.8 : 0.6),
+                  width: MediaQuery.of(context).size.width * (isOnPhone ? 0.9 : 0.6),
                   child: ListTile(
                     leading: CachedNetworkImage(
                       imageUrl: user.imageUrl,

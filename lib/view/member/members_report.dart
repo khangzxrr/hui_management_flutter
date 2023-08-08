@@ -51,7 +51,7 @@ class SingleMemberReport extends StatelessWidget {
               height: 10,
             ),
             SizedBox(
-              width: isOnPhone ? MediaQuery.of(context).size.width * 0.8 : MediaQuery.of(context).size.width * 0.3,
+              width: isOnPhone ? MediaQuery.of(context).size.width * 0.9 : MediaQuery.of(context).size.width * 0.3,
               child: Padding(
                 padding: isOnPhone ? const EdgeInsets.fromLTRB(0, 5, 0, 10) : const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: Row(
