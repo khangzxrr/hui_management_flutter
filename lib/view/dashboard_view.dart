@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -150,10 +151,11 @@ class _DashboardInfoState extends State<DashboardInfo> {
           style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5, width: 5),
-        Text(
+        AutoSizeText(
           textAlign: TextAlign.center,
           authenticationProvider.model!.user.address,
-          style: const TextStyle(fontSize: 13),
+          style: const TextStyle(fontSize: 15),
+          maxLines: 1,
         ),
         const SizedBox(height: 5, width: 5),
         Text(
