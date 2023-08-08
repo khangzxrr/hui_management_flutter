@@ -70,7 +70,7 @@ class MemberWidget extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 title: Text(user.name),
-                subtitle: Text('${user.identity}\n${user.phonenumber}\n${user.bankname} - ${user.banknumber}\n${user.address}\n${user.additionalInfo}'),
+                subtitle: Text('${user.identity}\n${user.phoneNumber}\n${user.bankName} - ${user.bankNumber}\n${user.address}\n${user.additionalInfo}'),
               )
             ],
           ),
@@ -127,11 +127,11 @@ class _MembersScreenState extends State<MembersScreen> {
               return true;
             }
 
-            if (user.bankname.toLowerCase().contains(filterText.toLowerCase())) {
+            if (user.bankName.toLowerCase().contains(filterText.toLowerCase())) {
               return true;
             }
 
-            if (user.banknumber.toLowerCase().contains(filterText.toLowerCase())) {
+            if (user.bankNumber.toLowerCase().contains(filterText.toLowerCase())) {
               return true;
             }
 
@@ -143,7 +143,7 @@ class _MembersScreenState extends State<MembersScreen> {
               return true;
             }
 
-            if (user.phonenumber.toLowerCase().contains(filterText.toLowerCase())) {
+            if (user.phoneNumber.toLowerCase().contains(filterText.toLowerCase())) {
               return true;
             }
 

@@ -77,7 +77,7 @@ class FundMemberWidget extends StatelessWidget {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               title: Text(fundMember.nickName),
-              subtitle: Text('${fundMember.user.identity}\n${fundMember.user.phonenumber}\n${fundMember.user.bankname} - ${fundMember.user.banknumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
+              subtitle: Text('${fundMember.user.identity}\n${fundMember.user.phoneNumber}\n${fundMember.user.bankName} - ${fundMember.user.bankNumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
             )
           ],
         ),

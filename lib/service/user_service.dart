@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorizeHttp.dart';
 import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/user_report_model.dart';
+import 'package:hui_management/model/user_with_payment_report.dart';
 
 import '../helper/constants.dart';
 
@@ -38,6 +40,29 @@ class UserService {
       final json = jsonDecode(response.body)['user'];
 
       return UserModel.fromJson(json);
+    }
+
+    throw Exception(response.body);
+  }
+
+  Future<List<UserWithPaymentReport>> getAllWithPaymentReport() async {
+    Map<String, String> queryParams = {};
+    queryParams['filterByAnyPayment'] = 'true';
+
+    Uri uri;
+
+    if (Constants.apiHostName.contains("https")) {
+      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/users', queryParams);
+    } else {
+      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/users', queryParams);
+    }
+
+    final response = await httpClient.get(uri);
+
+    if (response.statusCode == 200) {
+      final Iterable jsonObj = jsonDecode(response.body)['users'];
+
+      return List<UserWithPaymentReport>.from(jsonObj.map((model) => UserWithPaymentReport.fromJson(model)));
     }
 
     throw Exception(response.body);

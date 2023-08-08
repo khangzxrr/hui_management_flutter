@@ -25,14 +25,12 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
-    with AfterLayoutMixin<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin<DashboardScreen> {
   final getIt = GetIt.instance;
 
   @override
   Widget build(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context,
-        listen: true); //must not listen to avoid infinite loop
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop
 
     return Scaffold(
       appBar: AppBar(
@@ -44,15 +42,9 @@ class _DashboardScreenState extends State<DashboardScreen>
           //setting icon button
           IconButton(
             onPressed: () {
-              context.router
-                  .push(MemberEditRoute(
-                      isCreateNew: false,
-                      user: authenticationProvider.model!.user))
-                  .then((value) {
+              context.router.push(MemberEditRoute(isCreateNew: false, user: authenticationProvider.model!.user)).then((value) {
                 if (value != null) {
-                  authenticationProvider.setAuthentication(AuthenticationModel(
-                      user: value as UserModel,
-                      token: authenticationProvider.model!.token));
+                  authenticationProvider.setAuthentication(AuthenticationModel(user: value as UserModel, token: authenticationProvider.model!.token));
                 }
               });
             },
@@ -65,8 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             onPressed: () {
               authenticationProvider.clearAuthentication();
               //context.router.navigate(LoginRoute());
-              context.router
-                  .pushAndPopUntil(LoginRoute(), predicate: (_) => false);
+              context.router.pushAndPopUntil(LoginRoute(), predicate: (_) => false);
             },
             icon: const Icon(Icons.logout),
           )
@@ -82,16 +73,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                   context.router.popUntilRoot();
                 }
               },
-              child: const Text(
-                  'Bạn không có quyền xem trang này, nhấn vào đây để đăng nhập lại'),
+              child: const Text('Bạn không có quyền xem trang này, nhấn vào đây để đăng nhập lại'),
             ),
     );
   }
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context,
-        listen: false); //must not listen to avoid infinite loop
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false); //must not listen to avoid infinite loop
 
     if (authenticationProvider.model == null) {
       context.router.pushAndPopUntil(LoginRoute(), predicate: (_) => false);
@@ -123,16 +112,13 @@ class _DashboardInfoState extends State<DashboardInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context,
-        listen: true); //must not listen to avoid infinite loop
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop
 
     final usersProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    final generalFundProvider =
-        Provider.of<GeneralFundProvider>(context, listen: false);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
-    final userReportProvider =
-        Provider.of<UserReportProvider>(context, listen: false);
+    final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
 
     return ListView(
       padding: const EdgeInsets.all(30),
@@ -150,8 +136,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                    image: imageProvider, fit: BoxFit.scaleDown),
+                image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
               ),
             ),
             placeholder: (context, url) => const LinearProgressIndicator(),
@@ -173,13 +158,13 @@ class _DashboardInfoState extends State<DashboardInfo> {
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          authenticationProvider.model!.user.phonenumber,
+          authenticationProvider.model!.user.phoneNumber,
           style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          '${authenticationProvider.model!.user.bankname} - ${authenticationProvider.model!.user.banknumber}',
+          '${authenticationProvider.model!.user.bankName} - ${authenticationProvider.model!.user.bankNumber}',
           style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 10, width: 15),
@@ -188,8 +173,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
               enableLoading();
 
               usersProvider.getAllUsers().match((l) {
-                DialogHelper.showSnackBar(
-                    context, 'Có lỗi khi lấy danh sách thành viên');
+                DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
                 context.router.pop();
                 disableLoading();
               }, (r) {
@@ -207,8 +191,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
                 (l) {
                   disableLoading();
                   log(l);
-                  DialogHelper.showSnackBar(context,
-                      'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
+                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
                 },
                 (r) {
                   disableLoading();
@@ -225,12 +208,11 @@ class _DashboardInfoState extends State<DashboardInfo> {
           onPressed: () {
             enableLoading();
 
-            userReportProvider.getAllReport().match(
+            usersProvider.getAllWithPaymentReport().match(
               (l) {
                 disableLoading();
                 log(l);
-                DialogHelper.showSnackBar(context,
-                    'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
+                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
               },
               (r) {
                 disableLoading();

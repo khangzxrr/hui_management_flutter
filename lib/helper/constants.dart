@@ -4,4 +4,6 @@ class Constants {
 
   static const defaultAvatarPath = 'user.jpg';
   static const randomAvatarPath = 'https://picsum.photos/200';
+
+  static const smallScreenSize = 600;
 }

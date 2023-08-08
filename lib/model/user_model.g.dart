@@ -24,9 +24,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       identityCreateDate: fields[4] as DateTime,
       identityAddress: fields[5] as String,
       password: fields[6] as String,
-      phonenumber: fields[7] as String,
-      bankname: fields[8] as String,
-      banknumber: fields[9] as String,
+      phoneNumber: fields[7] as String,
+      bankName: fields[8] as String,
+      bankNumber: fields[9] as String,
       address: fields[10] as String,
       additionalInfo: fields[11] as String,
       identityImageFrontUrl: fields[12] as String?,
@@ -54,11 +54,11 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(6)
       ..write(obj.password)
       ..writeByte(7)
-      ..write(obj.phonenumber)
+      ..write(obj.phoneNumber)
       ..writeByte(8)
-      ..write(obj.bankname)
+      ..write(obj.bankName)
       ..writeByte(9)
-      ..write(obj.banknumber)
+      ..write(obj.bankNumber)
       ..writeByte(10)
       ..write(obj.address)
       ..writeByte(11)
@@ -94,9 +94,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       identityCreateDate: DateTime.parse(json['identityCreateDate'] as String),
       identityAddress: json['identityAddress'] as String,
       password: json['password'] as String,
-      phonenumber: json['phonenumber'] as String,
-      bankname: json['bankname'] as String,
-      banknumber: json['banknumber'] as String,
+      phoneNumber: json['phoneNumber'] as String,
+      bankName: json['bankName'] as String,
+      bankNumber: json['bankNumber'] as String,
       address: json['address'] as String,
       additionalInfo: json['additionalInfo'] as String,
       identityImageFrontUrl: json['identityImageFrontUrl'] as String?,
@@ -112,9 +112,9 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'identityCreateDate': instance.identityCreateDate.toIso8601String(),
       'identityAddress': instance.identityAddress,
       'password': instance.password,
-      'phonenumber': instance.phonenumber,
-      'bankname': instance.bankname,
-      'banknumber': instance.banknumber,
+      'phoneNumber': instance.phoneNumber,
+      'bankName': instance.bankName,
+      'bankNumber': instance.bankNumber,
       'address': instance.address,
       'additionalInfo': instance.additionalInfo,
       'identityImageFrontUrl': instance.identityImageFrontUrl,

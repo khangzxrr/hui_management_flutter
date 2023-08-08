@@ -7,6 +7,7 @@ import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
 import '../model/user_model.dart';
 import '../model/user_report_model.dart';
+import '../model/user_with_payment_report.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
@@ -28,7 +29,7 @@ import '../view/payments/payments_members_view.dart';
 part 'app_route.gr.dart';
 
 @AutoRouterConfig()
-class AppRouter extends _$AppRouter implements AutoRouteGuard {
+class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page, initial: true),
@@ -50,13 +51,13 @@ class AppRouter extends _$AppRouter implements AutoRouteGuard {
         AutoRoute(page: MemberReportRoute.page),
       ];
 
-  @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) {
-    resolver.next();
-    // if (authenticationProvider.model != null) {
-    //   resolver.next();
-    // } else {
-    //   resolver.redirect(LoginRoute());
-    // }
-  }
+  // @override
+  // void onNavigation(NavigationResolver resolver, StackRouter router) {
+  //   resolver.next();
+  //   // if (authenticationProvider.model != null) {
+  //   //   resolver.next();
+  //   // } else {
+  //   //   resolver.redirect(LoginRoute());
+  //   // }
+  // }
 }

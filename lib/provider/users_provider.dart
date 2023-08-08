@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/user_with_payment_report.dart';
 import 'package:hui_management/service/user_service.dart';
 
 class UsersProvider with ChangeNotifier {
@@ -18,6 +19,12 @@ class UsersProvider with ChangeNotifier {
           filterByNotFinishedPayment: filterByNotFinishedPayment,
           getFundRatio: getFundRatio,
         );
+
+        return users;
+      }, (error, stackTrace) => error.toString());
+
+  TaskEither<String, List<UserWithPaymentReport>> getAllWithPaymentReport() => TaskEither.tryCatch(() async {
+        final users = await GetIt.I<UserService>().getAllWithPaymentReport();
 
         return users;
       }, (error, stackTrace) => error.toString());

@@ -28,13 +28,13 @@ class UserModel {
   final String password;
 
   @HiveField(7)
-  final String phonenumber;
+  final String phoneNumber;
 
   @HiveField(8)
-  final String bankname;
+  final String bankName;
 
   @HiveField(9)
-  final String banknumber;
+  final String bankNumber;
 
   @HiveField(10)
   final String address;
@@ -59,9 +59,9 @@ class UserModel {
     required this.identityCreateDate,
     required this.identityAddress,
     required this.password,
-    required this.phonenumber,
-    required this.bankname,
-    required this.banknumber,
+    required this.phoneNumber,
+    required this.bankName,
+    required this.bankNumber,
     required this.address,
     required this.additionalInfo,
     required this.identityImageFrontUrl,
