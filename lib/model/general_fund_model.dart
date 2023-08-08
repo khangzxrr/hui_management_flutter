@@ -27,4 +27,9 @@ class GeneralFundModel {
 
   factory GeneralFundModel.fromJson(Map<String, dynamic> json) => _$GeneralFundModelFromJson(json);
   Map<String, dynamic> toJson() => _$GeneralFundModelToJson(this);
+
+  @override
+  String toString() {
+    return 'GeneralFundModel{id: $id, name: $name, openDateText: $openDateText, openDate: $openDate, fundPrice: $fundPrice, serviceCost: $serviceCost, membersCount: $membersCount, sessionsCount: $sessionsCount}';
+  }
 }

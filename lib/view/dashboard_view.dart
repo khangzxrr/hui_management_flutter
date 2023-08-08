@@ -222,26 +222,25 @@ class _DashboardInfoState extends State<DashboardInfo> {
           },
           child: const Text('Quản lí thanh toán'),
         ),
-        // const SizedBox(width: 30, height: 30),
-        // ElevatedButton(
-        //   onPressed: () {
-        //     enableLoading();
+        const SizedBox(width: 30, height: 30),
+        ElevatedButton(
+          onPressed: () {
+            enableLoading();
 
-        //     userReportProvider.getAllReport().match(
-        //       (l) {
-        //         disableLoading();
-        //         log(l);
-        //         DialogHelper.showSnackBar(context,
-        //             'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
-        //       },
-        //       (r) {
-        //         disableLoading();
-        //         context.router.push(MemberReportRoute(userReportModels: r));
-        //       },
-        //     ).run();
-        //   },
-        //   child: const Text('Báo cáo thành viên'),
-        // ),
+            userReportProvider.getAllReport().match(
+              (l) {
+                disableLoading();
+                log(l);
+                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
+              },
+              (r) {
+                disableLoading();
+                context.router.push(MemberReportRoute(userReportModels: r));
+              },
+            ).run();
+          },
+          child: const Text('Báo cáo thành viên'),
+        ),
       ],
     );
   }

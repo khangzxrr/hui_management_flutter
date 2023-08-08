@@ -104,7 +104,7 @@ class FundSessionDetailWidget extends StatelessWidget {
       width: 100,
     ),
     PlutoColumn(
-      title: 'Khui',
+      title: 'Ngày khui',
       field: 'fundOpenText',
       type: PlutoColumnType.text(),
       textAlign: PlutoColumnTextAlign.center,

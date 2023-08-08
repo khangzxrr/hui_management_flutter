@@ -94,10 +94,10 @@ class SingleFundScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tên dây hụi: ', textAlign: TextAlign.left),
-                        Text('Ngày mở hụi: ', textAlign: TextAlign.left),
+                        Text('Ngày khui hụi: ', textAlign: TextAlign.left),
                         Text('Mệnh giá: ', textAlign: TextAlign.left),
                         Text('Hoa hồng: ', textAlign: TextAlign.left),
-                        Text('Ngày tạo hụi: ', textAlign: TextAlign.left),
+                        Text('Ngày tạo dây hụi: ', textAlign: TextAlign.left),
                       ],
                     ),
                     Column(
@@ -123,8 +123,15 @@ class SingleFundScreen extends StatelessWidget {
 }
 
 @RoutePage()
-class MultipleFundsScreen extends StatelessWidget {
+class MultipleFundsScreen extends StatefulWidget {
   const MultipleFundsScreen({super.key});
+
+  @override
+  State<MultipleFundsScreen> createState() => _MultipleFundsScreenState();
+}
+
+class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
+  String filterText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +139,7 @@ class MultipleFundsScreen extends StatelessWidget {
 
     List<Widget> generalFundWigets = generalFundProvider
         .getFunds()
+        .where((f) => f.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()))
         .map(
           (e) => SingleFundScreen(fund: e),
         )
@@ -141,7 +149,42 @@ class MultipleFundsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Quản lí danh sách dây hụi'),
       ),
-      body: ListView(children: generalFundWigets),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(children: [
+          Text('Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
+          const SizedBox(
+            width: 8,
+            height: 8,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Tìm kiếm hụi (tên,...))',
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      filterText = text;
+                    });
+                  },
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    filterText = '';
+                  });
+                },
+                icon: const Icon(Icons.clear),
+              ),
+            ],
+          ),
+          ...generalFundWigets,
+        ]),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.router.push(FundEditRoute(isNew: true, fund: null)),
         child: const Icon(Icons.add),

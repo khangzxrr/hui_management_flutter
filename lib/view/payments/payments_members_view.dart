@@ -95,21 +95,63 @@ class SingleMemberScreen extends StatelessWidget {
 }
 
 @RoutePage()
-class MultiplePaymentMembersScreen extends StatelessWidget {
+class MultiplePaymentMembersScreen extends StatefulWidget {
   final List<UserWithPaymentReport> users;
 
   const MultiplePaymentMembersScreen({super.key, required this.users});
 
   @override
+  State<MultiplePaymentMembersScreen> createState() => _MultiplePaymentMembersScreenState();
+}
+
+class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScreen> {
+  String filterText = '';
+
+  @override
   Widget build(BuildContext context) {
-    final List<Widget> userWidgets = users.map((e) => SingleMemberScreen(user: e)).toList();
+    final List<Widget> userWidgets = widget.users
+        .where(
+          (u) => u.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()),
+        )
+        .map((e) => SingleMemberScreen(user: e))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thanh toán'),
       ),
-      body: ListView(
-        children: userWidgets,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
+                    ),
+                    onChanged: (text) {
+                      setState(() {
+                        filterText = text;
+                      });
+                    },
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      filterText = '';
+                    });
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
+              ],
+            ),
+            ...userWidgets,
+          ],
+        ),
       ),
     );
   }

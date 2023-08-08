@@ -47,4 +47,10 @@ class UserWithPaymentReport extends UserModel {
   //from json
   factory UserWithPaymentReport.fromJson(Map<String, dynamic> json) => _$UserWithPaymentReportFromJson(json);
   Map<String, dynamic> toJson() => _$UserWithPaymentReportToJson(this);
+
+  //toString
+  @override
+  String toString() {
+    return 'UserWithPaymentReport{totalCost: $totalCost, totalTransactionCost: $totalTransactionCost, id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, password: $password, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName}';
+  }
 }
