@@ -18,7 +18,7 @@ class TakenSessionDetailWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: CachedNetworkImage(
-              imageUrl: takenSessionDetail.fundMember.user.imageUrl,
+              imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
               imageBuilder: (context, imageProvider) => Container(
                 width: 80.0,
                 height: 80.0,
@@ -62,7 +62,7 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: CachedNetworkImage(
-              imageUrl: normalSessionDetail.fundMember.user.imageUrl,
+              imageUrl: normalSessionDetail.fundMember.subUser.imageUrl,
               imageBuilder: (context, imageProvider) => Container(
                 width: 80.0,
                 height: 80.0,

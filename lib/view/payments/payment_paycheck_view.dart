@@ -27,7 +27,7 @@ class PaycheckScreen extends StatelessWidget {
     double remainCost = payment.totalCost.abs() - payment.totalTransactionCost;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Xử lí Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
+        title: Text('Xử lí Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
       ),
       body: Container(
         padding: const EdgeInsets.all(14),
@@ -84,7 +84,7 @@ class PaycheckScreen extends StatelessWidget {
                         double.parse(formKey.currentState!.fields['transactionAmount']!.value.toString()),
                         formKey.currentState!.fields['transactionNote']!.value,
                       )
-                      .andThen(() => paymentProvider.getPayments(payment.owner.id))
+                      .andThen(() => paymentProvider.getPayments(paymentProvider.selectedUser))
                       .match(
                     (l) {
                       log(l);

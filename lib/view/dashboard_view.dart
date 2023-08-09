@@ -8,10 +8,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/authentication_model.dart';
-import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
-import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/dialog.dart';
@@ -43,9 +43,9 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
           //setting icon button
           IconButton(
             onPressed: () {
-              context.router.push(MemberEditRoute(isCreateNew: false, user: authenticationProvider.model!.user)).then((value) {
+              context.router.push(MemberEditRoute(isCreateNew: false, user: authenticationProvider.model!.subUser)).then((value) {
                 if (value != null) {
-                  authenticationProvider.setAuthentication(AuthenticationModel(user: value as UserModel, token: authenticationProvider.model!.token));
+                  authenticationProvider.setAuthentication(AuthenticationModel(subUser: value as SubUserModel, token: authenticationProvider.model!.token));
                 }
               });
             },
@@ -57,8 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
           IconButton(
             onPressed: () {
               authenticationProvider.clearAuthentication();
-              //context.router.navigate(LoginRoute());
-              context.router.pushAndPopUntil(LoginRoute(), predicate: (_) => false);
+              context.router.pushAndPopUntil(const LoginRoute(), predicate: (_) => false);
             },
             icon: const Icon(Icons.logout),
           )
@@ -69,7 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
           : ElevatedButton(
               onPressed: () {
                 if (context.router.canNavigateBack) {
-                  context.router.navigate(LoginRoute());
+                  context.router.navigate(const LoginRoute());
                 } else {
                   context.router.popUntilRoot();
                 }
@@ -115,7 +114,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
   Widget build(BuildContext context) {
     final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop
 
-    final usersProvider = Provider.of<UsersProvider>(context, listen: false);
+    final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
 
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
@@ -130,7 +129,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
           width: 200,
           height: 200,
           child: CachedNetworkImage(
-            imageUrl: authenticationProvider.model!.user.imageUrl,
+            imageUrl: authenticationProvider.model!.subUser.imageUrl,
             imageBuilder: (context, imageProvider) => Container(
               width: 100.0,
               height: 100.0,
@@ -147,26 +146,26 @@ class _DashboardInfoState extends State<DashboardInfo> {
         const SizedBox(height: 10, width: 10),
         Text(
           textAlign: TextAlign.center,
-          authenticationProvider.model!.user.name,
+          authenticationProvider.model!.subUser.name,
           style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5, width: 5),
         AutoSizeText(
           textAlign: TextAlign.center,
-          authenticationProvider.model!.user.address,
+          authenticationProvider.model!.subUser.address,
           style: const TextStyle(fontSize: 15),
           maxLines: 1,
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          authenticationProvider.model!.user.phoneNumber,
+          authenticationProvider.model!.subUser.phoneNumber,
           style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          '${authenticationProvider.model!.user.bankName} - ${authenticationProvider.model!.user.bankNumber}',
+          '${authenticationProvider.model!.subUser.bankName} - ${authenticationProvider.model!.subUser.bankNumber}',
           style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 10, width: 15),

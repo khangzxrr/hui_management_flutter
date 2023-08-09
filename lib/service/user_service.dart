@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorizeHttp.dart';
-import 'package:hui_management/model/user_model.dart';
-import 'package:hui_management/model/user_report_model.dart';
+import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
 
 import '../helper/constants.dart';
@@ -12,7 +11,7 @@ class UserService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
   Future<bool> delete(int id) async {
-    final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/users/$id'));
+    final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/subusers/$id'));
 
     if (response.statusCode == 200) {
       return true;
@@ -21,25 +20,25 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<UserModel?> update(UserModel updateUser) async {
-    final response = await httpClient.put(Uri.parse('${Constants.apiHostName}/users'), body: jsonEncode(updateUser.toJson()));
+  Future<SubUserModel?> update(SubUserModel updateUser) async {
+    final response = await httpClient.put(Uri.parse('${Constants.apiHostName}/subusers'), body: jsonEncode(updateUser.toJson()));
 
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body)['user'];
+      final json = jsonDecode(response.body)['subUser'];
 
-      return UserModel.fromJson(json);
+      return SubUserModel.fromJson(json);
     }
 
     throw Exception(response.body);
   }
 
-  Future<UserModel> createNew(UserModel user) async {
-    final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/users'), body: jsonEncode(user.toJson()));
+  Future<SubUserModel> createNew(SubUserModel user) async {
+    final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/subusers'), body: jsonEncode(user.toJson()));
 
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body)['user'];
+      final json = jsonDecode(response.body)['subUser'];
 
-      return UserModel.fromJson(json);
+      return SubUserModel.fromJson(json);
     }
 
     throw Exception(response.body);
@@ -52,15 +51,15 @@ class UserService {
     Uri uri;
 
     if (Constants.apiHostName.contains("https")) {
-      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/users', queryParams);
+      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/subusers', queryParams);
     } else {
-      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/users', queryParams);
+      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/subusers', queryParams);
     }
 
     final response = await httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      final Iterable jsonObj = jsonDecode(response.body)['users'];
+      final Iterable jsonObj = jsonDecode(response.body)['subUsers'];
 
       return List<UserWithPaymentReport>.from(jsonObj.map((model) => UserWithPaymentReport.fromJson(model)));
     }
@@ -68,7 +67,7 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<UserModel>> getAll({
+  Future<List<SubUserModel>> getAll({
     bool filterByAnyPayment = false,
     bool filterByNotFinishedPayment = false,
     bool getFundRatio = false,
@@ -88,17 +87,17 @@ class UserService {
     Uri uri;
 
     if (Constants.apiHostName.contains("https")) {
-      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/users', queryParams);
+      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/subusers', queryParams);
     } else {
-      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/users', queryParams);
+      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/subusers', queryParams);
     }
 
     final response = await httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      final Iterable jsonObj = jsonDecode(response.body)['users'];
+      final Iterable jsonObj = jsonDecode(response.body)['subUsers'];
 
-      return List<UserModel>.from(jsonObj.map((model) => UserModel.fromJson(model)));
+      return List<SubUserModel>.from(jsonObj.map((model) => SubUserModel.fromJson(model)));
     }
 
     throw Exception(response.body);

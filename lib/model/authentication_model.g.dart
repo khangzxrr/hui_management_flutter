@@ -18,7 +18,7 @@ class AuthenticationModelAdapter extends TypeAdapter<AuthenticationModel> {
     };
     return AuthenticationModel(
       token: fields[0] as String,
-      user: fields[1] as UserModel,
+      subUser: fields[1] as SubUserModel,
     );
   }
 
@@ -29,33 +29,26 @@ class AuthenticationModelAdapter extends TypeAdapter<AuthenticationModel> {
       ..writeByte(0)
       ..write(obj.token)
       ..writeByte(1)
-      ..write(obj.user);
+      ..write(obj.subUser);
   }
 
   @override
   int get hashCode => typeId.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthenticationModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+  bool operator ==(Object other) => identical(this, other) || other is AuthenticationModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthenticationModel _$AuthenticationModelFromJson(Map<String, dynamic> json) =>
-    AuthenticationModel(
+AuthenticationModel _$AuthenticationModelFromJson(Map<String, dynamic> json) => AuthenticationModel(
       token: json['token'] as String,
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      subUser: SubUserModel.fromJson(json['subUser'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$AuthenticationModelToJson(
-        AuthenticationModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AuthenticationModelToJson(AuthenticationModel instance) => <String, dynamic>{
       'token': instance.token,
-      'user': instance.user,
+      'subUser': instance.subUser,
     };

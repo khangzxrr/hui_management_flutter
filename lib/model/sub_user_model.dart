@@ -1,11 +1,11 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_model.g.dart';
+part 'sub_user_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 2)
-class UserModel {
+class SubUserModel {
   @HiveField(0)
   final int id;
 
@@ -23,9 +23,6 @@ class UserModel {
 
   @HiveField(5)
   final String identityAddress;
-
-  @HiveField(6)
-  final String password;
 
   @HiveField(7)
   final String phoneNumber;
@@ -51,14 +48,13 @@ class UserModel {
   @HiveField(14)
   final String nickName;
 
-  UserModel({
+  SubUserModel({
     required this.id,
     required this.imageUrl,
     required this.name,
     required this.identity,
     required this.identityCreateDate,
     required this.identityAddress,
-    required this.password,
     required this.phoneNumber,
     required this.bankName,
     required this.bankNumber,
@@ -69,12 +65,12 @@ class UserModel {
     required this.nickName,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  factory SubUserModel.fromJson(Map<String, dynamic> json) => _$SubUserModelFromJson(json);
+  Map<String, dynamic> toJson() => _$SubUserModelToJson(this);
 
   //toString
   @override
   String toString() {
-    return 'UserModel{id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, password: $password, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName}';
+    return 'UserModel{id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName}';
   }
 }
