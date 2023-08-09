@@ -70,7 +70,7 @@ class MemberWidget extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 title: Text(user.name),
-                subtitle: Text('${user.identity}\n${user.phoneNumber}\n${user.bankName} - ${user.bankNumber}\n${user.address}\n${user.additionalInfo}'),
+                subtitle: Text('CMND/CCCD: ${user.identity}\nSĐT: ${user.phoneNumber}\nNgân hàng: ${user.bankName} - ${user.bankNumber}\nĐịa chỉ: ${user.address}\n${user.additionalInfo}'),
               )
             ],
           ),

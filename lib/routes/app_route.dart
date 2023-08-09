@@ -25,6 +25,7 @@ import '../view/payments/payment_detail_table_view.dart';
 import '../view/payments/payment_paycheck_view.dart';
 import '../view/payments/payment_summaries_view.dart';
 import '../view/payments/payments_members_view.dart';
+import 'auth_guard.dart';
 
 part 'app_route.gr.dart';
 
@@ -33,31 +34,22 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page, initial: true),
-        AutoRoute(page: DashboardRoute.page),
-        AutoRoute(page: MembersRoute.page),
-        AutoRoute(page: MultipleFundsRoute.page),
-        AutoRoute(page: MultiplePaymentMembersRoute.page),
-        AutoRoute(page: MemberEditRoute.page),
-        AutoRoute(page: FundMembersRoute.page),
-        AutoRoute(page: FundEditRoute.page),
-        AutoRoute(page: FundDetailRoute.page),
-        AutoRoute(page: FundSessionListRoute.page),
-        AutoRoute(page: CreateSessionSelectMemberRoute.page),
-        AutoRoute(page: CreateSessionEnterInfoRoute.page),
-        AutoRoute(page: SessionDetailRoute.page),
-        AutoRoute(page: PaymentListOfUserRoute.page),
-        AutoRoute(page: PaycheckRoute.page),
-        AutoRoute(page: PaymentDetailRoute.page),
-        AutoRoute(page: MemberReportRoute.page),
+        AutoRoute(page: DashboardRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: MembersRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: MultipleFundsRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: MultiplePaymentMembersRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: MemberEditRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: FundMembersRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: FundEditRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: FundDetailRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: FundSessionListRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: CreateSessionSelectMemberRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: CreateSessionEnterInfoRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: SessionDetailRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: PaymentListOfUserRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: PaycheckRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: PaymentDetailRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: MemberReportRoute.page, guards: [AuthGuard()]),
       ];
 
-  // @override
-  // void onNavigation(NavigationResolver resolver, StackRouter router) {
-  //   resolver.next();
-  //   // if (authenticationProvider.model != null) {
-  //   //   resolver.next();
-  //   // } else {
-  //   //   resolver.redirect(LoginRoute());
-  //   // }
-  // }
 }
