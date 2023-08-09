@@ -72,17 +72,9 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
-  // factory UserModel.fromJson(Map<String, dynamic> json) {
-  //   return UserModel(
-  //     id: json['id'],
-  //     name: json['name'],
-  //     email: json['email'],
-  //     password: json['password'],
-  //     phonenumber: json['phonenumber'],
-  //     bankname: json['bankname'],
-  //     banknumber: json['banknumber'],
-  //     address: json['address'],
-  //     additionalInfo: json['additionalInfo'],
-  //   );
-  // }
+  //toString
+  @override
+  String toString() {
+    return 'UserModel{id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, password: $password, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName}';
+  }
 }

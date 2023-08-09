@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -106,61 +108,11 @@ class _MembersScreenState extends State<MembersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final usersProvider = Provider.of<UsersProvider>(context);
-
-    if (filterText.isNotEmpty) {
-      ;
-    }
+    final usersProvider = Provider.of<UsersProvider>(context, listen: true);
 
     final userWidgets = usersProvider.users
         .where(
-          (user) {
-            if (filterText == '') {
-              return true;
-            }
-
-            if (user.additionalInfo.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.address.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.bankName.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.bankNumber.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.identity.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.name.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.phoneNumber.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.identity.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.identityAddress.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            if (user.nickName.toLowerCase().contains(filterText.toLowerCase())) {
-              return true;
-            }
-
-            return false;
-          },
+          (u) => u.toString().replaceAll(' ', '').contains(filterText),
         )
         .map((user) => MemberWidget(user: user))
         .toList();
