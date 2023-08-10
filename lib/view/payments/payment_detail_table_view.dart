@@ -5,7 +5,9 @@ import 'package:hui_management/model/payment_fund_bill_model.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/payment_transaction_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/payment_provider.dart';
 import '../../routes/app_route.dart';
 
 class TransactionListWidget extends StatelessWidget {
@@ -170,6 +172,8 @@ class PaymentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
+
     double totalTaken = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == 'Taken') ? element.fromSessionDetail.payCost : 0));
     double totalAliveOrDead = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type != 'Taken') ? element.fromSessionDetail.payCost : 0));
 
@@ -179,7 +183,7 @@ class PaymentDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: isSmallScreen ? Text('Bill của ${payment.owner.name}\nngày ${Utils.dateFormat.format(payment.createAt)}') : Text('Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
+        title: isSmallScreen ? Text('Bill của ${paymentProvider.selectedUser.name}\nngày ${Utils.dateFormat.format(payment.createAt)}') : Text('Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
       ),
       body: Container(
           padding: const EdgeInsets.all(14),
@@ -193,13 +197,13 @@ class PaymentDetailScreen extends StatelessWidget {
                     const TextSpan(
                       text: 'Tên hụi viên: ',
                     ),
-                    TextSpan(text: '${payment.owner.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${paymentProvider.selectedUser.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Tên ngân hàng: '),
-                    TextSpan(text: '${payment.owner.bankName}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${paymentProvider.selectedUser.bankName}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số tài khoản: '),
-                    TextSpan(text: '${payment.owner.bankNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${paymentProvider.selectedUser.bankNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số điện thoại: '),
-                    TextSpan(text: '${payment.owner.phoneNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${paymentProvider.selectedUser.phoneNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),

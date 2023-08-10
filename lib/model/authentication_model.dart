@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'user_model.dart';
+import 'sub_user_model.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,15 +13,15 @@ class AuthenticationModel {
   final String token;
 
   @HiveField(1)
-  final UserModel user;
+  final SubUserModel subUser;
 
-  AuthenticationModel({required this.token, required this.user});
+  AuthenticationModel({required this.token, required this.subUser});
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) => _$AuthenticationModelFromJson(json);
   Map<String, dynamic> toJson() => _$AuthenticationModelToJson(this);
 
   @override
   String toString() {
-    return '$token ${user.toString()}';
+    return '$token ${subUser.toString()}';
   }
 }

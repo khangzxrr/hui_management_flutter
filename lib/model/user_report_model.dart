@@ -1,17 +1,18 @@
-import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/sub_user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_report_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class UserReportModel extends UserModel {
+class UserReportModel extends SubUserModel {
   final double fundRatio;
 
-  final double totalCost;
-  final double totalTransactionCost;
+  final double totalProcessingAmount;
+  final double totalDebtAmount;
 
   final double totalAliveAmount;
   final double totalDeadAmount;
+  final double totalTakenAmount;
 
   UserReportModel({
     required super.id,
@@ -20,7 +21,6 @@ class UserReportModel extends UserModel {
     required super.identity,
     required super.identityCreateDate,
     required super.identityAddress,
-    required super.password,
     required super.phoneNumber,
     required super.bankName,
     required super.bankNumber,
@@ -30,10 +30,11 @@ class UserReportModel extends UserModel {
     required super.identityImageBackUrl,
     required super.nickName,
     required this.fundRatio,
-    required this.totalCost,
-    required this.totalTransactionCost,
+    required this.totalProcessingAmount,
+    required this.totalDebtAmount,
     required this.totalAliveAmount,
     required this.totalDeadAmount,
+    required this.totalTakenAmount,
   });
 
   //toString

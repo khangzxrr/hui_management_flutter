@@ -1,29 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_model.dart';
+part of 'sub_user_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserModelAdapter extends TypeAdapter<UserModel> {
+class SubUserModelAdapter extends TypeAdapter<SubUserModel> {
   @override
   final int typeId = 2;
 
   @override
-  UserModel read(BinaryReader reader) {
+  SubUserModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserModel(
+    return SubUserModel(
       id: fields[0] as int,
       imageUrl: fields[1] as String,
       name: fields[2] as String,
       identity: fields[3] as String,
       identityCreateDate: fields[4] as DateTime,
       identityAddress: fields[5] as String,
-      password: fields[6] as String,
       phoneNumber: fields[7] as String,
       bankName: fields[8] as String,
       bankNumber: fields[9] as String,
@@ -36,9 +35,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   }
 
   @override
-  void write(BinaryWriter writer, UserModel obj) {
+  void write(BinaryWriter writer, SubUserModel obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -51,8 +50,6 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..write(obj.identityCreateDate)
       ..writeByte(5)
       ..write(obj.identityAddress)
-      ..writeByte(6)
-      ..write(obj.password)
       ..writeByte(7)
       ..write(obj.phoneNumber)
       ..writeByte(8)
@@ -77,7 +74,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserModelAdapter &&
+      other is SubUserModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -86,14 +83,13 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+SubUserModel _$SubUserModelFromJson(Map<String, dynamic> json) => SubUserModel(
       id: json['id'] as int,
       imageUrl: json['imageUrl'] as String,
       name: json['name'] as String,
       identity: json['identity'] as String,
       identityCreateDate: DateTime.parse(json['identityCreateDate'] as String),
       identityAddress: json['identityAddress'] as String,
-      password: json['password'] as String,
       phoneNumber: json['phoneNumber'] as String,
       bankName: json['bankName'] as String,
       bankNumber: json['bankNumber'] as String,
@@ -104,14 +100,14 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       nickName: json['nickName'] as String,
     );
 
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+Map<String, dynamic> _$SubUserModelToJson(SubUserModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'imageUrl': instance.imageUrl,
       'name': instance.name,
       'identity': instance.identity,
       'identityCreateDate': instance.identityCreateDate.toIso8601String(),
       'identityAddress': instance.identityAddress,
-      'password': instance.password,
       'phoneNumber': instance.phoneNumber,
       'bankName': instance.bankName,
       'bankNumber': instance.bankNumber,

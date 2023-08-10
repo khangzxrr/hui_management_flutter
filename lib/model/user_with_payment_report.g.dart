@@ -9,15 +9,14 @@ part of 'user_with_payment_report.dart';
 UserWithPaymentReport _$UserWithPaymentReportFromJson(
         Map<String, dynamic> json) =>
     UserWithPaymentReport(
-      totalCost: (json['totalCost'] as num).toDouble(),
-      totalTransactionCost: (json['totalTransactionCost'] as num).toDouble(),
+      totalProcessingAmount: (json['totalProcessingAmount'] as num).toDouble(),
+      totalDebtAmount: (json['totalDebtAmount'] as num).toDouble(),
       id: json['id'] as int,
       imageUrl: json['imageUrl'] as String,
       name: json['name'] as String,
       identity: json['identity'] as String,
       identityCreateDate: DateTime.parse(json['identityCreateDate'] as String),
       identityAddress: json['identityAddress'] as String,
-      password: json['password'] as String,
       phoneNumber: json['phoneNumber'] as String,
       bankName: json['bankName'] as String,
       bankNumber: json['bankNumber'] as String,
@@ -37,7 +36,6 @@ Map<String, dynamic> _$UserWithPaymentReportToJson(
       'identity': instance.identity,
       'identityCreateDate': instance.identityCreateDate.toIso8601String(),
       'identityAddress': instance.identityAddress,
-      'password': instance.password,
       'phoneNumber': instance.phoneNumber,
       'bankName': instance.bankName,
       'bankNumber': instance.bankNumber,
@@ -46,6 +44,6 @@ Map<String, dynamic> _$UserWithPaymentReportToJson(
       'identityImageFrontUrl': instance.identityImageFrontUrl,
       'identityImageBackUrl': instance.identityImageBackUrl,
       'nickName': instance.nickName,
-      'totalCost': instance.totalCost,
-      'totalTransactionCost': instance.totalTransactionCost,
+      'totalProcessingAmount': instance.totalProcessingAmount,
+      'totalDebtAmount': instance.totalDebtAmount,
     };

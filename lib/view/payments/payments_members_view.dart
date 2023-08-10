@@ -60,15 +60,15 @@ class SingleMemberScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tổng tiền cần ${(user.totalCost > 0) ? 'thu' : 'trả'}:  '),
+                        Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'trả'}:  '),
                         const Text('Tổng tiền đã thanh toán:  '),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('${Utils.moneyFormat.format(user.totalCost.abs())}đ'),
-                        Text('${Utils.moneyFormat.format(user.totalTransactionCost.abs())}đ'),
+                        Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
+                        Text('${Utils.moneyFormat.format(user.totalDebtAmount.abs())}đ'),
                       ],
                     )
                   ],
@@ -82,9 +82,7 @@ class SingleMemberScreen extends StatelessWidget {
           ],
         ),
         onTap: () {
-          //todo fix member provider inside build
-          //add ui for payments
-          Provider.of<PaymentProvider>(context, listen: false).getPayments(user.id).match((l) {
+          Provider.of<PaymentProvider>(context, listen: false).getPayments(user).match((l) {
             log(l);
             DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
           }, (r) => context.router.push(PaymentListOfUserRoute(user: user))).run();

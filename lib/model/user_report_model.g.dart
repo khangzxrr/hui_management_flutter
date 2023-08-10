@@ -14,7 +14,6 @@ UserReportModel _$UserReportModelFromJson(Map<String, dynamic> json) =>
       identity: json['identity'] as String,
       identityCreateDate: DateTime.parse(json['identityCreateDate'] as String),
       identityAddress: json['identityAddress'] as String,
-      password: json['password'] as String,
       phoneNumber: json['phoneNumber'] as String,
       bankName: json['bankName'] as String,
       bankNumber: json['bankNumber'] as String,
@@ -24,10 +23,11 @@ UserReportModel _$UserReportModelFromJson(Map<String, dynamic> json) =>
       identityImageBackUrl: json['identityImageBackUrl'] as String?,
       nickName: json['nickName'] as String,
       fundRatio: (json['fundRatio'] as num).toDouble(),
-      totalCost: (json['totalCost'] as num).toDouble(),
-      totalTransactionCost: (json['totalTransactionCost'] as num).toDouble(),
+      totalProcessingAmount: (json['totalProcessingAmount'] as num).toDouble(),
+      totalDebtAmount: (json['totalDebtAmount'] as num).toDouble(),
       totalAliveAmount: (json['totalAliveAmount'] as num).toDouble(),
       totalDeadAmount: (json['totalDeadAmount'] as num).toDouble(),
+      totalTakenAmount: (json['totalTakenAmount'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$UserReportModelToJson(UserReportModel instance) =>
@@ -38,7 +38,6 @@ Map<String, dynamic> _$UserReportModelToJson(UserReportModel instance) =>
       'identity': instance.identity,
       'identityCreateDate': instance.identityCreateDate.toIso8601String(),
       'identityAddress': instance.identityAddress,
-      'password': instance.password,
       'phoneNumber': instance.phoneNumber,
       'bankName': instance.bankName,
       'bankNumber': instance.bankNumber,
@@ -48,8 +47,9 @@ Map<String, dynamic> _$UserReportModelToJson(UserReportModel instance) =>
       'identityImageBackUrl': instance.identityImageBackUrl,
       'nickName': instance.nickName,
       'fundRatio': instance.fundRatio,
-      'totalCost': instance.totalCost,
-      'totalTransactionCost': instance.totalTransactionCost,
+      'totalProcessingAmount': instance.totalProcessingAmount,
+      'totalDebtAmount': instance.totalDebtAmount,
       'totalAliveAmount': instance.totalAliveAmount,
       'totalDeadAmount': instance.totalDeadAmount,
+      'totalTakenAmount': instance.totalTakenAmount,
     };

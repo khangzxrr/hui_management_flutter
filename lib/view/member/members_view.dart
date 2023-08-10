@@ -1,24 +1,22 @@
-import 'dart:async';
 import 'dart:developer';
 
-import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hui_management/model/user_model.dart';
-import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/model/sub_user_model.dart';
+import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:provider/provider.dart';
 
 class MemberWidget extends StatelessWidget {
-  final UserModel user;
+  final SubUserModel user;
 
   const MemberWidget({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UsersProvider>(context, listen: false);
+    final userProvider = Provider.of<SubUsersProvider>(context, listen: false);
 
     return Slidable(
       // The start action pane is the one at the left or the top side.
@@ -83,7 +81,7 @@ class MemberWidget extends StatelessWidget {
 }
 
 class MembersListView extends StatelessWidget {
-  final List<UserModel> users;
+  final List<SubUserModel> users;
 
   const MembersListView({super.key, required this.users});
 
@@ -108,9 +106,9 @@ class _MembersScreenState extends State<MembersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final usersProvider = Provider.of<UsersProvider>(context, listen: true);
+    final usersProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
-    final userWidgets = usersProvider.users
+    final userWidgets = usersProvider.subUsers
         .where(
           (u) => u.toString().replaceAll(' ', '').contains(filterText),
         )
@@ -124,7 +122,7 @@ class _MembersScreenState extends State<MembersScreen> {
       body: ListView(
         padding: const EdgeInsets.all(10.0),
         children: [
-          Text('Tổng số thành viên: ${usersProvider.users.length}', style: Theme.of(context).textTheme.titleMedium),
+          Text('Tổng số thành viên: ${usersProvider.subUsers.length}', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(
             height: 10.0,
             width: 10.0,

@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 @RoutePage()
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
 
                           authenticationEither.match(
                             (error) {
+                              log(error);
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 content: Text('Sai tài khoản hoặc mật khẩu'),
                               ));

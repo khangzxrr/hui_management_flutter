@@ -6,7 +6,7 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/payment_provider.dart';
 import 'package:hui_management/provider/user_report_provider.dart';
-import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/storage/hive_configuration.dart';
@@ -29,7 +29,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
-      ChangeNotifierProvider(create: (context) => UsersProvider()),
+      ChangeNotifierProvider(create: (context) => SubUsersProvider()),
       ChangeNotifierProvider(create: (context) => GeneralFundProvider()),
       ChangeNotifierProvider(create: (context) => FundProvider()),
       ChangeNotifierProvider(create: (context) => PaymentProvider()),
@@ -40,7 +40,6 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-
   MyApp({super.key});
 
   @override

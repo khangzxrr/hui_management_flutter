@@ -10,7 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
-import 'package:hui_management/model/user_model.dart';
+import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/user_service.dart';
@@ -64,7 +64,7 @@ class FundMemberWidget extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CachedNetworkImage(
-                imageUrl: fundMember.user.imageUrl,
+                imageUrl: fundMember.subUser.imageUrl,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 80.0,
                   height: 80.0,
@@ -77,7 +77,7 @@ class FundMemberWidget extends StatelessWidget {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               title: Text(fundMember.nickName),
-              subtitle: Text('${fundMember.user.identity}\n${fundMember.user.phoneNumber}\n${fundMember.user.bankName} - ${fundMember.user.bankNumber}\n${fundMember.user.address}\n${fundMember.user.additionalInfo}'),
+              subtitle: Text('${fundMember.subUser.identity}\n${fundMember.subUser.phoneNumber}\n${fundMember.subUser.bankName} - ${fundMember.subUser.bankNumber}\n${fundMember.subUser.address}\n${fundMember.subUser.additionalInfo}'),
             )
           ],
         ),
@@ -104,7 +104,7 @@ class AddMemberWidget extends StatelessWidget {
           flex: 7,
           child: FormBuilder(
             key: _formKey,
-            child: FormBuilderSearchableDropdown<UserModel>(
+            child: FormBuilderSearchableDropdown<SubUserModel>(
               popupProps: const PopupProps.dialog(showSearchBox: true),
               name: 'searchable_dropdown_user',
               decoration: const InputDecoration(
@@ -127,7 +127,7 @@ class AddMemberWidget extends StatelessWidget {
           flex: 3,
           child: ElevatedButton(
             onPressed: () {
-              final user = _formKey.currentState!.fields['searchable_dropdown_user']?.value as UserModel?;
+              final user = _formKey.currentState!.fields['searchable_dropdown_user']?.value as SubUserModel?;
 
               if (user == null) {
                 return;

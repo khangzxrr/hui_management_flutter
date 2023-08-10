@@ -5,7 +5,7 @@ import '../model/fund_member.dart';
 import '../model/fund_session_model.dart';
 import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
-import '../model/user_model.dart';
+import '../model/sub_user_model.dart';
 import '../model/user_report_model.dart';
 import '../model/user_with_payment_report.dart';
 import '../view/dashboard_view.dart';

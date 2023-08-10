@@ -8,8 +8,8 @@ import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/dialog.dart';
-import 'package:hui_management/model/user_model.dart';
-import 'package:hui_management/provider/users_provider.dart';
+import 'package:hui_management/model/sub_user_model.dart';
+import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/formHelper.dart';
@@ -17,7 +17,7 @@ import '../../helper/formHelper.dart';
 @RoutePage()
 class MemberEditScreen extends StatefulWidget {
   final bool isCreateNew;
-  final UserModel? user;
+  final SubUserModel? user;
 
   const MemberEditScreen({super.key, required this.isCreateNew, required this.user});
 
@@ -48,8 +48,6 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
 
   final _phonenumberFieldKey = GlobalKey<FormBuilderFieldState>();
 
-  final _passwordFieldKey = GlobalKey<FormBuilderFieldState>();
-
   final _additionalFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _photoFieldKey = GlobalKey<FormBuilderFieldState>();
@@ -58,13 +56,13 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
 
   final _identityBackImageKey = GlobalKey<FormBuilderFieldState>();
 
-  void makeRequest(UserModel user, UsersProvider provider) async {}
+  void makeRequest(SubUserModel user, SubUsersProvider provider) async {}
 
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
 
-    final usersProvider = Provider.of<UsersProvider>(context, listen: false);
+    final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -147,16 +145,16 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
                 ),
-                FormBuilderTextField(
-                  key: _passwordFieldKey,
-                  name: 'password',
-                  initialValue: widget.isCreateNew ? "" : widget.user!.password,
-                  decoration: const InputDecoration(labelText: 'Mật khẩu'),
-                  autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
-                  validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required()],
-                  ),
-                ),
+                // FormBuilderTextField(
+                //   key: _passwordFieldKey,
+                //   name: 'password',
+                //   initialValue: widget.isCreateNew ? "" : widget.user!.password,
+                //   decoration: const InputDecoration(labelText: 'Mật khẩu'),
+                //   autovalidateMode: widget.isCreateNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                //   validator: FormBuilderValidators.compose(
+                //     [FormBuilderValidators.required()],
+                //   ),
+                // ),
                 FormBuilderTextField(
                   key: _additionalFieldKey,
                   name: 'additional',
@@ -270,7 +268,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                             }
                           }
 
-                          final modifyUser = UserModel(
+                          final modifyUser = SubUserModel(
                             id: widget.isCreateNew ? 0 : widget.user!.id,
                             imageUrl: imageUrl,
                             name: _nameFieldKey.currentState!.value,
@@ -278,7 +276,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                             identity: _identityFieldKey.currentState!.value,
                             identityCreateDate: _identityCreateDateFieldKey.currentState!.value!,
                             identityAddress: _identityAddressFieldKey.currentState!.value,
-                            password: _passwordFieldKey.currentState!.value,
+                            //password: _passwordFieldKey.currentState!.value,
                             phoneNumber: _phonenumberFieldKey.currentState!.value,
                             bankName: _bankNameFieldKey.currentState!.value,
                             bankNumber: _bankNumberFieldKey.currentState!.value,
