@@ -159,13 +159,13 @@ class _DashboardInfoState extends State<DashboardInfo> {
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          authenticationProvider.model!.subUser.phoneNumber,
+          'Số điện thoại: ${authenticationProvider.model!.subUser.phoneNumber}',
           style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          '${authenticationProvider.model!.subUser.bankName} - ${authenticationProvider.model!.subUser.bankNumber}',
+          'Bank: ${authenticationProvider.model!.subUser.bankName} - ${authenticationProvider.model!.subUser.bankNumber}',
           style: const TextStyle(fontSize: 15),
         ),
         const SizedBox(height: 10, width: 15),
@@ -182,7 +182,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
                 context.router.push(const MembersRoute());
               }).run();
             },
-            child: const Text('Quản lí người dùng')),
+            child: const Text('Quản lí hụi viên')),
         const SizedBox(width: 30, height: 30),
         ElevatedButton(
             onPressed: () {
@@ -240,7 +240,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
               },
             ).run();
           },
-          child: const Text('Báo cáo thành viên'),
+          child: const Text('Báo cáo dây hụi'),
         ),
       ],
     );

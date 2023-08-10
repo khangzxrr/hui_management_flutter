@@ -48,8 +48,6 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
 
   final _phonenumberFieldKey = GlobalKey<FormBuilderFieldState>();
 
-  final _passwordFieldKey = GlobalKey<FormBuilderFieldState>();
-
   final _additionalFieldKey = GlobalKey<FormBuilderFieldState>();
 
   final _photoFieldKey = GlobalKey<FormBuilderFieldState>();
