@@ -47,16 +47,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
   final getIt = GetIt.instance;
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
-    //check login
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-
-    if (authenticationProvider.loadAuthenticationFromCache() != null) {
-      SetupService.setupAuthorizeServiced(authenticationProvider.model!.token);
-      //navigate.popAndPushNamed(DashboardWidget.routeName);
-      context.router.replace(const DashboardRoute());
-    }
-  }
+  FutureOr<void> afterFirstLayout(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
