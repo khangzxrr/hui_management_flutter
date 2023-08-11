@@ -89,6 +89,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginScreen(),
       );
     },
+    MemberReportRoute.name: (routeData) {
+      final args = routeData.argsAs<MemberReportRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MemberReportScreen(
+          key: args.key,
+          userReportModels: args.userReportModels,
+        ),
+      );
+    },
     MembersRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -107,13 +117,9 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     MultiplePaymentMembersRoute.name: (routeData) {
-      final args = routeData.argsAs<MultiplePaymentMembersRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MultiplePaymentMembersScreen(
-          key: args.key,
-          users: args.users,
-        ),
+        child: const MultiplePaymentMembersScreen(),
       );
     },
     PaymentDetailRoute.name: (routeData) {
@@ -143,16 +149,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: PaymentListOfUserScreen(
           key: args.key,
           user: args.user,
-        ),
-      );
-    },
-    MemberReportRoute.name: (routeData) {
-      final args = routeData.argsAs<MemberReportRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: MemberReportScreen(
-          key: args.key,
-          userReportModels: args.userReportModels,
         ),
       );
     },
@@ -383,6 +379,44 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MemberReportScreen]
+class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
+  MemberReportRoute({
+    Key? key,
+    required List<UserReportModel> userReportModels,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MemberReportRoute.name,
+          args: MemberReportRouteArgs(
+            key: key,
+            userReportModels: userReportModels,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MemberReportRoute';
+
+  static const PageInfo<MemberReportRouteArgs> page =
+      PageInfo<MemberReportRouteArgs>(name);
+}
+
+class MemberReportRouteArgs {
+  const MemberReportRouteArgs({
+    this.key,
+    required this.userReportModels,
+  });
+
+  final Key? key;
+
+  final List<UserReportModel> userReportModels;
+
+  @override
+  String toString() {
+    return 'MemberReportRouteArgs{key: $key, userReportModels: $userReportModels}';
+  }
+}
+
+/// generated route for
 /// [MembersScreen]
 class MembersRoute extends PageRouteInfo<void> {
   const MembersRoute({List<PageRouteInfo>? children})
@@ -441,41 +475,16 @@ class MemberEditRouteArgs {
 
 /// generated route for
 /// [MultiplePaymentMembersScreen]
-class MultiplePaymentMembersRoute
-    extends PageRouteInfo<MultiplePaymentMembersRouteArgs> {
-  MultiplePaymentMembersRoute({
-    Key? key,
-    required List<UserWithPaymentReport> users,
-    List<PageRouteInfo>? children,
-  }) : super(
+class MultiplePaymentMembersRoute extends PageRouteInfo<void> {
+  const MultiplePaymentMembersRoute({List<PageRouteInfo>? children})
+      : super(
           MultiplePaymentMembersRoute.name,
-          args: MultiplePaymentMembersRouteArgs(
-            key: key,
-            users: users,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'MultiplePaymentMembersRoute';
 
-  static const PageInfo<MultiplePaymentMembersRouteArgs> page =
-      PageInfo<MultiplePaymentMembersRouteArgs>(name);
-}
-
-class MultiplePaymentMembersRouteArgs {
-  const MultiplePaymentMembersRouteArgs({
-    this.key,
-    required this.users,
-  });
-
-  final Key? key;
-
-  final List<UserWithPaymentReport> users;
-
-  @override
-  String toString() {
-    return 'MultiplePaymentMembersRouteArgs{key: $key, users: $users}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -589,43 +598,5 @@ class PaymentListOfUserRouteArgs {
   @override
   String toString() {
     return 'PaymentListOfUserRouteArgs{key: $key, user: $user}';
-  }
-}
-
-/// generated route for
-/// [MemberReportScreen]
-class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
-  MemberReportRoute({
-    Key? key,
-    required List<UserReportModel> userReportModels,
-    List<PageRouteInfo>? children,
-  }) : super(
-          MemberReportRoute.name,
-          args: MemberReportRouteArgs(
-            key: key,
-            userReportModels: userReportModels,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'MemberReportRoute';
-
-  static const PageInfo<MemberReportRouteArgs> page =
-      PageInfo<MemberReportRouteArgs>(name);
-}
-
-class MemberReportRouteArgs {
-  const MemberReportRouteArgs({
-    this.key,
-    required this.userReportModels,
-  });
-
-  final Key? key;
-
-  final List<UserReportModel> userReportModels;
-
-  @override
-  String toString() {
-    return 'MemberReportRouteArgs{key: $key, userReportModels: $userReportModels}';
   }
 }
