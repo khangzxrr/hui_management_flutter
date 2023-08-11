@@ -62,12 +62,16 @@ class SingleMemberScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'trả'}:  '),
+                        const Text('Đã thanh toán: '),
+                        const Text('Còn nợ: '),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
+                        Text('${Utils.moneyFormat.format(user.totalDebtAmount)}đ'), //lazy to change the name!
+                        Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ'),
                       ],
                     )
                   ],

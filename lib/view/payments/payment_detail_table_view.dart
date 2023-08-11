@@ -236,7 +236,28 @@ class PaymentDetailScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('${Utils.moneyFormat.format(totalAliveOrDead)}đ\n${Utils.moneyFormat.format(totalTaken)}đ\n${Utils.moneyFormat.format(ratio.abs())}đ\n${Utils.moneyFormat.format(payment.totalTransactionCost)}đ', textAlign: TextAlign.right, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Text(
+                        '${Utils.moneyFormat.format(totalAliveOrDead)}đ',
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${Utils.moneyFormat.format(totalTaken)}đ',
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('${Utils.moneyFormat.format(payment.totalTransactionCost)}đ',
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
+                      Text(
+                        '${Utils.moneyFormat.format(ratio.abs() - payment.totalTransactionCost)}đ',
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                 ],
