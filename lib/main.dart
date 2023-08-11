@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/fund_provider.dart';
@@ -9,7 +8,6 @@ import 'package:hui_management/provider/user_report_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/setup_service.dart';
-import 'package:hui_management/storage/hive_configuration.dart';
 
 import 'package:hui_management/view/login_view.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +15,6 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  final fireApp = await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  FirebaseStorage.instanceFor(app: fireApp);
-
-  await HiveConfiguration.setup();
   SetupService.setup();
 
   runApp(MultiProvider(
