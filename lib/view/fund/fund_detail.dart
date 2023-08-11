@@ -17,10 +17,24 @@ class FundDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('DÂY HỤI ${fundProvider.fund.name}'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.router
+                  .push(
+                    FundEditRoute(isNew: false, fund: fundProvider.fund),
+                  )
+                  .then(
+                    (value) => fundProvider.getFund(fundProvider.fund.id).run(),
+                  );
+            },
+            icon: const Icon(Icons.edit),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: Column(
             children: [
               Row(

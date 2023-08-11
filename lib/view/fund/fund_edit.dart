@@ -5,26 +5,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
+import 'package:number_to_vietnamese_words/number_to_vietnamese_words.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
-class FundEditScreen extends StatelessWidget {
+class FundEditScreen extends StatefulWidget {
   final bool isNew;
   final GeneralFundModel? fund;
 
   FundEditScreen({super.key, required this.isNew, required this.fund});
 
+  @override
+  State<FundEditScreen> createState() => _FundEditScreenState();
+}
+
+class _FundEditScreenState extends State<FundEditScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   final _nameKey = GlobalKey<FormBuilderFieldState>();
+
   final _openDateKey = GlobalKey<FormBuilderFieldState>();
+
   final _costKey = GlobalKey<FormBuilderFieldState>();
+
   final _ownerCostKey = GlobalKey<FormBuilderFieldState>();
+
   final _openDateTextKey = GlobalKey<FormBuilderFieldState>();
+
+  int cost = 0;
+  int ownerCost = 0;
+
+  @override
+  void initState() {
+    if (!widget.isNew) {
+      cost = widget.fund!.fundPrice.toInt();
+      ownerCost = widget.fund!.serviceCost.toInt();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,43 +64,62 @@ class FundEditScreen extends StatelessWidget {
           child: FormBuilder(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FormBuilderTextField(
                   key: _nameKey,
                   name: 'name',
                   decoration: const InputDecoration(labelText: 'Tên hụi'),
-                  initialValue: isNew ? "" : fund!.name,
-                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  initialValue: widget.isNew ? "" : widget.fund!.name,
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text('Số tiền dây hụi (thành chữ): ${cost.toVietnameseWords()} đồng'),
                 FormBuilderTextField(
                   key: _costKey,
                   name: 'cost',
                   decoration: const InputDecoration(labelText: 'Số tiền dây hụi '),
-                  initialValue: isNew ? "" : fund!.fundPrice.toString(),
-                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  initialValue: widget.isNew ? "" : widget.fund!.fundPrice.toString(),
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  onChanged: (costValue) {
+                    setState(() {
+                      cost = int.tryParse(costValue!) ?? 0;
+                    });
+                  },
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text('Số tiền hoa hồng (thành chữ): ${ownerCost.toVietnameseWords()} đồng'),
                 FormBuilderTextField(
                   key: _ownerCostKey,
                   name: 'ownerCost',
                   decoration: const InputDecoration(labelText: 'Số tiền hoa hồng '),
-                  initialValue: isNew ? "" : fund!.serviceCost.toString(),
-                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  initialValue: widget.isNew ? "" : widget.fund!.serviceCost.toString(),
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
+                  onChanged: (ownerCostValue) {
+                    setState(() {
+                      ownerCost = int.tryParse(ownerCostValue!) ?? 0;
+                    });
+                  },
                 ),
                 FormBuilderTextField(
                   key: _openDateTextKey,
                   name: 'openDateText',
                   decoration: const InputDecoration(labelText: 'Khui vào lúc (ghi chú)'),
-                  initialValue: isNew ? "" : fund!.openDateText,
-                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  initialValue: widget.isNew ? "" : widget.fund!.openDateText,
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -86,9 +128,9 @@ class FundEditScreen extends StatelessWidget {
                   key: _openDateKey,
                   name: 'openDate',
                   decoration: const InputDecoration(labelText: 'Ngày mở dây hụi'),
-                  initialValue: isNew ? DateTime.now() : fund!.openDate,
+                  initialValue: widget.isNew ? DateTime.now() : widget.fund!.openDate,
                   format: Utils.dateFormat,
-                  autovalidateMode: isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required()],
                   ),
@@ -102,7 +144,7 @@ class FundEditScreen extends StatelessWidget {
                       }
 
                       final newFund = GeneralFundModel(
-                        id: fund == null ? -1 : fund!.id,
+                        id: widget.fund == null ? -1 : widget.fund!.id,
                         fundPrice: double.parse(_costKey.currentState!.value),
                         name: _nameKey.currentState!.value,
                         openDate: _openDateKey.currentState!.value,
@@ -112,7 +154,7 @@ class FundEditScreen extends StatelessWidget {
                         sessionsCount: 0,
                       );
 
-                      if (isNew) {
+                      if (widget.isNew) {
                         final createdFundEither = GetIt.I<FundService>().create(newFund);
 
                         createdFundEither.match(
@@ -128,13 +170,14 @@ class FundEditScreen extends StatelessWidget {
                         updatedFundEither.match(
                           (l) => log(l),
                           (updatedFund) {
+                            DialogHelper.showSnackBar(context, 'Cập nhật dây hụi thành công');
                             fundProvider.updateFund(updatedFund);
                             navigator.pop();
                           },
                         ).run();
                       }
                     },
-                    child: Text((isNew) ? 'Tạo dây hụi mới' : 'Cập nhật dây hụi'))
+                    child: Text((widget.isNew) ? 'Tạo dây hụi mới' : 'Cập nhật dây hụi'))
               ],
             ),
           ),
