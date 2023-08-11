@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
+import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
@@ -61,14 +62,12 @@ class SingleMemberScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'trả'}:  '),
-                        const Text('Tổng tiền đã thanh toán:  '),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
-                        Text('${Utils.moneyFormat.format(user.totalDebtAmount.abs())}đ'),
                       ],
                     )
                   ],
@@ -94,9 +93,7 @@ class SingleMemberScreen extends StatelessWidget {
 
 @RoutePage()
 class MultiplePaymentMembersScreen extends StatefulWidget {
-  final List<UserWithPaymentReport> users;
-
-  const MultiplePaymentMembersScreen({super.key, required this.users});
+  const MultiplePaymentMembersScreen({super.key});
 
   @override
   State<MultiplePaymentMembersScreen> createState() => _MultiplePaymentMembersScreenState();
@@ -107,7 +104,9 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> userWidgets = widget.users
+    final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: true);
+
+    final List<Widget> userWidgets = subUsersProvider.subUsersWithPaymentReport
         .where(
           (u) => u.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()),
         )
