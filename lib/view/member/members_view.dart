@@ -4,6 +4,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hui_management/helper/dialog.dart';
+import 'package:hui_management/helper/translate_exception.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
@@ -31,6 +33,7 @@ class MemberWidget extends StatelessWidget {
             onPressed: (context) async {
               userProvider.removeUser(user.id).andThen(() => userProvider.getAllUsers()).getOrElse((l) {
                 log(l);
+                DialogHelper.showSnackBar(context, TranslateException.exceptionTranslate[l]!);
               }).run();
             },
             backgroundColor: const Color(0xFFFE4A49),
