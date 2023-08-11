@@ -217,7 +217,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
               },
               (r) {
                 disableLoading();
-                context.router.push(MultiplePaymentMembersRoute(users: r));
+                context.router.push(const MultiplePaymentMembersRoute());
               },
             ).run();
           },
