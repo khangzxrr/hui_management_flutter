@@ -7,6 +7,7 @@ import 'package:hui_management/service/user_service.dart';
 
 class SubUsersProvider with ChangeNotifier {
   List<SubUserModel> subUsers = [];
+  List<UserWithPaymentReport> subUsersWithPaymentReport = [];
 
   TaskEither<String, List<SubUserModel>> fetchAndFilterUsers({
     bool filterByAnyPayment = false,
@@ -25,6 +26,8 @@ class SubUsersProvider with ChangeNotifier {
 
   TaskEither<String, List<UserWithPaymentReport>> getAllWithPaymentReport() => TaskEither.tryCatch(() async {
         final users = await GetIt.I<UserService>().getAllWithPaymentReport();
+
+        subUsersWithPaymentReport = users;
 
         return users;
       }, (error, stackTrace) => error.toString());
