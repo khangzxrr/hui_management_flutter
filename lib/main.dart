@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/fund_provider.dart';
@@ -12,7 +11,6 @@ import 'package:hui_management/service/setup_service.dart';
 import 'package:hui_management/view/login_view.dart';
 import 'package:provider/provider.dart';
 
-import 'firebase_options.dart';
 
 void main() async {
   SetupService.setup();
