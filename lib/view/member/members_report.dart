@@ -1,21 +1,24 @@
+import 'dart:async';
+
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/model/user_report_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:provider/provider.dart';
 
 import '../../helper/utils.dart';
+import '../../provider/user_report_provider.dart';
 
 @RoutePage()
 class MemberReportScreen extends StatefulWidget {
-  final List<UserReportModel> userReportModels;
-
-  const MemberReportScreen({super.key, required this.userReportModels});
+  const MemberReportScreen({super.key});
 
   @override
   State<MemberReportScreen> createState() => _MemberReportScreenState();
 }
 
-class _MemberReportScreenState extends State<MemberReportScreen> {
+class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayoutMixin<MemberReportScreen> {
   String filterText = '';
 
   List<PlutoColumn> columns = [
@@ -72,7 +75,8 @@ class _MemberReportScreenState extends State<MemberReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<PlutoRow> rows = widget.userReportModels
+    final userReportProvider = Provider.of<UserReportProvider>(context, listen: true);
+    List<PlutoRow> rows = userReportProvider.userReportModels
         .map((u) => PlutoRow(cells: {
               'name': PlutoCell(value: u.name),
               'nickName': PlutoCell(value: u.nickName),
@@ -85,16 +89,14 @@ class _MemberReportScreenState extends State<MemberReportScreen> {
             }))
         .toList();
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Báo cáo thành viên'),
-        ),
-        body: PlutoGrid(
-          columns: columns,
-          rows: rows,
-          // configuration: PlutoGridConfiguration(
-          //   columnSize: PlutoGridColumnSizeConfig(autoSizeMode: PlutoAutoSizeMode.equal),
-          // ),
-        ));
+    return PlutoGrid(
+      columns: columns,
+      rows: rows,
+    );
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    print('call after layout');
   }
 }

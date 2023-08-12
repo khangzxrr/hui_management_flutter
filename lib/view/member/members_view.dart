@@ -9,6 +9,7 @@ import 'package:hui_management/helper/translate_exception.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 class MemberWidget extends StatelessWidget {
@@ -118,11 +119,12 @@ class _MembersScreenState extends State<MembersScreen> {
         .map((user) => MemberWidget(user: user))
         .toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quản lí thành viên'),
-      ),
-      body: ListView(
+    return LiquidPullToRefresh(
+      onRefresh: () async {
+        await usersProvider.getAllUsers().run();
+      },
+      showChildOpacityTransition: false,
+      child: ListView(
         padding: const EdgeInsets.all(10.0),
         children: [
           Text('Tổng số thành viên: ${usersProvider.subUsers.length}', style: Theme.of(context).textTheme.titleMedium),
@@ -158,11 +160,13 @@ class _MembersScreenState extends State<MembersScreen> {
           ...userWidgets,
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push(MemberEditRoute(isCreateNew: true, user: null)),
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
-      ),
     );
+    //   );
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: () => context.router.push(MemberEditRoute(isCreateNew: true, user: null)),
+    //     backgroundColor: Colors.green,
+    //     child: const Icon(Icons.add),
+    //   ),
+    // );
   }
 }

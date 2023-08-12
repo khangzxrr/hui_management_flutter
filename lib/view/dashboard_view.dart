@@ -6,6 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';
@@ -95,7 +96,7 @@ class DashboardInfo extends StatefulWidget {
   State<DashboardInfo> createState() => _DashboardInfoState();
 }
 
-class _DashboardInfoState extends State<DashboardInfo> {
+class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<DashboardInfo> {
   bool loading = false;
 
   void enableLoading() async {
@@ -112,137 +113,149 @@ class _DashboardInfoState extends State<DashboardInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop
+    return AutoTabsRouter(
+      routes: const [
+        DashboardInfoRoute(),
+        MembersRoute(),
+        MultipleFundsRoute(),
+        MultiplePaymentMembersRoute(),
+        MemberReportRoute(),
+      ],
+      transitionBuilder: (context, child, animation) => FadeTransition(
+        opacity: animation,
+        // the passed child is technically our animated selected-tab page
+        child: child,
+      ),
+      builder: (context, child) {
+        final tabRouter = AutoTabsRouter.of(context);
 
+        return Scaffold(
+          body: child,
+          floatingActionButton: tabRouter.activeIndex > 0 && tabRouter.activeIndex < 3
+              ? FloatingActionButton(
+                  onPressed: () {
+                    if (tabRouter.current.name == MembersRoute.name) {
+                      context.router.push(MemberEditRoute(isCreateNew: true, user: null));
+                    } else if (tabRouter.current.name == MultipleFundsRoute.name) {
+                      context.router.push(FundEditRoute(isNew: true, fund: null));
+                    }
+                  },
+                  child: const Icon(Icons.add),
+                )
+              : null,
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: tabRouter.activeIndex,
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) {
+              tabRouter.setActiveIndex(index);
+
+              if (index == 4) {
+                final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
+                userReportProvider.getAllReport().run();
+                print('get report');
+              }
+            },
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Cá nhân'),
+              BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Thành viên'),
+              BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Dây hụi'),
+              BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Thanh toán'),
+              BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Báo cáo'),
+            ],
+          ),
+        );
+      },
+    );
+
+    //     ElevatedButton(
+    //         onPressed: () {
+    //           enableLoading();
+
+    //           usersProvider.getAllUsers().match((l) {
+    //             DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
+    //             context.router.pop();
+    //             disableLoading();
+    //           }, (r) {
+    //             disableLoading();
+    //             context.router.push(const MembersRoute());
+    //           }).run();
+    //         },
+    //         child: const Text('Quản lí hụi viên')),
+    //     const SizedBox(width: 30, height: 30),
+    //     ElevatedButton(
+    //         onPressed: () {
+    //           enableLoading();
+
+    //           generalFundProvider.fetchFunds().match(
+    //             (l) {
+    //               disableLoading();
+    //               log(l);
+    //               DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
+    //             },
+    //             (r) {
+    //               disableLoading();
+    //               context.router.push(const MultipleFundsRoute());
+    //             },
+    //           ).run();
+    //         },
+    //         child: const Text('Quản lí dây hụi')),
+    //     const SizedBox(
+    //       width: 30,
+    //       height: 30,
+    //     ),
+    //     ElevatedButton(
+    //       onPressed: () {
+    //         enableLoading();
+
+    //         usersProvider.getAllWithPaymentReport().match(
+    //           (l) {
+    //             disableLoading();
+    //             log(l);
+    //             DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
+    //           },
+    //           (r) {
+    //             disableLoading();
+    //             context.router.push(const MultiplePaymentMembersRoute());
+    //           },
+    //         ).run();
+    //       },
+    //       child: const Text('Quản lí thanh toán'),
+    //     ),
+    //     const SizedBox(width: 30, height: 30),
+    //     ElevatedButton(
+    //       onPressed: () {
+    //         enableLoading();
+
+    //         userReportProvider.getAllReport().match(
+    //           (l) {
+    //             disableLoading();
+    //             log(l);
+    //             DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
+    //           },
+    //           (r) {
+    //             disableLoading();
+    //             context.router.push(MemberReportRoute(userReportModels: r));
+    //           },
+    //         ).run();
+    //       },
+    //       child: const Text('Báo cáo dây hụi'),
+    //     ),
+    //   ],
+    // );
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
     final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
+
+    usersProvider.getAllUsers().run();
 
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
+    generalFundProvider.fetchFunds().run();
+
     final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
 
-    return ListView(
-      padding: const EdgeInsets.all(30),
-      children: [
-        loading ? const LinearProgressIndicator() : const SizedBox(),
-        const SizedBox(height: 5, width: 5),
-        SizedBox(
-          width: 200,
-          height: 200,
-          child: CachedNetworkImage(
-            imageUrl: authenticationProvider.model!.subUser.imageUrl,
-            imageBuilder: (context, imageProvider) => Container(
-              width: 100.0,
-              height: 100.0,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
-              ),
-            ),
-            placeholder: (context, url) => const LinearProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-          ),
-        ),
-        const SizedBox(height: 10, width: 10),
-        Text(
-          textAlign: TextAlign.center,
-          authenticationProvider.model!.subUser.name,
-          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 5, width: 5),
-        AutoSizeText(
-          textAlign: TextAlign.center,
-          authenticationProvider.model!.subUser.address,
-          style: const TextStyle(fontSize: 15),
-          maxLines: 1,
-        ),
-        const SizedBox(height: 5, width: 5),
-        Text(
-          textAlign: TextAlign.center,
-          'Số điện thoại: ${authenticationProvider.model!.subUser.phoneNumber}',
-          style: const TextStyle(fontSize: 15),
-        ),
-        const SizedBox(height: 5, width: 5),
-        Text(
-          textAlign: TextAlign.center,
-          'Bank: ${authenticationProvider.model!.subUser.bankName} - ${authenticationProvider.model!.subUser.bankNumber}',
-          style: const TextStyle(fontSize: 15),
-        ),
-        const SizedBox(height: 10, width: 15),
-        ElevatedButton(
-            onPressed: () {
-              enableLoading();
-
-              usersProvider.getAllUsers().match((l) {
-                DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                context.router.pop();
-                disableLoading();
-              }, (r) {
-                disableLoading();
-                context.router.push(const MembersRoute());
-              }).run();
-            },
-            child: const Text('Quản lí hụi viên')),
-        const SizedBox(width: 30, height: 30),
-        ElevatedButton(
-            onPressed: () {
-              enableLoading();
-
-              generalFundProvider.fetchFunds().match(
-                (l) {
-                  disableLoading();
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
-                },
-                (r) {
-                  disableLoading();
-                  context.router.push(const MultipleFundsRoute());
-                },
-              ).run();
-            },
-            child: const Text('Quản lí dây hụi')),
-        const SizedBox(
-          width: 30,
-          height: 30,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            enableLoading();
-
-            usersProvider.getAllWithPaymentReport().match(
-              (l) {
-                disableLoading();
-                log(l);
-                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
-              },
-              (r) {
-                disableLoading();
-                context.router.push(const MultiplePaymentMembersRoute());
-              },
-            ).run();
-          },
-          child: const Text('Quản lí thanh toán'),
-        ),
-        const SizedBox(width: 30, height: 30),
-        ElevatedButton(
-          onPressed: () {
-            enableLoading();
-
-            userReportProvider.getAllReport().match(
-              (l) {
-                disableLoading();
-                log(l);
-                DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
-              },
-              (r) {
-                disableLoading();
-                context.router.push(MemberReportRoute(userReportModels: r));
-              },
-            ).run();
-          },
-          child: const Text('Báo cáo dây hụi'),
-        ),
-      ],
-    );
+    userReportProvider.getAllReport().run();
   }
 }

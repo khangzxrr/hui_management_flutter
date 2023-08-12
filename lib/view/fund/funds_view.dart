@@ -10,6 +10,7 @@ import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 import '../../routes/app_route.dart';
@@ -145,11 +146,12 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
         )
         .toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quản lí danh sách dây hụi'),
-      ),
-      body: Padding(
+    return LiquidPullToRefresh(
+      showChildOpacityTransition: false,
+      onRefresh: () async {
+        await generalFundProvider.fetchFunds().run();
+      },
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(children: [
           Text('Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
@@ -184,10 +186,6 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
           ),
           ...generalFundWigets,
         ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push(FundEditRoute(isNew: true, fund: null)),
-        child: const Icon(Icons.add),
       ),
     );
   }

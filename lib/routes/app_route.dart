@@ -8,6 +8,7 @@ import '../model/payment_model.dart';
 import '../model/sub_user_model.dart';
 import '../model/user_report_model.dart';
 import '../model/user_with_payment_report.dart';
+import '../view/dashboard_info.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
@@ -34,10 +35,17 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page, initial: true),
-        AutoRoute(page: DashboardRoute.page, guards: [AuthGuard()]),
-        AutoRoute(page: MembersRoute.page, guards: [AuthGuard()]),
-        AutoRoute(page: MultipleFundsRoute.page, guards: [AuthGuard()]),
-        AutoRoute(page: MultiplePaymentMembersRoute.page, guards: [AuthGuard()]),
+        AutoRoute(
+          page: DashboardRoute.page,
+          guards: [AuthGuard()],
+          children: [
+            AutoRoute(page: DashboardInfoRoute.page, guards: [AuthGuard()]),
+            AutoRoute(page: MembersRoute.page, guards: [AuthGuard()]),
+            AutoRoute(page: MultipleFundsRoute.page, guards: [AuthGuard()]),
+            AutoRoute(page: MultiplePaymentMembersRoute.page, guards: [AuthGuard()]),
+            AutoRoute(page: MemberReportRoute.page, guards: [AuthGuard()]),
+          ],
+        ),
         AutoRoute(page: MemberEditRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundMembersRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundEditRoute.page, guards: [AuthGuard()]),
@@ -49,7 +57,5 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: PaymentListOfUserRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PaycheckRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PaymentDetailRoute.page, guards: [AuthGuard()]),
-        AutoRoute(page: MemberReportRoute.page, guards: [AuthGuard()]),
       ];
-
 }

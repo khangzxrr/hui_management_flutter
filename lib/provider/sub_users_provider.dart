@@ -34,7 +34,7 @@ class SubUsersProvider with ChangeNotifier {
 
   TaskEither<String, void> getAllUsers() => TaskEither.tryCatch(() async {
         final users = await GetIt.I<UserService>().getAll();
-        this.subUsers = users;
+        subUsers = users;
 
         notifyListeners();
       }, (error, stackTrace) => error.toString());

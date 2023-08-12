@@ -90,13 +90,9 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     MemberReportRoute.name: (routeData) {
-      final args = routeData.argsAs<MemberReportRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MemberReportScreen(
-          key: args.key,
-          userReportModels: args.userReportModels,
-        ),
+        child: const MemberReportScreen(),
       );
     },
     MembersRoute.name: (routeData) {
@@ -150,6 +146,12 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           user: args.user,
         ),
+      );
+    },
+    DashboardInfoRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DashboardInfoScreen(),
       );
     },
   };
@@ -380,40 +382,16 @@ class LoginRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [MemberReportScreen]
-class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
-  MemberReportRoute({
-    Key? key,
-    required List<UserReportModel> userReportModels,
-    List<PageRouteInfo>? children,
-  }) : super(
+class MemberReportRoute extends PageRouteInfo<void> {
+  const MemberReportRoute({List<PageRouteInfo>? children})
+      : super(
           MemberReportRoute.name,
-          args: MemberReportRouteArgs(
-            key: key,
-            userReportModels: userReportModels,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'MemberReportRoute';
 
-  static const PageInfo<MemberReportRouteArgs> page =
-      PageInfo<MemberReportRouteArgs>(name);
-}
-
-class MemberReportRouteArgs {
-  const MemberReportRouteArgs({
-    this.key,
-    required this.userReportModels,
-  });
-
-  final Key? key;
-
-  final List<UserReportModel> userReportModels;
-
-  @override
-  String toString() {
-    return 'MemberReportRouteArgs{key: $key, userReportModels: $userReportModels}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -599,4 +577,18 @@ class PaymentListOfUserRouteArgs {
   String toString() {
     return 'PaymentListOfUserRouteArgs{key: $key, user: $user}';
   }
+}
+
+/// generated route for
+/// [DashboardInfoScreen]
+class DashboardInfoRoute extends PageRouteInfo<void> {
+  const DashboardInfoRoute({List<PageRouteInfo>? children})
+      : super(
+          DashboardInfoRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DashboardInfoRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

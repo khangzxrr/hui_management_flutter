@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
@@ -117,11 +118,12 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
         .map((e) => SingleMemberScreen(user: e))
         .toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quản lí thanh toán'),
-      ),
-      body: Padding(
+    return LiquidPullToRefresh(
+      onRefresh: () async {
+        await subUsersProvider.getAllWithPaymentReport().run();
+      },
+      showChildOpacityTransition: false,
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
