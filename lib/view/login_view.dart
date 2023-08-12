@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                 FormBuilderTextField(
                   key: _emailFieldKey,
                   name: 'email',
+                  autofillHints: const [AutofillHints.username],
                   decoration: const InputDecoration(labelText: 'Số điện thoại'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose(
@@ -78,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                 FormBuilderTextField(
                   key: _passwordFieldKey,
                   name: 'password',
+                  autofillHints: const [AutofillHints.password],
                   decoration: const InputDecoration(labelText: 'Mật khẩu'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose(
