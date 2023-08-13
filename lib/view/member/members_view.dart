@@ -89,54 +89,19 @@ class MemberWidget extends StatelessWidget {
   }
 }
 
-class MembersListView extends StatelessWidget {
-  final List<SubUserModel> users;
-
-  const MembersListView({super.key, required this.users});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: users.map((user) => MemberWidget(user: user)).toList(),
-    );
-  }
-}
-
 @RoutePage()
 class MembersScreen extends StatefulWidget {
-  MembersScreen({super.key});
-
-  /// The data to browse into.
-  /// Given to [Sherlock] for researches.
-  final List<Map<String, dynamic>> characters = [
-    {
-      'name': 'Jiji',
-      'description': 'Black cat with large white eyes and black pupils',
-      'from': 'Kiki\'s delivery service',
-      'by': 'Studio Ghibli',
-      'image': 'https://i.pinimg.com/originals/10/f5/b8/10f5b8f9a07cbebd069fe90e0c8417c9.jpg',
-    },
-    {
-      'name': 'Haku',
-      'description': 'He has straight, dark green hair in a bob haircut and slanted, green eyes',
-      'from': 'Spirited Away',
-      'by': 'Studio Ghibli',
-      'image': 'https://i.pinimg.com/736x/21/72/ff/2172ff97bf332adb0c2c003fa2746688.jpg',
-    },
-    {
-      'name': 'Soot Sprites',
-      'description': 'They are small, round balls made from the soot that dwells in old and abandoned houses',
-      'from': 'My Neighbor Totoro',
-      'by': 'Studio Ghibli',
-      'image': 'https://media0.giphy.com/media/oje6kPRIef6Gk/200.gif?cid=6c09b952152c6g4ft5pmn8bgv6knnhnx8mqvac8mu37xmzlx&ep=v1_gifs_search&rid=200.gif&ct=g',
-    },
-  ];
+  const MembersScreen({super.key});
 
   @override
   State<MembersScreen> createState() => _MembersScreenState();
 }
 
+enum AdditionalFilter { sortByAZ }
+
 class _MembersScreenState extends State<MembersScreen> {
+  Set<AdditionalFilter> additionalFilters = {};
+
   String filterText = '';
 
   List<Result> results = [];
@@ -147,11 +112,21 @@ class _MembersScreenState extends State<MembersScreen> {
 
     final sherlock = Sherlock(elements: usersProvider.subUsers.map((e) => e.toJson()).toList());
 
-    final userWidgets = filterText != ''
-        ? results.map(
-            (e) => MemberWidget(user: SubUserModel.fromJson(e.element)),
-          )
-        : usersProvider.subUsers.map((user) => MemberWidget(user: user)).toList();
+    final subUserModels = filterText != ''
+        ? results
+            .map(
+              (e) => SubUserModel.fromJson(e.element),
+            )
+            .toList()
+        : usersProvider.subUsers;
+
+    for (final filter in additionalFilters) {
+      if (filter == AdditionalFilter.sortByAZ) {
+        subUserModels.sort((a, b) => a.name.split(' ').last[0].toLowerCase().compareTo(b.name.split(' ').last[0].toLowerCase()));
+      }
+    }
+
+    final userWidgets = subUserModels.map((e) => MemberWidget(user: e)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {
@@ -196,6 +171,24 @@ class _MembersScreenState extends State<MembersScreen> {
                       icon: const Icon(Icons.clear),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                  spacing: 5.0,
+                  children: [
+                    FilterChip(
+                      label: const Text('Sắp xếp theo tên A-Z'),
+                      selected: additionalFilters.contains(AdditionalFilter.sortByAZ),
+                      onSelected: (value) => setState(
+                        () => value ? additionalFilters.add(AdditionalFilter.sortByAZ) : additionalFilters.remove(AdditionalFilter.sortByAZ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 ...userWidgets,
               ],
