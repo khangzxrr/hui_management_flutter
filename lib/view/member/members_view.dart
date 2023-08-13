@@ -12,6 +12,11 @@ import 'package:hui_management/routes/app_route.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
+import 'package:sherlock/completion.dart';
+import 'package:sherlock/result.dart';
+import 'package:sherlock/sherlock.dart';
+import 'package:sherlock/widget.dart';
+
 class MemberWidget extends StatelessWidget {
   final SubUserModel user;
 
@@ -99,7 +104,33 @@ class MembersListView extends StatelessWidget {
 
 @RoutePage()
 class MembersScreen extends StatefulWidget {
-  const MembersScreen({super.key});
+  MembersScreen({super.key});
+
+  /// The data to browse into.
+  /// Given to [Sherlock] for researches.
+  final List<Map<String, dynamic>> characters = [
+    {
+      'name': 'Jiji',
+      'description': 'Black cat with large white eyes and black pupils',
+      'from': 'Kiki\'s delivery service',
+      'by': 'Studio Ghibli',
+      'image': 'https://i.pinimg.com/originals/10/f5/b8/10f5b8f9a07cbebd069fe90e0c8417c9.jpg',
+    },
+    {
+      'name': 'Haku',
+      'description': 'He has straight, dark green hair in a bob haircut and slanted, green eyes',
+      'from': 'Spirited Away',
+      'by': 'Studio Ghibli',
+      'image': 'https://i.pinimg.com/736x/21/72/ff/2172ff97bf332adb0c2c003fa2746688.jpg',
+    },
+    {
+      'name': 'Soot Sprites',
+      'description': 'They are small, round balls made from the soot that dwells in old and abandoned houses',
+      'from': 'My Neighbor Totoro',
+      'by': 'Studio Ghibli',
+      'image': 'https://media0.giphy.com/media/oje6kPRIef6Gk/200.gif?cid=6c09b952152c6g4ft5pmn8bgv6knnhnx8mqvac8mu37xmzlx&ep=v1_gifs_search&rid=200.gif&ct=g',
+    },
+  ];
 
   @override
   State<MembersScreen> createState() => _MembersScreenState();
@@ -108,16 +139,19 @@ class MembersScreen extends StatefulWidget {
 class _MembersScreenState extends State<MembersScreen> {
   String filterText = '';
 
+  List<Result> results = [];
+
   @override
   Widget build(BuildContext context) {
     final usersProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
-    final userWidgets = usersProvider.subUsers
-        .where(
-          (u) => u.toString().replaceAll(' ', '').contains(filterText),
-        )
-        .map((user) => MemberWidget(user: user))
-        .toList();
+    final sherlock = Sherlock(elements: usersProvider.subUsers.map((e) => e.toJson()).toList());
+
+    final userWidgets = filterText != ''
+        ? results.map(
+            (e) => MemberWidget(user: SubUserModel.fromJson(e.element)),
+          )
+        : usersProvider.subUsers.map((user) => MemberWidget(user: user)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {
@@ -134,6 +168,7 @@ class _MembersScreenState extends State<MembersScreen> {
                   height: 10.0,
                   width: 10.0,
                 ),
+                //buildSearchBar(context),
                 Row(
                   children: [
                     Expanded(
@@ -142,9 +177,12 @@ class _MembersScreenState extends State<MembersScreen> {
                           border: OutlineInputBorder(),
                           labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
                         ),
-                        onChanged: (text) {
+                        onChanged: (text) async {
+                          final results = await sherlock.search(input: text);
+
                           setState(() {
                             filterText = text;
+                            this.results = results;
                           });
                         },
                       ),
@@ -163,12 +201,5 @@ class _MembersScreenState extends State<MembersScreen> {
               ],
             ),
     );
-    //   );
-    //   floatingActionButton: FloatingActionButton(
-    //     onPressed: () => context.router.push(MemberEditRoute(isCreateNew: true, user: null)),
-    //     backgroundColor: Colors.green,
-    //     child: const Icon(Icons.add),
-    //   ),
-    // );
   }
 }

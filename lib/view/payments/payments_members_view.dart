@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:js_interop';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
@@ -10,6 +11,8 @@ import 'package:hui_management/model/user_with_payment_report.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
+import 'package:sherlock/result.dart';
+import 'package:sherlock/sherlock.dart';
 
 import '../../helper/dialog.dart';
 import '../../helper/utils.dart';
@@ -109,16 +112,15 @@ class MultiplePaymentMembersScreen extends StatefulWidget {
 class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScreen> {
   String filterText = '';
 
+  List<Result> results = [];
+
   @override
   Widget build(BuildContext context) {
     final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
-    final List<Widget> userWidgets = subUsersProvider.subUsersWithPaymentReport
-        .where(
-          (u) => u.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()),
-        )
-        .map((e) => SingleMemberScreen(user: e))
-        .toList();
+    final sherlock = Sherlock(elements: subUsersProvider.subUsersWithPaymentReport.map((e) => e.toJson()).toList());
+
+    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {
@@ -141,9 +143,12 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
                             border: OutlineInputBorder(),
                             labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
                           ),
-                          onChanged: (text) {
+                          onChanged: (text) async {
+                            final searchResults = await sherlock.search(input: text);
+
                             setState(() {
                               filterText = text;
+                              results = searchResults;
                             });
                           },
                         ),

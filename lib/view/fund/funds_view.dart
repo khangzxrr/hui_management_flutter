@@ -12,6 +12,8 @@ import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
+import 'package:sherlock/result.dart';
+import 'package:sherlock/sherlock.dart';
 
 import '../../routes/app_route.dart';
 import 'fund_edit.dart';
@@ -134,17 +136,23 @@ class MultipleFundsScreen extends StatefulWidget {
 class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
   String filterText = '';
 
+  List<Result> results = [];
+
   @override
   Widget build(BuildContext context) {
     final generalFundProvider = Provider.of<GeneralFundProvider>(context);
 
-    List<Widget> generalFundWigets = generalFundProvider
-        .getFunds()
-        .where((f) => f.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()))
-        .map(
-          (e) => SingleFundScreen(fund: e),
-        )
-        .toList();
+    final sherlock = Sherlock(elements: generalFundProvider.getFunds().map((e) => e.toJson()).toList());
+
+    List<Widget> generalFundWigets = filterText.isNotEmpty
+        ? results.map((e) => SingleFundScreen(fund: GeneralFundModel.fromJson(e.element))).toList()
+        : generalFundProvider
+            .getFunds()
+            .where((f) => f.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()))
+            .map(
+              (e) => SingleFundScreen(fund: e),
+            )
+            .toList();
 
     return LiquidPullToRefresh(
       showChildOpacityTransition: false,
@@ -169,9 +177,12 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
                           border: OutlineInputBorder(),
                           labelText: 'Tìm kiếm hụi (tên,...))',
                         ),
-                        onChanged: (text) {
+                        onChanged: (text) async {
+                          final searchResults = await sherlock.search(input: text);
+
                           setState(() {
                             filterText = text;
+                            results = searchResults;
                           });
                         },
                       ),
