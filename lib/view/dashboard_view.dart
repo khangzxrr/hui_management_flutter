@@ -167,81 +167,6 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
       },
     );
 
-    //     ElevatedButton(
-    //         onPressed: () {
-    //           enableLoading();
-
-    //           usersProvider.getAllUsers().match((l) {
-    //             DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-    //             context.router.pop();
-    //             disableLoading();
-    //           }, (r) {
-    //             disableLoading();
-    //             context.router.push(const MembersRoute());
-    //           }).run();
-    //         },
-    //         child: const Text('Quản lí hụi viên')),
-    //     const SizedBox(width: 30, height: 30),
-    //     ElevatedButton(
-    //         onPressed: () {
-    //           enableLoading();
-
-    //           generalFundProvider.fetchFunds().match(
-    //             (l) {
-    //               disableLoading();
-    //               log(l);
-    //               DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách dây hụi CODE: $l');
-    //             },
-    //             (r) {
-    //               disableLoading();
-    //               context.router.push(const MultipleFundsRoute());
-    //             },
-    //           ).run();
-    //         },
-    //         child: const Text('Quản lí dây hụi')),
-    //     const SizedBox(
-    //       width: 30,
-    //       height: 30,
-    //     ),
-    //     ElevatedButton(
-    //       onPressed: () {
-    //         enableLoading();
-
-    //         usersProvider.getAllWithPaymentReport().match(
-    //           (l) {
-    //             disableLoading();
-    //             log(l);
-    //             DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy danh sách thành viên CODE: $l');
-    //           },
-    //           (r) {
-    //             disableLoading();
-    //             context.router.push(const MultiplePaymentMembersRoute());
-    //           },
-    //         ).run();
-    //       },
-    //       child: const Text('Quản lí thanh toán'),
-    //     ),
-    //     const SizedBox(width: 30, height: 30),
-    //     ElevatedButton(
-    //       onPressed: () {
-    //         enableLoading();
-
-    //         userReportProvider.getAllReport().match(
-    //           (l) {
-    //             disableLoading();
-    //             log(l);
-    //             DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy báo cáo thành viên CODE: $l');
-    //           },
-    //           (r) {
-    //             disableLoading();
-    //             context.router.push(MemberReportRoute(userReportModels: r));
-    //           },
-    //         ).run();
-    //       },
-    //       child: const Text('Báo cáo dây hụi'),
-    //     ),
-    //   ],
-    // );
   }
 
   @override
@@ -249,6 +174,8 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
     final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
 
     usersProvider.getAllUsers().run();
+
+    usersProvider.getAllWithPaymentReport().run();
 
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
