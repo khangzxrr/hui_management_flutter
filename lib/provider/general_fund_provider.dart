@@ -5,7 +5,14 @@ import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/service/fund_service.dart';
 
 class GeneralFundProvider with ChangeNotifier {
+  bool loading = false;
   List<GeneralFundModel> _funds = [];
+
+  void setLoading(bool loading) {
+    this.loading = loading;
+
+    notifyListeners();
+  }
 
   void setFunds(List<GeneralFundModel> funds) {
     _funds = funds;
@@ -33,9 +40,13 @@ class GeneralFundProvider with ChangeNotifier {
   }
 
   TaskEither<String, List<GeneralFundModel>> fetchFunds() => TaskEither.tryCatch(() async {
+        setLoading(true);
+
         final funds = await GetIt.I<FundService>().getAll();
 
         setFunds(funds);
+
+        setLoading(false);
 
         return funds;
       }, (error, stackTrace) => error.toString());

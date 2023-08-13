@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -125,36 +127,40 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
       showChildOpacityTransition: false,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
-                    ),
-                    onChanged: (text) {
-                      setState(() {
-                        filterText = text;
-                      });
-                    },
+        child: subUsersProvider.loading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
+                          ),
+                          onChanged: (text) {
+                            setState(() {
+                              filterText = text;
+                            });
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            filterText = '';
+                          });
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+                    ],
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      filterText = '';
-                    });
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              ],
-            ),
-            ...userWidgets,
-          ],
-        ),
+                  ...userWidgets,
+                ],
+              ),
       ),
     );
   }

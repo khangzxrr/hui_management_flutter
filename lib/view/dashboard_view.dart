@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';
@@ -15,7 +11,6 @@ import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../helper/dialog.dart';
 import '../provider/user_report_provider.dart';
 import '../routes/app_route.dart';
 
@@ -84,7 +79,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
     final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false); //must not listen to avoid infinite loop
 
     if (authenticationProvider.model == null) {
-      context.router.pushAndPopUntil(LoginRoute(), predicate: (_) => false);
+      context.router.pushAndPopUntil(const LoginRoute(), predicate: (_) => false);
     }
   }
 }
@@ -146,13 +141,21 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: tabRouter.activeIndex,
             type: BottomNavigationBarType.fixed,
-            onTap: (index) {
+            onTap: (index) async {
               tabRouter.setActiveIndex(index);
 
-              if (index == 4) {
-                final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
-                userReportProvider.getAllReport().run();
-                print('get report');
+              if (index == 3) {
+                print('fetch payment members');
+                await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport().run();
+              } else if (index == 4) {
+                print('fetch report');
+                await Provider.of<UserReportProvider>(context, listen: false).getAllReport().run();
+              } else if (index == 2) {
+                print('fetch funds');
+                await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds().run();
+              } else if (index == 1) {
+                print('fetch members');
+                await Provider.of<SubUsersProvider>(context, listen: false).getAllUsers().run();
               }
             },
             items: const [
@@ -166,23 +169,17 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
         );
       },
     );
-
   }
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
     final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
-
-    usersProvider.getAllUsers().run();
-
-    usersProvider.getAllWithPaymentReport().run();
-
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
-    generalFundProvider.fetchFunds().run();
+    await usersProvider.getAllUsers().run();
 
-    final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
+    await generalFundProvider.fetchFunds().run();
 
-    userReportProvider.getAllReport().run();
+    print('trigger after first layout');
   }
 }

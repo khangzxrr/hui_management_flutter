@@ -32,7 +32,7 @@ class DashboardInfoScreen extends StatelessWidget {
                 image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
               ),
             ),
-            placeholder: (context, url) => const LinearProgressIndicator(),
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),

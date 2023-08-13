@@ -6,6 +6,8 @@ import 'package:hui_management/model/user_with_payment_report.dart';
 import 'package:hui_management/service/user_service.dart';
 
 class SubUsersProvider with ChangeNotifier {
+  bool loading = false;
+
   List<SubUserModel> subUsers = [];
   List<UserWithPaymentReport> subUsersWithPaymentReport = [];
 
@@ -24,19 +26,29 @@ class SubUsersProvider with ChangeNotifier {
         return users;
       }, (error, stackTrace) => error.toString());
 
+  void setLoading(bool value) {
+    loading = value;
+
+    notifyListeners();
+  }
+
   TaskEither<String, List<UserWithPaymentReport>> getAllWithPaymentReport() => TaskEither.tryCatch(() async {
+        setLoading(true);
+
         final users = await GetIt.I<UserService>().getAllWithPaymentReport();
 
         subUsersWithPaymentReport = users;
 
+        setLoading(false);
         return users;
       }, (error, stackTrace) => error.toString());
 
   TaskEither<String, void> getAllUsers() => TaskEither.tryCatch(() async {
+        setLoading(true);
         final users = await GetIt.I<UserService>().getAll();
         subUsers = users;
 
-        notifyListeners();
+        setLoading(false);
       }, (error, stackTrace) => error.toString());
 
   TaskEither<String, SubUserModel> createUser(SubUserModel user) => TaskEither.tryCatch(

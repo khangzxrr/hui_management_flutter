@@ -124,42 +124,44 @@ class _MembersScreenState extends State<MembersScreen> {
         await usersProvider.getAllUsers().run();
       },
       showChildOpacityTransition: false,
-      child: ListView(
-        padding: const EdgeInsets.all(10.0),
-        children: [
-          Text('Tổng số thành viên: ${usersProvider.subUsers.length}', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(
-            height: 10.0,
-            width: 10.0,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
-                  ),
-                  onChanged: (text) {
-                    setState(() {
-                      filterText = text;
-                    });
-                  },
+      child: usersProvider.loading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: const EdgeInsets.all(10.0),
+              children: [
+                Text('Tổng số thành viên: ${usersProvider.subUsers.length}', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(
+                  height: 10.0,
+                  width: 10.0,
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    filterText = '';
-                  });
-                },
-                icon: const Icon(Icons.clear),
-              ),
-            ],
-          ),
-          ...userWidgets,
-        ],
-      ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
+                        ),
+                        onChanged: (text) {
+                          setState(() {
+                            filterText = text;
+                          });
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          filterText = '';
+                        });
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ],
+                ),
+                ...userWidgets,
+              ],
+            ),
     );
     //   );
     //   floatingActionButton: FloatingActionButton(

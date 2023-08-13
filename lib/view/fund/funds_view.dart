@@ -151,42 +151,44 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
       onRefresh: () async {
         await generalFundProvider.fetchFunds().run();
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView(children: [
-          Text('Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
-          const SizedBox(
-            width: 8,
-            height: 8,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Tìm kiếm hụi (tên,...))',
-                  ),
-                  onChanged: (text) {
-                    setState(() {
-                      filterText = text;
-                    });
-                  },
+      child: generalFundProvider.loading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(children: [
+                Text('Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
+                const SizedBox(
+                  width: 8,
+                  height: 8,
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    filterText = '';
-                  });
-                },
-                icon: const Icon(Icons.clear),
-              ),
-            ],
-          ),
-          ...generalFundWigets,
-        ]),
-      ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Tìm kiếm hụi (tên,...))',
+                        ),
+                        onChanged: (text) {
+                          setState(() {
+                            filterText = text;
+                          });
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          filterText = '';
+                        });
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ],
+                ),
+                ...generalFundWigets,
+              ]),
+            ),
     );
   }
 }

@@ -76,6 +76,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
   @override
   Widget build(BuildContext context) {
     final userReportProvider = Provider.of<UserReportProvider>(context, listen: true);
+
     List<PlutoRow> rows = userReportProvider.userReportModels
         .map((u) => PlutoRow(cells: {
               'name': PlutoCell(value: u.name),
@@ -89,14 +90,21 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
             }))
         .toList();
 
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-    );
+    return userReportProvider.loading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : PlutoGrid(
+            columns: columns,
+            rows: rows,
+          );
   }
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
     print('call after layout');
+    final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
+
+    await userReportProvider.getAllReport().run();
   }
 }

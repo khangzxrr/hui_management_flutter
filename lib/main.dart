@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/fund_provider.dart';
@@ -10,7 +11,6 @@ import 'package:hui_management/service/setup_service.dart';
 
 import 'package:hui_management/view/login_view.dart';
 import 'package:provider/provider.dart';
-
 
 void main() async {
   SetupService.setup();
@@ -46,7 +46,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerConfig: appRouter.config(),
+      routerConfig: appRouter.config(
+        navigatorObservers: () => [AutoRouteObserver()],
+      ),
     );
   }
 }
