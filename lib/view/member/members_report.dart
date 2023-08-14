@@ -30,46 +30,166 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       enableEditingMode: false,
     ),
     PlutoColumn(
-      title: 'Tổng tiền đóng',
+      title: 'Tiền đóng',
       field: 'totalProcessingAmount',
-      type: PlutoColumnType.text(),
+      type: PlutoColumnType.currency(
+        name: 'VNĐ',
+        decimalDigits: 0,
+        format: '#,### đ',
+      ),
       enableSorting: true,
       readOnly: true,
+      footerRenderer: (rendererContext) {
+        return PlutoAggregateColumnFooter(
+          rendererContext: rendererContext,
+          type: PlutoAggregateColumnType.sum,
+          alignment: Alignment.centerLeft,
+          titleSpanBuilder: (text) {
+            return [
+              const TextSpan(text: 'Tổng tiền đóng: '),
+              TextSpan(
+                text: text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ];
+          },
+        );
+      },
     ),
     PlutoColumn(
-      title: 'Tổng tiền nợ',
+      title: 'Tiền nợ',
       field: 'totalDebtAmount',
-      type: PlutoColumnType.text(),
+      type: PlutoColumnType.currency(
+        name: 'VNĐ',
+        decimalDigits: 0,
+        format: '#,### đ',
+      ),
       enableSorting: true,
       readOnly: true,
+      footerRenderer: (rendererContext) {
+        return PlutoAggregateColumnFooter(
+          rendererContext: rendererContext,
+          type: PlutoAggregateColumnType.sum,
+          alignment: Alignment.centerLeft,
+          titleSpanBuilder: (text) {
+            return [
+              const TextSpan(text: 'Tổng tiền nợ: '),
+              TextSpan(
+                text: text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ];
+          },
+        );
+      },
     ),
     PlutoColumn(
-      title: 'Tổng tiền hụi sống',
+      title: 'Tiền hụi sống',
       field: 'totalAliveAmount',
-      type: PlutoColumnType.text(),
       enableSorting: true,
       readOnly: true,
+      type: PlutoColumnType.currency(
+        name: 'VNĐ',
+        decimalDigits: 0,
+        format: '#,### đ',
+      ),
+      footerRenderer: (rendererContext) {
+        return PlutoAggregateColumnFooter(
+          rendererContext: rendererContext,
+          type: PlutoAggregateColumnType.sum,
+          alignment: Alignment.centerLeft,
+          titleSpanBuilder: (text) {
+            return [
+              const TextSpan(text: 'Tổng tiền hụi sống: '),
+              TextSpan(
+                text: text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ];
+          },
+        );
+      },
     ),
     PlutoColumn(
       title: 'Tổng tiền hụi chết',
       field: 'totalDeadAmount',
-      type: PlutoColumnType.text(),
       enableSorting: true,
       readOnly: true,
+      type: PlutoColumnType.currency(
+        name: 'VNĐ',
+        decimalDigits: 0,
+        format: '#,### đ',
+      ),
+      footerRenderer: (rendererContext) {
+        return PlutoAggregateColumnFooter(
+          rendererContext: rendererContext,
+          type: PlutoAggregateColumnType.sum,
+          alignment: Alignment.centerLeft,
+          titleSpanBuilder: (text) {
+            return [
+              const TextSpan(text: 'Tổng tiền hụi chết: '),
+              TextSpan(
+                text: text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ];
+          },
+        );
+      },
     ),
     PlutoColumn(
-      title: 'Tổng tiền hốt',
+      title: 'Tiền hốt',
       field: 'totalTakenAmount',
-      type: PlutoColumnType.text(),
       enableSorting: true,
       readOnly: true,
+      type: PlutoColumnType.currency(
+        name: 'VNĐ',
+        decimalDigits: 0,
+        format: '#,### đ',
+      ),
+      footerRenderer: (rendererContext) {
+        return PlutoAggregateColumnFooter(
+          rendererContext: rendererContext,
+          type: PlutoAggregateColumnType.sum,
+          alignment: Alignment.centerLeft,
+          titleSpanBuilder: (text) {
+            return [
+              const TextSpan(text: 'Tổng tiền hốt: '),
+              TextSpan(
+                text: text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ];
+          },
+        );
+      },
     ),
     PlutoColumn(
       title: 'Âm/Dương',
       field: 'fundRatio',
-      type: PlutoColumnType.text(),
-      readOnly: true,
       enableSorting: true,
+      readOnly: true,
+      type: PlutoColumnType.currency(
+        name: 'VNĐ',
+        decimalDigits: 0,
+        format: '#,### đ',
+      ),
+      footerRenderer: (rendererContext) {
+        return PlutoAggregateColumnFooter(
+          rendererContext: rendererContext,
+          type: PlutoAggregateColumnType.sum,
+          alignment: Alignment.centerLeft,
+          titleSpanBuilder: (text) {
+            return [
+              const TextSpan(text: 'Tổng Âm/Dương: '),
+              TextSpan(
+                text: text,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ];
+          },
+        );
+      },
     ),
   ];
 
@@ -81,12 +201,12 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
         .map((u) => PlutoRow(cells: {
               'name': PlutoCell(value: u.name),
               'nickName': PlutoCell(value: u.nickName),
-              'totalAliveAmount': PlutoCell(value: '${Utils.moneyFormat.format(u.totalAliveAmount)}đ'),
-              'totalDeadAmount': PlutoCell(value: '${Utils.moneyFormat.format(u.totalDeadAmount)}đ'),
-              'totalTakenAmount': PlutoCell(value: '${Utils.moneyFormat.format(u.totalTakenAmount)}đ'),
-              'totalProcessingAmount': PlutoCell(value: '${Utils.moneyFormat.format(u.totalProcessingAmount)}đ'),
-              'totalDebtAmount': PlutoCell(value: '${Utils.moneyFormat.format(u.totalDebtAmount)}đ'),
-              'fundRatio': PlutoCell(value: '${Utils.moneyFormat.format(u.fundRatio)}đ'),
+              'totalAliveAmount': PlutoCell(value: u.totalAliveAmount),
+              'totalDeadAmount': PlutoCell(value: u.totalDeadAmount),
+              'totalTakenAmount': PlutoCell(value: u.totalTakenAmount),
+              'totalProcessingAmount': PlutoCell(value: u.totalProcessingAmount),
+              'totalDebtAmount': PlutoCell(value: u.totalDebtAmount),
+              'fundRatio': PlutoCell(value: u.fundRatio),
             }))
         .toList();
 

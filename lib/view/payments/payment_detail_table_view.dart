@@ -143,22 +143,20 @@ class FundSessionDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<PlutoRow> rows = fundBills
-        .map(
-          (e) => PlutoRow(
-            cells: {
-              'fundName': PlutoCell(value: e.fromFund.name),
-              'predictedPrice': PlutoCell(value: (e.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.predictedPrice)}đ' : ''),
-              'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(e.fromFund.openDate)),
-              'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(e.fromFund.fundPrice)}đ'),
-              'fundOpenText': PlutoCell(value: e.fromFund.openDateText),
-              'sessionNumber': PlutoCell(value: '${e.fromSession.sessionNumber}/${e.fromFund.membersCount}'),
-              'takeFromOwnerPrice': PlutoCell(value: (e.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.payCost)}đ' : ''),
-              'takeFromFundMemberPrice': PlutoCell(value: (e.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(e.fromSessionDetail.payCost)}đ' : ''),
-            },
-          ),
-        )
-        .toList();
+    List<PlutoRow> rows = fundBills.map((fb) {
+      return PlutoRow(
+        cells: {
+          'fundName': PlutoCell(value: fb.fromFund.name),
+          'predictedPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromSessionDetail.predictedPrice)}đ'),
+          'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.openDate)),
+          'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromFund.fundPrice)}đ'),
+          'fundOpenText': PlutoCell(value: Utils.dateFormat.format(fb.fromSession.takenDate)),
+          'sessionNumber': PlutoCell(value: '${fb.fromSession.sessionNumber}/${fb.fromFund.membersCount}'),
+          'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+          'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+        },
+      );
+    }).toList();
 
     return PlutoGrid(mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
   }

@@ -12,10 +12,8 @@ import 'package:hui_management/routes/app_route.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sherlock/completion.dart';
 import 'package:sherlock/result.dart';
 import 'package:sherlock/sherlock.dart';
-import 'package:sherlock/widget.dart';
 
 class MemberWidget extends StatelessWidget {
   final SubUserModel user;
@@ -100,7 +98,9 @@ class MembersScreen extends StatefulWidget {
 enum AdditionalFilter { sortByAZ }
 
 class _MembersScreenState extends State<MembersScreen> {
-  Set<AdditionalFilter> additionalFilters = {};
+  Set<AdditionalFilter> additionalFilters = {
+    AdditionalFilter.sortByAZ,
+  };
 
   String filterText = '';
 

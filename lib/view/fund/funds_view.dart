@@ -86,6 +86,7 @@ class SingleFundScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
+                dense: true,
                 leading: CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
                   child: Text('D${generalFundProvider.getFunds().indexOf(fund) + 1}'),
@@ -97,7 +98,7 @@ class SingleFundScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tên dây hụi: ', textAlign: TextAlign.left),
-                        Text('Ngày khui hụi: ', textAlign: TextAlign.left),
+                        Text('Giờ khui: ', textAlign: TextAlign.left),
                         Text('Mệnh giá: ', textAlign: TextAlign.left),
                         Text('Hoa hồng: ', textAlign: TextAlign.left),
                         Text('Ngày tạo dây hụi: ', textAlign: TextAlign.left),
@@ -148,7 +149,6 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
         ? results.map((e) => SingleFundScreen(fund: GeneralFundModel.fromJson(e.element))).toList()
         : generalFundProvider
             .getFunds()
-            .where((f) => f.toString().toLowerCase().replaceAll(' ', '').contains(filterText.toLowerCase()))
             .map(
               (e) => SingleFundScreen(fund: e),
             )

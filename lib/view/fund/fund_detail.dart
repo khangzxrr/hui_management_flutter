@@ -44,7 +44,7 @@ class FundDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Tên:    ', textAlign: TextAlign.right),
-                      Text('Ngày mở hụi:    ', textAlign: TextAlign.right),
+                      Text('Giờ khui:    ', textAlign: TextAlign.right),
                       Text('Mệnh giá:    ', textAlign: TextAlign.right),
                       Text('Hoa hồng:    ', textAlign: TextAlign.right),
                       Text('Ngày tạo hụi:    ', textAlign: TextAlign.right),

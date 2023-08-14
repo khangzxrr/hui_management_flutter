@@ -1,8 +1,5 @@
-import 'dart:async';
 import 'dart:developer';
-import 'dart:js_interop';
 
-import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +49,8 @@ class SingleMemberScreen extends StatelessWidget {
                       placeholder: (context, url) => const CircularProgressIndicator(),
                       errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
-                    title: Text('${user.name} (${user.nickName})'),
-                    subtitle: Text('${user.identity}\n${user.phoneNumber}\n${user.bankName} - ${user.bankNumber}\n${user.address}\n${user.additionalInfo}'),
+                    title: Text(isOnPhone ? user.name : '${user.name} (${user.nickName})'),
+                    subtitle: Text(isOnPhone ? user.nickName : ''),
                   ),
                 ),
                 const SizedBox(
