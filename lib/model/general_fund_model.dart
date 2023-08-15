@@ -6,7 +6,10 @@ part 'general_fund_model.g.dart';
 class GeneralFundModel {
   int id;
   String name;
-  String openDateText;
+
+  int newSessionDurationDayCount;
+  int takenSessionDeliveryDayCount;
+
   DateTime openDate;
   double fundPrice;
   double serviceCost;
@@ -17,7 +20,8 @@ class GeneralFundModel {
   GeneralFundModel({
     required this.id,
     required this.name,
-    required this.openDateText,
+    required this.newSessionDurationDayCount,
+    required this.takenSessionDeliveryDayCount,
     required this.openDate,
     required this.fundPrice,
     required this.serviceCost,
@@ -30,6 +34,6 @@ class GeneralFundModel {
 
   @override
   String toString() {
-    return 'GeneralFundModel{id: $id, name: $name, openDateText: $openDateText, openDate: $openDate, fundPrice: $fundPrice, serviceCost: $serviceCost, membersCount: $membersCount, sessionsCount: $sessionsCount}';
+    return 'GeneralFundModel{id: $id, name: $name, new sesion duration day count: $newSessionDurationDayCount, taken session delivery day count: $takenSessionDeliveryDayCount, openDate: $openDate, fundPrice: $fundPrice, serviceCost: $serviceCost, membersCount: $membersCount, sessionsCount: $sessionsCount}';
   }
 }

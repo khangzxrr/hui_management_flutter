@@ -61,6 +61,7 @@ dependencies:
   number_to_vietnamese_words: ^1.0.1+1
   liquid_pull_to_refresh: ^3.0.1
   sherlock: ^0.2.2
+  firebase_messaging: ^14.6.5
   
 
 dev_dependencies:

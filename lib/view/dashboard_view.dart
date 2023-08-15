@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
@@ -145,17 +147,29 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
               tabRouter.setActiveIndex(index);
 
               if (index == 3) {
-                print('fetch payment members');
-                await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport().run();
+                final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport().run();
+                getAllWithPaymentReportResult.match((l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
+                }, (r) => null);
               } else if (index == 4) {
-                print('fetch report');
-                await Provider.of<UserReportProvider>(context, listen: false).getAllReport().run();
+                final getAllReportResult = await Provider.of<UserReportProvider>(context, listen: false).getAllReport().run();
+                getAllReportResult.match((l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
+                }, (r) => null);
               } else if (index == 2) {
-                print('fetch funds');
-                await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds().run();
+                final fetchFundsResult = await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds().run();
+                fetchFundsResult.match((l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách dây hụi');
+                }, (r) => null);
               } else if (index == 1) {
-                print('fetch members');
-                await Provider.of<SubUsersProvider>(context, listen: false).getAllUsers().run();
+                final getAllUsersResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllUsers().run();
+                getAllUsersResult.match((l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
+                }, (r) => null);
               }
             },
             items: const [

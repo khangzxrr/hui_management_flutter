@@ -43,18 +43,20 @@ class FundDetailScreen extends StatelessWidget {
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tên:    ', textAlign: TextAlign.right),
-                      Text('Giờ khui:    ', textAlign: TextAlign.right),
-                      Text('Mệnh giá:    ', textAlign: TextAlign.right),
-                      Text('Hoa hồng:    ', textAlign: TextAlign.right),
-                      Text('Ngày tạo hụi:    ', textAlign: TextAlign.right),
+                      Text('Tên:    ', textAlign: TextAlign.left),
+                      Text('ngày khui: ', textAlign: TextAlign.left),
+                      Text('ngày giao: ', textAlign: TextAlign.left),
+                      Text('Mệnh giá:    ', textAlign: TextAlign.left),
+                      Text('Hoa hồng:    ', textAlign: TextAlign.left),
+                      Text('Ngày tạo hụi:    ', textAlign: TextAlign.left),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(fundProvider.fund.name, textAlign: TextAlign.right),
-                      Text(fundProvider.fund.openDateText, textAlign: TextAlign.right),
+                      Text(fundProvider.fund.newSessionDurationDayCount.toString(), textAlign: TextAlign.right),
+                      Text(fundProvider.fund.takenSessionDeliveryDayCount.toString(), textAlign: TextAlign.right),
                       Text('${Utils.moneyFormat.format(fundProvider.fund.fundPrice)}đ', textAlign: TextAlign.right),
                       Text('${Utils.moneyFormat.format(fundProvider.fund.serviceCost)}đ', textAlign: TextAlign.right),
                       Text(Utils.dateFormat.format(fundProvider.fund.openDate), textAlign: TextAlign.right),

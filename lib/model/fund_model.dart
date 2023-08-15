@@ -13,7 +13,8 @@ class Fund extends GeneralFundModel {
   Fund({
     required super.id,
     required super.name,
-    required super.openDateText,
+    required super.newSessionDurationDayCount,
+    required super.takenSessionDeliveryDayCount,
     required super.openDate,
     required super.fundPrice,
     required super.serviceCost,

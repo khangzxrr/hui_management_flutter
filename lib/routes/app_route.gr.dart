@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    DashboardInfoRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DashboardInfoScreen(),
+      );
+    },
     DashboardRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -98,7 +104,7 @@ abstract class _$AppRouter extends RootStackRouter {
     MembersRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MembersScreen(),
+        child: const MembersScreen(),
       );
     },
     MemberEditRoute.name: (routeData) {
@@ -148,13 +154,21 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    DashboardInfoRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const DashboardInfoScreen(),
-      );
-    },
   };
+}
+
+/// generated route for
+/// [DashboardInfoScreen]
+class DashboardInfoRoute extends PageRouteInfo<void> {
+  const DashboardInfoRoute({List<PageRouteInfo>? children})
+      : super(
+          DashboardInfoRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DashboardInfoRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -219,7 +233,8 @@ class FundEditRoute extends PageRouteInfo<FundEditRouteArgs> {
 
   static const String name = 'FundEditRoute';
 
-  static const PageInfo<FundEditRouteArgs> page = PageInfo<FundEditRouteArgs>(name);
+  static const PageInfo<FundEditRouteArgs> page =
+      PageInfo<FundEditRouteArgs>(name);
 }
 
 class FundEditRouteArgs {
@@ -271,7 +286,8 @@ class FundSessionListRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [CreateSessionEnterInfoScreen]
-class CreateSessionEnterInfoRoute extends PageRouteInfo<CreateSessionEnterInfoRouteArgs> {
+class CreateSessionEnterInfoRoute
+    extends PageRouteInfo<CreateSessionEnterInfoRouteArgs> {
   CreateSessionEnterInfoRoute({
     Key? key,
     required FundMember fundMember,
@@ -287,7 +303,8 @@ class CreateSessionEnterInfoRoute extends PageRouteInfo<CreateSessionEnterInfoRo
 
   static const String name = 'CreateSessionEnterInfoRoute';
 
-  static const PageInfo<CreateSessionEnterInfoRouteArgs> page = PageInfo<CreateSessionEnterInfoRouteArgs>(name);
+  static const PageInfo<CreateSessionEnterInfoRouteArgs> page =
+      PageInfo<CreateSessionEnterInfoRouteArgs>(name);
 }
 
 class CreateSessionEnterInfoRouteArgs {
@@ -340,7 +357,8 @@ class SessionDetailRoute extends PageRouteInfo<SessionDetailRouteArgs> {
 
   static const String name = 'SessionDetailRoute';
 
-  static const PageInfo<SessionDetailRouteArgs> page = PageInfo<SessionDetailRouteArgs>(name);
+  static const PageInfo<SessionDetailRouteArgs> page =
+      PageInfo<SessionDetailRouteArgs>(name);
 }
 
 class SessionDetailRouteArgs {
@@ -424,7 +442,8 @@ class MemberEditRoute extends PageRouteInfo<MemberEditRouteArgs> {
 
   static const String name = 'MemberEditRoute';
 
-  static const PageInfo<MemberEditRouteArgs> page = PageInfo<MemberEditRouteArgs>(name);
+  static const PageInfo<MemberEditRouteArgs> page =
+      PageInfo<MemberEditRouteArgs>(name);
 }
 
 class MemberEditRouteArgs {
@@ -478,7 +497,8 @@ class PaymentDetailRoute extends PageRouteInfo<PaymentDetailRouteArgs> {
 
   static const String name = 'PaymentDetailRoute';
 
-  static const PageInfo<PaymentDetailRouteArgs> page = PageInfo<PaymentDetailRouteArgs>(name);
+  static const PageInfo<PaymentDetailRouteArgs> page =
+      PageInfo<PaymentDetailRouteArgs>(name);
 }
 
 class PaymentDetailRouteArgs {
@@ -515,7 +535,8 @@ class PaycheckRoute extends PageRouteInfo<PaycheckRouteArgs> {
 
   static const String name = 'PaycheckRoute';
 
-  static const PageInfo<PaycheckRouteArgs> page = PageInfo<PaycheckRouteArgs>(name);
+  static const PageInfo<PaycheckRouteArgs> page =
+      PageInfo<PaycheckRouteArgs>(name);
 }
 
 class PaycheckRouteArgs {
@@ -552,7 +573,8 @@ class PaymentListOfUserRoute extends PageRouteInfo<PaymentListOfUserRouteArgs> {
 
   static const String name = 'PaymentListOfUserRoute';
 
-  static const PageInfo<PaymentListOfUserRouteArgs> page = PageInfo<PaymentListOfUserRouteArgs>(name);
+  static const PageInfo<PaymentListOfUserRouteArgs> page =
+      PageInfo<PaymentListOfUserRouteArgs>(name);
 }
 
 class PaymentListOfUserRouteArgs {
@@ -569,18 +591,4 @@ class PaymentListOfUserRouteArgs {
   String toString() {
     return 'PaymentListOfUserRouteArgs{key: $key, user: $user}';
   }
-}
-
-/// generated route for
-/// [DashboardInfoScreen]
-class DashboardInfoRoute extends PageRouteInfo<void> {
-  const DashboardInfoRoute({List<PageRouteInfo>? children})
-      : super(
-          DashboardInfoRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DashboardInfoRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -98,7 +98,8 @@ class SingleFundScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tên dây hụi: ', textAlign: TextAlign.left),
-                        Text('Giờ khui: ', textAlign: TextAlign.left),
+                        Text('ngày khui: ', textAlign: TextAlign.left),
+                        Text('ngày giao: ', textAlign: TextAlign.left),
                         Text('Mệnh giá: ', textAlign: TextAlign.left),
                         Text('Hoa hồng: ', textAlign: TextAlign.left),
                         Text('Ngày tạo dây hụi: ', textAlign: TextAlign.left),
@@ -108,7 +109,8 @@ class SingleFundScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(fund.name, textAlign: TextAlign.right),
-                        Text(fund.openDateText, textAlign: TextAlign.right),
+                        Text(fund.newSessionDurationDayCount.toString(), textAlign: TextAlign.right),
+                        Text(fund.takenSessionDeliveryDayCount.toString(), textAlign: TextAlign.right),
                         Text('${Utils.moneyFormat.format(fund.fundPrice)}đ', textAlign: TextAlign.right),
                         Text('${Utils.moneyFormat.format(fund.serviceCost)}đ', textAlign: TextAlign.right),
                         Text(Utils.dateFormat.format(fund.openDate), textAlign: TextAlign.right),

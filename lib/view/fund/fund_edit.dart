@@ -18,7 +18,7 @@ class FundEditScreen extends StatefulWidget {
   final bool isNew;
   final GeneralFundModel? fund;
 
-  FundEditScreen({super.key, required this.isNew, required this.fund});
+  const FundEditScreen({super.key, required this.isNew, required this.fund});
 
   @override
   State<FundEditScreen> createState() => _FundEditScreenState();
@@ -35,7 +35,9 @@ class _FundEditScreenState extends State<FundEditScreen> {
 
   final _ownerCostKey = GlobalKey<FormBuilderFieldState>();
 
-  final _openDateTextKey = GlobalKey<FormBuilderFieldState>();
+  final _newSessionDurationDayCountKey = GlobalKey<FormBuilderFieldState>();
+
+  final _takenSessionDeliveryDayCountKey = GlobalKey<FormBuilderFieldState>();
 
   int cost = 0;
   int ownerCost = 0;
@@ -115,13 +117,23 @@ class _FundEditScreenState extends State<FundEditScreen> {
                   },
                 ),
                 FormBuilderTextField(
-                  key: _openDateTextKey,
-                  name: 'openDateText',
-                  decoration: const InputDecoration(labelText: 'Khui vào lúc (ghi chú)'),
-                  initialValue: widget.isNew ? "" : widget.fund!.openDateText,
+                  key: _newSessionDurationDayCountKey,
+                  name: 'newSesionDurationDayCount',
+                  decoration: const InputDecoration(labelText: 'Ngày khui tính từ ngày mở dây hụi'),
+                  initialValue: widget.isNew ? "" : widget.fund!.newSessionDurationDayCount.toString(),
                   autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required()],
+                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                  ),
+                ),
+                FormBuilderTextField(
+                  key: _takenSessionDeliveryDayCountKey,
+                  name: 'takenSessionDeliveryDayCount',
+                  decoration: const InputDecoration(labelText: 'Ngày giao tính từ ngày mở dây hụi'),
+                  initialValue: widget.isNew ? "" : widget.fund!.newSessionDurationDayCount.toString(),
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
                   ),
                 ),
                 FormBuilderDateTimePicker(
@@ -149,7 +161,8 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         name: _nameKey.currentState!.value,
                         openDate: _openDateKey.currentState!.value,
                         serviceCost: double.parse(_ownerCostKey.currentState!.value),
-                        openDateText: _openDateTextKey.currentState!.value,
+                        newSessionDurationDayCount: int.parse(_newSessionDurationDayCountKey.currentState!.value),
+                        takenSessionDeliveryDayCount: int.parse(_takenSessionDeliveryDayCountKey.currentState!.value),
                         membersCount: 0,
                         sessionsCount: 0,
                       );

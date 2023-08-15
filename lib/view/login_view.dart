@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -69,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                 FormBuilderTextField(
                   key: _emailFieldKey,
                   name: 'email',
+                  initialValue: kReleaseMode ? '' : '0862106650',
                   autofillHints: const [AutofillHints.username],
                   decoration: const InputDecoration(labelText: 'Số điện thoại'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -80,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                   key: _passwordFieldKey,
                   name: 'password',
                   autofillHints: const [AutofillHints.password],
+                  initialValue: kReleaseMode ? '' : '123123aaa',
                   decoration: const InputDecoration(labelText: 'Mật khẩu'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: FormBuilderValidators.compose(
