@@ -129,9 +129,9 @@ class FundSessionListScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.router.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false),
+        onPressed: () => context.router.popUntil((route) => route.settings.name == FundDetailRoute.name),
         heroTag: null,
-        label: const Text('Menu chính'),
+        label: const Text('Về trang quản lí dây hụi'),
         icon: const Icon(Icons.home),
       ),
     );

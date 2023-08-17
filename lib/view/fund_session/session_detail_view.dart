@@ -1,9 +1,11 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
 import '../../helper/utils.dart';
+import '../../routes/app_route.dart';
 
 class TakenSessionDetailWidget extends StatelessWidget {
   final NormalSessionDetail takenSessionDetail;
@@ -105,6 +107,12 @@ class SessionDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('dây hụi $fundName kỳ ${session.sessionNumber}'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.router.popUntil((route) => route.settings.name == FundDetailRoute.name),
+        heroTag: null,
+        label: const Text('Về trang quản lí dây hụi'),
+        icon: const Icon(Icons.home),
       ),
       body: SingleChildScrollView(
         child: Padding(
