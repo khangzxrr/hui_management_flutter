@@ -146,7 +146,6 @@ class AddMemberWidget extends StatelessWidget {
                   DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
                 },
                 (r) {
-                  context.router.pop();
                   DialogHelper.showSnackBar(context, 'Thêm thành viên mới thành công');
                 },
               ).run();
@@ -187,6 +186,13 @@ class FundMembersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
+        automaticallyImplyLeading: false,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.router.pop(),
+        heroTag: null,
+        label: const Text('Xong'),
+        icon: const Icon(Icons.check),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
