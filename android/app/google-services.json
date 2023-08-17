@@ -29,6 +29,13 @@
             {
               "client_id": "976834930137-pasc5i12n9lv7uevk3fl64gbo9g923a3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "976834930137-1842jja6erojm2vunfus1ofja31d8ivf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.huiManagement"
+              }
             }
           ]
         }
