@@ -4,10 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/fund_model.dart';
+import 'package:hui_management/model/fund_report_model.dart';
 import 'package:hui_management/service/fund_service.dart';
 
 class FundProvider with ChangeNotifier {
   late Fund _fund;
+
+  TaskEither<String, FundReportModel> getReport(String reportCode) => TaskEither.tryCatch(
+        () async => await GetIt.I<FundService>().getReport(reportCode),
+        (error, stackTrace) => error.toString(),
+      );
+
+  TaskEither<String, bool> removeFund(int fundId) => TaskEither.tryCatch(
+        () async => GetIt.I<FundService>().remove(fundId),
+        (error, stackTrace) => error.toString(),
+      );
 
   TaskEither<String, void> getFund(int fundId) => TaskEither.tryCatch(
         () async {

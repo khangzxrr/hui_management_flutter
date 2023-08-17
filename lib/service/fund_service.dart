@@ -6,10 +6,21 @@ import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorizeHttp.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/fund_model.dart';
+import 'package:hui_management/model/fund_report_model.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 
 class FundService {
   final httpClient = GetIt.I<AuthorizeHttp>();
+
+  Future<bool> remove(int fundId) async {
+    final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/funds/$fundId'));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+
+    throw Exception(response.body);
+  }
 
   Future<bool> removeSession(int fundId, int sessionId) async {
     final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/funds/$fundId/sessions/$sessionId'));
@@ -105,6 +116,16 @@ class FundService {
 
         throw Exception(response.body);
       }, (error, stackTrace) => error.toString());
+
+  Future<FundReportModel> getReport(String reportCode) async {
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds/reports/$reportCode'));
+
+    if (response.statusCode == 200) {
+      return FundReportModel.fromJson(jsonDecode(response.body));
+    }
+
+    throw Exception(response.body);
+  }
 
   Future<List<GeneralFundModel>> getAll() async {
     final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds'));
