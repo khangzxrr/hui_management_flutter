@@ -8,11 +8,17 @@ class GeneralFundModel {
   String name;
 
   int newSessionDurationDayCount;
+  DateTime nextSessionDurationDate;
+
   int takenSessionDeliveryDayCount;
+  DateTime nextTakenSessionDeliveryDate;
 
   DateTime openDate;
+  DateTime endDate;
   double fundPrice;
   double serviceCost;
+
+  double lastSessionFundPrice;
 
   int membersCount;
   int sessionsCount;
@@ -21,10 +27,14 @@ class GeneralFundModel {
     required this.id,
     required this.name,
     required this.newSessionDurationDayCount,
+    required this.nextSessionDurationDate,
     required this.takenSessionDeliveryDayCount,
+    required this.nextTakenSessionDeliveryDate,
     required this.openDate,
+    required this.endDate,
     required this.fundPrice,
     required this.serviceCost,
+    required this.lastSessionFundPrice,
     required this.membersCount,
     required this.sessionsCount,
   });
