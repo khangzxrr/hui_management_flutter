@@ -162,7 +162,11 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         openDate: _openDateKey.currentState!.value,
                         serviceCost: double.parse(_ownerCostKey.currentState!.value),
                         newSessionDurationDayCount: int.parse(_newSessionDurationDayCountKey.currentState!.value),
+                        nextSessionDurationDate: DateTime.now(),
                         takenSessionDeliveryDayCount: int.parse(_takenSessionDeliveryDayCountKey.currentState!.value),
+                        nextTakenSessionDeliveryDate: DateTime.now(),
+                        endDate: DateTime.now(),
+                        lastSessionFundPrice: 0,
                         membersCount: 0,
                         sessionsCount: 0,
                       );
