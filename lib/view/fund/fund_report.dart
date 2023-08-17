@@ -115,6 +115,8 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
     });
   }
 
+  final _formKey = GlobalKey<FormBuilderState>();
+
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
@@ -130,8 +132,6 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
       PlutoColumn(title: 'Tên hụi viên', field: 'takenBy', type: PlutoColumnType.text(), enableEditingMode: false, width: 100),
       PlutoColumn(title: 'Ghi chú', field: 'note', type: PlutoColumnType.text(), enableEditingMode: true),
     ];
-
-    final _formKey = GlobalKey<FormBuilderState>();
 
     final takenSessionMemberRows = fundProvider.fund.sessions.asMap().entries.map((s) {
       final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == 'Taken').first;
