@@ -18,12 +18,10 @@ class ImageService {
     return image_lib.encodeJpg(resizedImage);
   }
 
-  Future<String> uploadImage(XFile file) async {
-    final resizedImageBytes = await compute(resizeAndEncodeImage, file);
-
+  Future<String> uploadFromBytes(Uint8List bytes, String filename) async {
     var request = MultipartRequest('POST', Uri.parse('${Constants.apiHostName}/Media/Upload'));
     request.files.add(
-      MultipartFile.fromBytes('Media', resizedImageBytes, filename: file.name),
+      MultipartFile.fromBytes('Media', bytes, filename: filename),
     );
 
     var response = await request.send();
@@ -34,5 +32,11 @@ class ImageService {
     }
 
     throw Exception('Failed to upload image CODE: ${response.statusCode} REASON: $body');
+  }
+
+  Future<String> uploadImage(XFile file) async {
+    final resizedImageBytes = await compute(resizeAndEncodeImage, file);
+
+    return await uploadFromBytes(resizedImageBytes, file.name);
   }
 }
