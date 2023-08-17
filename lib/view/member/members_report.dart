@@ -22,7 +22,14 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
   String filterText = '';
 
   List<PlutoColumn> columns = [
-    PlutoColumn(title: 'Tên hụi viên', field: 'name', type: PlutoColumnType.text(), readOnly: true, enableSorting: true, frozen: PlutoColumnFrozen.start),
+    PlutoColumn(
+      title: 'Tên hụi viên',
+      field: 'name',
+      type: PlutoColumnType.text(),
+      readOnly: true,
+      enableSorting: true,
+      frozen: PlutoColumnFrozen.start,
+    ),
     PlutoColumn(
       title: 'Biệt danh',
       field: 'nickName',
@@ -217,6 +224,11 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
         : PlutoGrid(
             columns: columns,
             rows: rows,
+            // configuration: PlutoGridConfiguration(
+            //   columnSize: PlutoGridColumnSizeConfig(
+            //     autoSizeMode: PlutoAutoSizeMode.scale,
+            //   ),
+            // ),
           );
   }
 
