@@ -7,26 +7,31 @@ class DialogHelper {
     ));
   }
 
-  static Future<void> showAlert(BuildContext context) async {
-    return showDialog<void>(
+  static Future<bool?> showConfirmDialog(BuildContext context, String title, String content) async {
+    return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('AlertDialog Title'),
+          title: Text(title),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text(content),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Approve'),
+              child: const Text('Hủy'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: const Text('Chấp nhận'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
               },
             ),
           ],
