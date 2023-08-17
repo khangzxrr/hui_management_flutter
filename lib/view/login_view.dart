@@ -3,11 +3,14 @@ import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/constants.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/login_service.dart';
@@ -48,7 +51,25 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
   final getIt = GetIt.instance;
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) {}
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
+    print('request permission');
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    final fcmToken = await FirebaseMessaging.instance.getToken(vapidKey: Constants.webPushNotificationToken);
+
+    print('FCM token: $fcmToken');
+
+    print('User granted permission: ${settings.authorizationStatus}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +128,11 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                           authenticationEither.match(
                             (error) {
                               log(error);
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text('Sai tài khoản hoặc mật khẩu'),
-                              ));
+                              if (error.contains('XMLHttpRequest error')) {
+                                DialogHelper.showSnackBar(context, 'Lỗi kết nối đến máy chủ, vui lòng thử lại sau');
+                              } else {
+                                DialogHelper.showSnackBar(context, 'Sai tài khoản hoặc mật khẩu');
+                              }
                               disableLoading();
                             },
                             (authentication) {
