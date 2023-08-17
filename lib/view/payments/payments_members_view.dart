@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/constants.dart';
@@ -27,52 +28,55 @@ class SingleMemberScreen extends StatelessWidget {
 
     return Card(
       child: InkWell(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CachedNetworkImage(
-                imageUrl: user.imageUrl,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 80.0,
-                  height: 80.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+        child: Container(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CachedNetworkImage(
+                  imageUrl: user.imageUrl,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                    ),
                   ),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-            ),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Tên: '),
-                    const Text('Nick name: '),
-                    const SizedBox(height: 8),
-                    Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'trả'}:  '),
-                    const Text('Đã thanh toán: '),
-                    const Text('Còn nợ: '),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(user.name),
-                    Text(user.nickName),
-                    const SizedBox(height: 8),
-                    Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
-                    Text('${Utils.moneyFormat.format(user.totalDebtAmount)}đ'), //lazy to change the name!
-                    Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ'),
-                  ],
-                )
-              ],
-            ),
-          ],
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Tên: '),
+                      const Text('Nick name: '),
+                      const SizedBox(height: 8),
+                      Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'trả'}:  '),
+                      const Text('Đã thanh toán: '),
+                      const Text('Còn nợ: '),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      AutoSizeText(user.name),
+                      AutoSizeText(user.nickName),
+                      const SizedBox(height: 8),
+                      Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
+                      Text('${Utils.moneyFormat.format(user.totalDebtAmount)}đ'), //lazy to change the name!
+                      Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ'),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
         onTap: () {
           Provider.of<PaymentProvider>(context, listen: false).getPayments(user).match((l) {

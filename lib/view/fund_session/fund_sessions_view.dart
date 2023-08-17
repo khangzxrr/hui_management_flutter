@@ -48,7 +48,6 @@ class SessionViewWidget extends StatelessWidget {
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            label: 'Xóa',
           ),
         ],
       ),
@@ -61,6 +60,7 @@ class SessionViewWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ListTile(
+                dense: true,
                 leading: isOnPhone
                     ? null
                     : CircleAvatar(

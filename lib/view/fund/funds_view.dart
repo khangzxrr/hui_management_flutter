@@ -59,7 +59,6 @@ class SingleFundScreen extends StatelessWidget {
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            label: 'Xóa',
           ),
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
@@ -73,7 +72,6 @@ class SingleFundScreen extends StatelessWidget {
             backgroundColor: Color.fromARGB(255, 20, 134, 255),
             foregroundColor: Colors.white,
             icon: Icons.archive,
-            label: 'Lưu trữ',
           ),
           SlidableAction(
             onPressed: (context) {
@@ -87,7 +85,6 @@ class SingleFundScreen extends StatelessWidget {
             backgroundColor: Color.fromARGB(255, 255, 134, 20),
             foregroundColor: Colors.white,
             icon: Icons.edit,
-            label: 'Chỉnh sửa',
           ),
         ],
       ),
@@ -112,10 +109,10 @@ class SingleFundScreen extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 dense: true,
-                leading: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: Text('D${generalFundProvider.getFunds().indexOf(fund) + 1}'),
-                ),
+                // leading: CircleAvatar(
+                //   backgroundColor: Theme.of(context).primaryColor,
+                //   child: Text('D${generalFundProvider.getFunds().indexOf(fund) + 1}'),
+                // ),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
