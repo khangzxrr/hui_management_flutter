@@ -82,6 +82,14 @@ class FundSessionDetailWidget extends StatelessWidget {
       width: 100,
     ),
     PlutoColumn(
+      title: 'Mệnh giá',
+      field: 'fundPrice',
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      type: PlutoColumnType.text(),
+      width: 100,
+    ),
+    PlutoColumn(
       title: 'Kỳ',
       field: 'sessionNumber',
       type: PlutoColumnType.text(),
@@ -92,14 +100,6 @@ class FundSessionDetailWidget extends StatelessWidget {
     PlutoColumn(
       title: 'Thăm kêu',
       field: 'predictedPrice',
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      type: PlutoColumnType.text(),
-      width: 100,
-    ),
-    PlutoColumn(
-      title: 'Mệnh giá',
-      field: 'fundPrice',
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
       type: PlutoColumnType.text(),
@@ -137,6 +137,14 @@ class FundSessionDetailWidget extends StatelessWidget {
       titleTextAlign: PlutoColumnTextAlign.center,
       width: 100,
     ),
+    PlutoColumn(
+      title: 'Ngày kết thúc',
+      field: 'fundEndDate',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      width: 100,
+    ),
   ];
 
   FundSessionDetailWidget({super.key, required this.fundBills});
@@ -154,6 +162,7 @@ class FundSessionDetailWidget extends StatelessWidget {
           'sessionNumber': PlutoCell(value: '${fb.fromSession.sessionNumber}/${fb.fromFund.membersCount}'),
           'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
           'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+          'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate)),
         },
       );
     }).toList();
