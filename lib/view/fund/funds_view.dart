@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
@@ -20,8 +21,9 @@ import 'fund_edit.dart';
 
 class SingleFundScreen extends StatelessWidget {
   final GeneralFundModel fund;
+  final BuildContext parentContext;
 
-  const SingleFundScreen({super.key, required this.fund});
+  const SingleFundScreen({super.key, required this.fund, required this.parentContext});
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,29 @@ class SingleFundScreen extends StatelessWidget {
 
         // All actions are defined in the children parameter.
         children: [
+          SlidableAction(
+            onPressed: (context) {
+              DialogHelper.showConfirmDialog(parentContext, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa dây hụi này, dây hụi bạn xóa sẽ không thể khôi phục lại.').then(
+                (result) async {
+                  if (result == null || !result) return;
+
+                  final isSuccessEither = await fundProvider.removeFund(fund.id).run();
+
+                  isSuccessEither.match((l) {
+                    log(l);
+                    DialogHelper.showSnackBar(parentContext, 'Có lỗi xảy ra, Xóa dây hụi thất bại');
+                  }, (r) {
+                    DialogHelper.showSnackBar(parentContext, 'Xóa dây hụi thành công');
+                    generalFundProvider.removeFund(fund);
+                  });
+                },
+              );
+            },
+            backgroundColor: const Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Xóa',
+          ),
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
             onPressed: (context) async {
@@ -45,7 +70,7 @@ class SingleFundScreen extends StatelessWidget {
                 generalFundProvider.removeFund(fund);
               }).run();
             },
-            backgroundColor: const Color(0xFFFE4A49),
+            backgroundColor: Color.fromARGB(255, 20, 134, 255),
             foregroundColor: Colors.white,
             icon: Icons.archive,
             label: 'Lưu trữ',
@@ -59,7 +84,7 @@ class SingleFundScreen extends StatelessWidget {
                 ),
               );
             },
-            backgroundColor: const Color.fromARGB(255, 31, 132, 248),
+            backgroundColor: Color.fromARGB(255, 255, 134, 20),
             foregroundColor: Colors.white,
             icon: Icons.edit,
             label: 'Chỉnh sửa',
@@ -98,22 +123,24 @@ class SingleFundScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tên dây hụi: ', textAlign: TextAlign.left),
-                        Text('ngày khui: ', textAlign: TextAlign.left),
-                        Text('ngày giao: ', textAlign: TextAlign.left),
+                        Text('ngày khui tiếp theo: ', textAlign: TextAlign.left),
+                        Text('ngày giao tiếp theo: ', textAlign: TextAlign.left),
                         Text('Mệnh giá: ', textAlign: TextAlign.left),
                         Text('Hoa hồng: ', textAlign: TextAlign.left),
                         Text('Ngày tạo dây hụi: ', textAlign: TextAlign.left),
+                        Text('Ngày kết thúc dây hụi: ', textAlign: TextAlign.left),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(fund.name, textAlign: TextAlign.right),
-                        Text(fund.newSessionDurationDayCount.toString(), textAlign: TextAlign.right),
-                        Text(fund.takenSessionDeliveryDayCount.toString(), textAlign: TextAlign.right),
+                        Text(Utils.dateFormat.format(fund.nextSessionDurationDate), textAlign: TextAlign.right),
+                        Text(Utils.dateFormat.format(fund.nextTakenSessionDeliveryDate), textAlign: TextAlign.right),
                         Text('${Utils.moneyFormat.format(fund.fundPrice)}đ', textAlign: TextAlign.right),
                         Text('${Utils.moneyFormat.format(fund.serviceCost)}đ', textAlign: TextAlign.right),
                         Text(Utils.dateFormat.format(fund.openDate), textAlign: TextAlign.right),
+                        Text(Utils.dateFormat.format(fund.endDate), textAlign: TextAlign.right),
                       ],
                     ),
                   ],
@@ -148,11 +175,19 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
     final sherlock = Sherlock(elements: generalFundProvider.getFunds().map((e) => e.toJson()).toList());
 
     List<Widget> generalFundWigets = filterText.isNotEmpty
-        ? results.map((e) => SingleFundScreen(fund: GeneralFundModel.fromJson(e.element))).toList()
+        ? results
+            .map((e) => SingleFundScreen(
+                  fund: GeneralFundModel.fromJson(e.element),
+                  parentContext: context,
+                ))
+            .toList()
         : generalFundProvider
             .getFunds()
             .map(
-              (e) => SingleFundScreen(fund: e),
+              (e) => SingleFundScreen(
+                fund: e,
+                parentContext: context,
+              ),
             )
             .toList();
 

@@ -56,6 +56,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const FundMembersScreen(),
       );
     },
+    FundReportRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FundReportScreen(),
+      );
+    },
+    PdfExportReviewRoute.name: (routeData) {
+      final args = routeData.argsAs<PdfExportReviewRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PdfExportReviewScreen(
+          key: args.key,
+          fundReportToPdfViewModel: args.fundReportToPdfViewModel,
+        ),
+      );
+    },
     FundSessionListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -268,6 +284,58 @@ class FundMembersRoute extends PageRouteInfo<void> {
   static const String name = 'FundMembersRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FundReportScreen]
+class FundReportRoute extends PageRouteInfo<void> {
+  const FundReportRoute({List<PageRouteInfo>? children})
+      : super(
+          FundReportRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FundReportRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PdfExportReviewScreen]
+class PdfExportReviewRoute extends PageRouteInfo<PdfExportReviewRouteArgs> {
+  PdfExportReviewRoute({
+    Key? key,
+    required FundReportToPdfViewModel fundReportToPdfViewModel,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PdfExportReviewRoute.name,
+          args: PdfExportReviewRouteArgs(
+            key: key,
+            fundReportToPdfViewModel: fundReportToPdfViewModel,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PdfExportReviewRoute';
+
+  static const PageInfo<PdfExportReviewRouteArgs> page =
+      PageInfo<PdfExportReviewRouteArgs>(name);
+}
+
+class PdfExportReviewRouteArgs {
+  const PdfExportReviewRouteArgs({
+    this.key,
+    required this.fundReportToPdfViewModel,
+  });
+
+  final Key? key;
+
+  final FundReportToPdfViewModel fundReportToPdfViewModel;
+
+  @override
+  String toString() {
+    return 'PdfExportReviewRouteArgs{key: $key, fundReportToPdfViewModel: $fundReportToPdfViewModel}';
+  }
 }
 
 /// generated route for
