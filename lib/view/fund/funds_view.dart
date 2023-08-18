@@ -120,8 +120,8 @@ class SingleFundScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Tên dây hụi: ', textAlign: TextAlign.left),
-                        Text('ngày khui tiếp theo: ', textAlign: TextAlign.left),
-                        Text('ngày giao tiếp theo: ', textAlign: TextAlign.left),
+                        Text('ngày khui hụi: ', textAlign: TextAlign.left),
+                        Text('ngày giao hụi: ', textAlign: TextAlign.left),
                         Text('Mệnh giá: ', textAlign: TextAlign.left),
                         Text('Hoa hồng: ', textAlign: TextAlign.left),
                         Text('Ngày tạo dây hụi: ', textAlign: TextAlign.left),
