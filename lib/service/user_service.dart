@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/helper/authorizeHttp.dart';
+import 'package:hui_management/helper/authorize_http.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
 

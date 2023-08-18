@@ -134,8 +134,8 @@ class _FundEditScreenState extends State<FundEditScreen> {
                 FormBuilderTextField(
                   key: _takenSessionDeliveryDayCountKey,
                   name: 'takenSessionDeliveryDayCount',
-                  decoration: const InputDecoration(labelText: 'SỐ Ngày giao đếm từ ngày mở dây hụi (1,2,3...)'),
-                  initialValue: widget.isNew ? "" : widget.fund!.newSessionDurationDayCount.toString(),
+                  decoration: const InputDecoration(labelText: 'SỐ ngày giao đếm từ ngày mở dây hụi (1,2,3...)'),
+                  initialValue: widget.isNew ? "" : widget.fund!.takenSessionDeliveryDayCount.toString(),
                   autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
                     [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
@@ -170,6 +170,8 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         nextSessionDurationDate: DateTime.now(),
                         takenSessionDeliveryDayCount: int.parse(_takenSessionDeliveryDayCountKey.currentState!.value),
                         nextTakenSessionDeliveryDate: DateTime.now(),
+                        currentSessionDurationDate: DateTime.now(),
+                        currentTakenSessionDeliveryDate: DateTime.now(),
                         endDate: DateTime.now(),
                         lastSessionFundPrice: 0,
                         membersCount: 0,

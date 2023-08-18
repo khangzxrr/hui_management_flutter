@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
 
-import '../helper/authorizeHttp.dart';
+import '../helper/authorize_http.dart';
 import '../helper/constants.dart';
 
 class PaymentService {

@@ -33,12 +33,12 @@ void main() async {
       ChangeNotifierProvider(create: (context) => PaymentProvider()),
       ChangeNotifierProvider(create: (context) => UserReportProvider()),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -74,6 +74,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return LoginScreen();
+    return const LoginScreen();
   }
 }

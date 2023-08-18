@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/user_report_model.dart';
 
-import '../helper/authorizeHttp.dart';
+import '../helper/authorize_http.dart';
 import '../helper/constants.dart';
 
 class UserReportService {

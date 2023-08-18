@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hui_management/helper/authorizeHttp.dart';
+import 'package:hui_management/helper/authorize_http.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/fund_report_model.dart';

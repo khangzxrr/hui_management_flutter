@@ -12,7 +12,7 @@ import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../helper/formHelper.dart';
+import '../../helper/form_helper.dart';
 
 @RoutePage()
 class MemberEditScreen extends StatefulWidget {

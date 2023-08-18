@@ -11,9 +11,13 @@ GeneralFundModel _$GeneralFundModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       name: json['name'] as String,
       newSessionDurationDayCount: json['newSessionDurationDayCount'] as int,
+      currentSessionDurationDate:
+          DateTime.parse(json['currentSessionDurationDate'] as String),
       nextSessionDurationDate:
           DateTime.parse(json['nextSessionDurationDate'] as String),
       takenSessionDeliveryDayCount: json['takenSessionDeliveryDayCount'] as int,
+      currentTakenSessionDeliveryDate:
+          DateTime.parse(json['currentTakenSessionDeliveryDate'] as String),
       nextTakenSessionDeliveryDate:
           DateTime.parse(json['nextTakenSessionDeliveryDate'] as String),
       openDate: DateTime.parse(json['openDate'] as String),
@@ -30,9 +34,13 @@ Map<String, dynamic> _$GeneralFundModelToJson(GeneralFundModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'newSessionDurationDayCount': instance.newSessionDurationDayCount,
+      'currentSessionDurationDate':
+          instance.currentSessionDurationDate.toIso8601String(),
       'nextSessionDurationDate':
           instance.nextSessionDurationDate.toIso8601String(),
       'takenSessionDeliveryDayCount': instance.takenSessionDeliveryDayCount,
+      'currentTakenSessionDeliveryDate':
+          instance.currentTakenSessionDeliveryDate.toIso8601String(),
       'nextTakenSessionDeliveryDate':
           instance.nextTakenSessionDeliveryDate.toIso8601String(),
       'openDate': instance.openDate.toIso8601String(),

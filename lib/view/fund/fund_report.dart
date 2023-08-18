@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hui_management/helper/utils.dart';
@@ -11,7 +9,6 @@ import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/view_models/fund_report_to_pdf_vm.dart';
 import 'package:hui_management/view_models/taken_member_report_vm.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:provider/provider.dart';
@@ -49,47 +46,6 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
   };
 
   List<TakenMemberReportViewModel> takenMemberReportViewModels = [];
-
-  Future<void> _displayTextInputDialog(BuildContext context, String key) async {
-    final TextEditingController textFieldController = TextEditingController();
-
-    textFieldController.text = replacebleText[key]!;
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            scrollable: true,
-            title: const Text('Nhập văn bản mới'),
-            content: Column(
-              children: [
-                TextField(
-                  maxLines: 7,
-                  controller: textFieldController,
-                  decoration: const InputDecoration(hintText: "Nhập văn bản cần chỉnh sửa ở đây"),
-                ),
-              ],
-            ),
-            actions: [
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Hủy bỏ'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    replacebleText[key] = textFieldController.text;
-                  });
-                  Navigator.pop(context);
-                },
-                child: const Text('Lưu'),
-              ),
-            ],
-          );
-        });
-  }
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
@@ -145,8 +101,6 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
         },
       );
     }).toList();
-
-    print(takenSessionMemberRows.length);
 
     return Scaffold(
       appBar: AppBar(
@@ -268,8 +222,6 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                       columns: takenSessionColumns,
                       rows: takenSessionMemberRows,
                       onChanged: (event) {
-                        print('changed ${event.row.cells['note']!.value}}');
-
                         int index = int.parse(event.row.cells['index']!.value.toString()) - 1;
 
                         setState(() {

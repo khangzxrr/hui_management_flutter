@@ -8,9 +8,11 @@ class GeneralFundModel {
   String name;
 
   int newSessionDurationDayCount;
+  DateTime currentSessionDurationDate;
   DateTime nextSessionDurationDate;
 
   int takenSessionDeliveryDayCount;
+  DateTime currentTakenSessionDeliveryDate;
   DateTime nextTakenSessionDeliveryDate;
 
   DateTime openDate;
@@ -27,8 +29,10 @@ class GeneralFundModel {
     required this.id,
     required this.name,
     required this.newSessionDurationDayCount,
+    required this.currentSessionDurationDate,
     required this.nextSessionDurationDate,
     required this.takenSessionDeliveryDayCount,
+    required this.currentTakenSessionDeliveryDate,
     required this.nextTakenSessionDeliveryDate,
     required this.openDate,
     required this.endDate,
