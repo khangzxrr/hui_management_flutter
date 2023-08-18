@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
 
                             disableLoading();
 
-                            context.router.navigate(const DashboardRoute());
+                            context.router.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false);
                           },
                         );
                       },

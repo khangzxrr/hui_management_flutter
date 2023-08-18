@@ -29,7 +29,7 @@ class DashboardInfoScreen extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
               ),
             ),
             placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
@@ -45,23 +45,28 @@ class DashboardInfoScreen extends StatelessWidget {
         const SizedBox(height: 5, width: 5),
         AutoSizeText(
           textAlign: TextAlign.center,
-          authenticationProvider.model!.subUser.address,
-          style: const TextStyle(fontSize: 15),
+          'Địa chỉ: ${authenticationProvider.model!.subUser.address}',
+          style: const TextStyle(fontSize: 18),
           maxLines: 1,
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
           'Số điện thoại: ${authenticationProvider.model!.subUser.phoneNumber}',
-          style: const TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 18),
         ),
         const SizedBox(height: 5, width: 5),
         Text(
           textAlign: TextAlign.center,
-          'Bank: ${authenticationProvider.model!.subUser.bankName} - ${authenticationProvider.model!.subUser.bankNumber}',
-          style: const TextStyle(fontSize: 15),
+          'Ngân hàng giao dịch: ${authenticationProvider.model!.subUser.bankName} - ${authenticationProvider.model!.subUser.bankNumber}',
+          style: const TextStyle(fontSize: 18),
         ),
-        const SizedBox(height: 10, width: 15)
+        const SizedBox(height: 10, width: 15),
+        Text(
+          textAlign: TextAlign.center,
+          authenticationProvider.model!.subUser.additionalInfo,
+          style: const TextStyle(fontSize: 18),
+        ),
       ],
     );
   }
