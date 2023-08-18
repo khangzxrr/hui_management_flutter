@@ -15,12 +15,9 @@ class AuthGuard extends AutoRouteGuard {
       final provider = Provider.of<AuthenticationProvider>(context, listen: false);
 
       if (provider.model != null) {
-        log('AuthGuard: user is logged in');
-
         resolver.next();
       } else {
-        log('AuthGuard: not logged yet');
-        resolver.redirect(LoginRoute());
+        resolver.redirect(const LoginRoute());
       }
     } else {
       resolver.next();

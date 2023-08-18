@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart' as fp;
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/authentication_model.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/user_report_provider.dart';
 import '../routes/app_route.dart';
+import '../service/notification_service.dart';
 
 @RoutePage()
 class DashboardScreen extends StatefulWidget {
@@ -187,13 +189,15 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
-    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
+    print('request permission');
 
-    await usersProvider.getAllUsers().run();
-
-    await generalFundProvider.fetchFunds().run();
-
-    print('trigger after first layout');
+    final notificationService = GetIt.I<NotificationService>();
+    await fp.TaskEither.tryCatch(
+      () async => await notificationService.requestPermission(),
+      (error, stackTrace) {
+        log(error.toString());
+        DialogHelper.showSnackBar(context, 'Có lỗi khi yêu cầu cấp quyền thông báo!');
+      },
+    ).run();
   }
 }

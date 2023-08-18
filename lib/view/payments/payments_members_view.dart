@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -24,12 +23,10 @@ class SingleMemberScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isOnPhone = MediaQuery.of(context).size.width < Constants.smallScreenSize;
-
     return Card(
       child: InkWell(
         child: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

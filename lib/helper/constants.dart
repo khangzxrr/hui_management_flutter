@@ -9,4 +9,5 @@ class Constants {
   static const smallScreenSize = 600;
 
   static const String webPushNotificationToken = 'BNGA9XwGd7qCq6VkXXVr0g8Dy-RiQJnv8h-TuPJSLJ50y-H_Mhaizu69Dla-twR00dAB2vIqStua3JGnSXTNsN8';
+  static const String fcmTokenPref = 'FCM_TOKEN_PREF';
 }

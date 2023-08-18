@@ -5,6 +5,7 @@ import 'package:hui_management/helper/authorizeHttp.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:hui_management/service/image_service.dart';
 import 'package:hui_management/service/login_service.dart';
+import 'package:hui_management/service/notification_service.dart';
 import 'package:hui_management/service/payment_service.dart';
 import 'package:hui_management/service/user_report_service.dart';
 import 'package:hui_management/service/user_service.dart';
@@ -19,6 +20,7 @@ class SetupService {
     getIt.registerFactory(() => PaymentService());
     getIt.registerFactory(() => ImageService());
     getIt.registerFactory(() => UserReportService());
+    getIt.registerFactory(() => NotificationService());
   }
 
   static void setupAuthorizeServiced(String token) {

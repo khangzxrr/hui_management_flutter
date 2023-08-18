@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:hui_management/model/user_report_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 
-import '../../helper/utils.dart';
 import '../../provider/user_report_provider.dart';
 
 @RoutePage()

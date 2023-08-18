@@ -14,8 +14,8 @@ class DashboardInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop;
 
-    return ListView(
-      padding: const EdgeInsets.all(30),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 5, width: 5),
         SizedBox(

@@ -68,6 +68,11 @@ class _FundEditScreenState extends State<FundEditScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                FormBuilderDateRangePicker(
+                  name: 'newSessionDateRange',
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                ),
                 FormBuilderTextField(
                   key: _nameKey,
                   name: 'name',
