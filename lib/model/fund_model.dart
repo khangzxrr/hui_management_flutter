@@ -13,21 +13,20 @@ class Fund extends GeneralFundModel {
   Fund({
     required super.id,
     required super.name,
-    required super.newSessionDurationDayCount,
-    required super.currentSessionDurationDate,
-    required super.nextSessionDurationDate,
-    required super.takenSessionDeliveryDayCount,
-    required super.currentTakenSessionDeliveryDate,
-    required super.nextTakenSessionDeliveryDate,
+    required super.fundType,
+    required super.newSessionDurationCount,
+    required super.takenSessionDeliveryCount,
+    required super.newSessionCreateDayOfMonth,
+    required super.newSessionCreateHourOfDay,
     required super.openDate,
     required super.endDate,
     required super.fundPrice,
     required super.serviceCost,
-    required super.lastSessionFundPrice,
     required super.membersCount,
     required super.sessionsCount,
     required this.members,
     required this.sessions,
+    required super.newSessionCreateDates,
   });
 
   factory Fund.fromJson(Map<String, dynamic> json) => _$FundFromJson(json);

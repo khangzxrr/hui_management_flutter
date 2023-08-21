@@ -1,16 +1,15 @@
 import 'dart:developer';
 
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
-import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
+import 'package:hui_management/view/fund/fund_info_widget.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 import 'package:sherlock/result.dart';
@@ -103,47 +102,11 @@ class SingleFundScreen extends StatelessWidget {
                 .run();
             ;
           },
-          //get primary color of context
-
           child: Column(
             children: <Widget>[
               ListTile(
                 dense: true,
-                // leading: CircleAvatar(
-                //   backgroundColor: Theme.of(context).primaryColor,
-                //   child: Text('D${generalFundProvider.getFunds().indexOf(fund) + 1}'),
-                // ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Tên dây hụi: ', textAlign: TextAlign.left),
-                        Text('Mệnh giá: ', textAlign: TextAlign.left),
-                        Text('Hoa hồng: ', textAlign: TextAlign.left),
-                        Text('Ngày mở dây hụi: ', textAlign: TextAlign.left),
-                        Text('Ngày kết thúc dây hụi: ', textAlign: TextAlign.left),
-                        Text('ngày khui hụi hiện tại: ', textAlign: TextAlign.left),
-                        Text('ngày giao hụi hiện tại: ', textAlign: TextAlign.left),
-                        Text('ngày khui hụi tiếp theo: ', textAlign: TextAlign.left),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(fund.name, textAlign: TextAlign.right),
-                        Text('${Utils.moneyFormat.format(fund.fundPrice)}đ', textAlign: TextAlign.right),
-                        Text('${Utils.moneyFormat.format(fund.serviceCost)}đ', textAlign: TextAlign.right),
-                        Text(Utils.dateFormat.format(fund.openDate), textAlign: TextAlign.right),
-                        Text(Utils.dateFormat.format(fund.endDate), textAlign: TextAlign.right),
-                        Text(Utils.dateFormat.format(fund.currentSessionDurationDate), textAlign: TextAlign.right),
-                        Text(Utils.dateFormat.format(fund.currentTakenSessionDeliveryDate), textAlign: TextAlign.right),
-                        Text(Utils.dateFormat.format(fund.nextSessionDurationDate), textAlign: TextAlign.right),
-                      ],
-                    ),
-                  ],
-                ),
+                title: FundInfoWidget(fund: fund),
                 subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
               ),
             ],

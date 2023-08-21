@@ -6,11 +6,19 @@ import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
 import '../../helper/utils.dart';
 import '../../routes/app_route.dart';
+import 'taken_session_info_widget.dart';
 
 class TakenSessionDetailWidget extends StatelessWidget {
   final NormalSessionDetail takenSessionDetail;
+  final FundSession session;
+  final int memberCount;
 
-  const TakenSessionDetailWidget({super.key, required this.takenSessionDetail});
+  const TakenSessionDetailWidget({
+    super.key,
+    required this.takenSessionDetail,
+    required this.session,
+    required this.memberCount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +27,28 @@ class TakenSessionDetailWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: CachedNetworkImage(
-              imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
-              imageBuilder: (context, imageProvider) => Container(
-                width: 80.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+              leading: CachedNetworkImage(
+                imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                  ),
                 ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            title: Text(
-              takenSessionDetail.fundMember.nickName,
-              style: const TextStyle(color: Colors.white),
-            ),
-            subtitle: Text('Tổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.white)),
-          )
+              title: Text(
+                takenSessionDetail.fundMember.nickName,
+                style: const TextStyle(color: Colors.white),
+              ),
+              subtitle: TakenSessionInfoWidget(
+                session: session,
+                takenSessionDetail: takenSessionDetail,
+                memberCount: memberCount,
+              ))
         ],
       ),
     );
@@ -89,8 +100,9 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
 class SessionDetailScreen extends StatelessWidget {
   final FundSession session;
   final String fundName;
+  final int memberCount;
 
-  const SessionDetailScreen({super.key, required this.fundName, required this.session});
+  const SessionDetailScreen({super.key, required this.fundName, required this.session, required this.memberCount});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +112,13 @@ class SessionDetailScreen extends StatelessWidget {
 
     widgets.addAll(
       session.normalSessionDetails.map(
-        (normalSessionDetail) => normalSessionDetail.type == "Taken" ? TakenSessionDetailWidget(takenSessionDetail: normalSessionDetail) : NormalSessionDetailMemberWidget(normalSessionDetail: normalSessionDetail),
+        (normalSessionDetail) => normalSessionDetail.type == "Taken"
+            ? TakenSessionDetailWidget(
+                takenSessionDetail: normalSessionDetail,
+                session: session,
+                memberCount: memberCount,
+              )
+            : NormalSessionDetailMemberWidget(normalSessionDetail: normalSessionDetail),
       ),
     );
 

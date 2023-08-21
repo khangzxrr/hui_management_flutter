@@ -7,11 +7,13 @@ import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/view/fund_session/session_detail_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
 import '../../helper/utils.dart';
 import '../../routes/app_route.dart';
+import 'taken_session_info_widget.dart';
 
 class SessionViewWidget extends StatelessWidget {
   final FundSession session;
@@ -56,7 +58,9 @@ class SessionViewWidget extends StatelessWidget {
       // component is not dragged.
       child: Card(
         child: InkWell(
-          onTap: () => context.router.push(SessionDetailRoute(fundName: fundProvider.fund.name, session: session)),
+          onTap: () => context.router.push(
+            SessionDetailRoute(fundName: fundProvider.fund.name, session: session, memberCount: fundProvider.fund.membersCount),
+          ),
           child: Column(
             children: <Widget>[
               ListTile(
@@ -67,37 +71,10 @@ class SessionViewWidget extends StatelessWidget {
                         backgroundColor: Theme.of(context).primaryColor,
                         child: Text('K${session.sessionNumber}'),
                       ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Ngày khui hụi: '),
-                        Text('Lần hốt: '),
-                        Text('Thành viên hốt: '),
-                        Text('Thăm kêu: '),
-                        Text('Chịu lỗ: '),
-                        Text('Tiền hốt hụi: '),
-                        Text('Trừ hoa hồng: '),
-                        Text('Tiền hốt hụi còn lại: '),
-                        //Kỳ ${session.sessionNumber}\nThành viên hốt: ${takenSessionDetail.fundMember.nickName}\nThăm kêu: ${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ\nTổng tiền sống + chết: ${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ\nTrừ hoa hồng: ${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ\nCòn lại: ${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', textAlign: TextAlign.right)
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(Utils.dateFormat.format(session.takenDate)),
-                        Text('${session.sessionNumber}/${fundProvider.fund.membersCount}'),
-                        Text(takenSessionDetail.fundMember.nickName),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.lossCost)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ'),
-                        Text('${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ'),
-                      ],
-                    )
-                  ],
+                title: TakenSessionInfoWidget(
+                  takenSessionDetail: takenSessionDetail,
+                  session: session,
+                  memberCount: fundProvider.fund.membersCount,
                 ),
               ),
             ],
@@ -128,12 +105,22 @@ class FundSessionListScreen extends StatelessWidget {
           children: sesionViewWidgets,
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.router.popUntil((route) => route.settings.name == FundDetailRoute.name),
-        heroTag: null,
-        label: const Text('Về trang quản lí dây hụi'),
-        icon: const Icon(Icons.home),
-      ),
+      bottomNavigationBar: BottomAppBar(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton.icon(
+            onPressed: () => context.router.push(const CreateSessionSelectMemberRoute()),
+            icon: const Icon(Icons.add),
+            label: const Text('Khui hụi'),
+          ),
+          TextButton.icon(
+            onPressed: () => context.router.popUntil((route) => route.settings.name == FundDetailRoute.name),
+            icon: const Icon(Icons.home),
+            label: const Text('Trở về trang quản lí dây hụi'),
+          ),
+        ],
+      )),
     );
   }
 }

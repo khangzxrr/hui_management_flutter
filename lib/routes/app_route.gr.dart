@@ -167,6 +167,7 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           fundName: args.fundName,
           session: args.session,
+          memberCount: args.memberCount,
         ),
       );
     },
@@ -625,6 +626,7 @@ class SessionDetailRoute extends PageRouteInfo<SessionDetailRouteArgs> {
     Key? key,
     required String fundName,
     required FundSession session,
+    required int memberCount,
     List<PageRouteInfo>? children,
   }) : super(
           SessionDetailRoute.name,
@@ -632,6 +634,7 @@ class SessionDetailRoute extends PageRouteInfo<SessionDetailRouteArgs> {
             key: key,
             fundName: fundName,
             session: session,
+            memberCount: memberCount,
           ),
           initialChildren: children,
         );
@@ -647,6 +650,7 @@ class SessionDetailRouteArgs {
     this.key,
     required this.fundName,
     required this.session,
+    required this.memberCount,
   });
 
   final Key? key;
@@ -655,8 +659,10 @@ class SessionDetailRouteArgs {
 
   final FundSession session;
 
+  final int memberCount;
+
   @override
   String toString() {
-    return 'SessionDetailRouteArgs{key: $key, fundName: $fundName, session: $session}';
+    return 'SessionDetailRouteArgs{key: $key, fundName: $fundName, session: $session, memberCount: $memberCount}';
   }
 }

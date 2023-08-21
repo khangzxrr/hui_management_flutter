@@ -10,6 +10,7 @@ import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
+import 'package:intl/intl.dart';
 import 'package:number_to_vietnamese_words/number_to_vietnamese_words.dart';
 import 'package:provider/provider.dart';
 
@@ -35,18 +36,23 @@ class _FundEditScreenState extends State<FundEditScreen> {
 
   final _ownerCostKey = GlobalKey<FormBuilderFieldState>();
 
-  final _newSessionDurationDayCountKey = GlobalKey<FormBuilderFieldState>();
+  final _fundTypeKey = GlobalKey<FormBuilderFieldState>();
 
-  final _takenSessionDeliveryDayCountKey = GlobalKey<FormBuilderFieldState>();
+  final _newSessionDurationCountKey = GlobalKey<FormBuilderFieldState>();
+
+  final _newSessionCreateDayOfMonthKey = GlobalKey<FormBuilderFieldState>();
 
   int cost = 0;
   int ownerCost = 0;
+
+  FundType fundType = FundType.dayFund;
 
   @override
   void initState() {
     if (!widget.isNew) {
       cost = widget.fund!.fundPrice.toInt();
       ownerCost = widget.fund!.serviceCost.toInt();
+      fundType = widget.fund!.fundType;
     }
     super.initState();
   }
@@ -62,16 +68,77 @@ class _FundEditScreenState extends State<FundEditScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(8.0),
           child: FormBuilder(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FormBuilderDateRangePicker(
-                  name: 'newSessionDateRange',
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                FormBuilderRadioGroup(
+                  key: _fundTypeKey,
+                  wrapAlignment: WrapAlignment.spaceAround,
+                  name: 'fundType',
+                  initialValue: widget.isNew ? 'DayFund' : widget.fund!.fundType,
+                  decoration: const InputDecoration(labelText: 'Loại hụi'),
+                  options: const [
+                    FormBuilderFieldOption(value: FundType.dayFund, child: Text('Hụi ngày')),
+                    FormBuilderFieldOption(value: FundType.monthFund, child: Text('Hụi tháng')),
+                  ],
+                  validator: FormBuilderValidators.required(),
+                  onChanged: (fundTypeValue) => setState(() {
+                    if (fundTypeValue == null) return;
+
+                    fundType = fundTypeValue as FundType;
+                  }),
+                ),
+                SizedBox(height: 15),
+                Row(
+                  children: [
+                    Text((fundType == 'DayFund') ? 'Khui vào mỗi ' : 'Khui vào ngày '),
+                    SizedBox(
+                      width: 70,
+                      child: FormBuilderTextField(
+                        key: _newSessionDurationCountKey,
+                        name: 'newSessionDurationCount',
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(labelText: '(số ngày)', floatingLabelAlignment: FloatingLabelAlignment.center),
+                        initialValue: widget.isNew ? "" : widget.fund!.newSessionDurationCount.toString(),
+                        autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                        validator: FormBuilderValidators.compose(
+                          [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                        ),
+                      ),
+                    ),
+                    Text((fundType == 'DayFund') ? 'ngày ' : 'ngày mỗi '),
+                    (fundType == 'MonthFund')
+                        ? SizedBox(
+                            width: 80,
+                            child: FormBuilderTextField(
+                              key: _newSessionCreateDayOfMonthKey,
+                              name: 'newSessionCreateDayOfMonth',
+                              textAlign: TextAlign.center,
+                              decoration: const InputDecoration(labelText: '(số tháng)', floatingLabelAlignment: FloatingLabelAlignment.center),
+                              initialValue: widget.isNew ? "" : widget.fund!.newSessionCreateDayOfMonth.toString(),
+                              autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                              validator: FormBuilderValidators.compose(
+                                [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                    (fundType == 'MonthFund') ? Text('tháng') : Text(''),
+                  ],
+                ),
+                SizedBox(height: 15),
+                FormBuilderDateTimePicker(
+                  name: 'newSessionCreateHourOfDay',
+                  decoration: const InputDecoration(labelText: 'Khui vào lúc'),
+                  initialTime: TimeOfDay.now(),
+                  inputType: InputType.time,
+                  format: DateFormat('HH:mm'),
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 FormBuilderTextField(
                   key: _nameKey,
@@ -121,26 +188,6 @@ class _FundEditScreenState extends State<FundEditScreen> {
                     });
                   },
                 ),
-                FormBuilderTextField(
-                  key: _newSessionDurationDayCountKey,
-                  name: 'newSesionDurationDayCount',
-                  decoration: const InputDecoration(labelText: 'SỐ ngày khui đếm từ ngày mở dây hụi (1,2,3...)'),
-                  initialValue: widget.isNew ? "" : widget.fund!.newSessionDurationDayCount.toString(),
-                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
-                  validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
-                  ),
-                ),
-                FormBuilderTextField(
-                  key: _takenSessionDeliveryDayCountKey,
-                  name: 'takenSessionDeliveryDayCount',
-                  decoration: const InputDecoration(labelText: 'SỐ ngày giao đếm từ ngày mở dây hụi (1,2,3...)'),
-                  initialValue: widget.isNew ? "" : widget.fund!.takenSessionDeliveryDayCount.toString(),
-                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
-                  validator: FormBuilderValidators.compose(
-                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
-                  ),
-                ),
                 FormBuilderDateTimePicker(
                   key: _openDateKey,
                   name: 'openDate',
@@ -164,18 +211,17 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         id: widget.fund == null ? -1 : widget.fund!.id,
                         fundPrice: double.parse(_costKey.currentState!.value),
                         name: _nameKey.currentState!.value,
+                        fundType: _fundTypeKey.currentState!.value,
                         openDate: _openDateKey.currentState!.value,
-                        serviceCost: double.parse(_ownerCostKey.currentState!.value),
-                        newSessionDurationDayCount: int.parse(_newSessionDurationDayCountKey.currentState!.value),
-                        nextSessionDurationDate: DateTime.now(),
-                        takenSessionDeliveryDayCount: int.parse(_takenSessionDeliveryDayCountKey.currentState!.value),
-                        nextTakenSessionDeliveryDate: DateTime.now(),
-                        currentSessionDurationDate: DateTime.now(),
-                        currentTakenSessionDeliveryDate: DateTime.now(),
                         endDate: DateTime.now(),
-                        lastSessionFundPrice: 0,
+                        serviceCost: double.parse(_ownerCostKey.currentState!.value),
+                        newSessionDurationCount: int.parse(_newSessionDurationCountKey.currentState!.value),
+                        newSessionCreateDayOfMonth: fundType == FundType.dayFund ? 0 : int.parse(_newSessionCreateDayOfMonthKey.currentState!.value),
+                        newSessionCreateHourOfDay: DateTime.now(),
+                        takenSessionDeliveryCount: int.parse(_newSessionDurationCountKey.currentState!.value),
                         membersCount: 0,
                         sessionsCount: 0,
+                        newSessionCreateDates: [],
                       );
 
                       if (widget.isNew) {

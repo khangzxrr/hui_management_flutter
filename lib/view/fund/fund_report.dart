@@ -52,8 +52,8 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
 
     setState(() {
-      replacebleText['takenSessionText'] = 'Giao vào mỗi ngày ${fundProvider.fund.takenSessionDeliveryDayCount} kể từ lúc bắt đầu';
-      replacebleText['newSessionText'] = 'Khui vào mỗi ngày ${fundProvider.fund.newSessionDurationDayCount} kể từ lúc bắt đầu';
+      replacebleText['takenSessionText'] = 'Giao vào mỗi ngày 0 kể từ lúc bắt đầu';
+      replacebleText['newSessionText'] = 'Khui vào mỗi ngày 0 kể từ lúc bắt đầu';
       replacebleText['newSessionMethodText'] = 'Mở thăm trực tiếp hoặc online';
       replacebleText['warningText'] = '1. Hụi viên đóng hụi ngày 05 & 06, không đóng trễ nhiều lần.\n2. Nếu hụi sống muống ngưng ngang hoặc đóng trễ quá 5 ngày sẽ được thói hụi sau khi trừ lời hụi và hoa hồng.\n3. Nếu hụi chết đóng trễ quá 7 ngày sẽ được công khai hụi trễ lên các group hụi & tính lãi suất bằng ngân hàng.\n4. Nếu có tình hình dịch hay lí do gì về kinh tế cả nước nên hụi viên muốn ngưng hụi thì phải theo biểu quyết của các hụi viên còn sống\n5.Hụi viên có số âm hụi nhiều thì chủ hụi được quyền yêu cầu đóng mãn dây khi hốt.\n6.Không so sánh lịch giao hụi với nơi khác!';
 
@@ -160,7 +160,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                   FormBuilderTextField(
                     name: 'fundEndDate',
                     decoration: const InputDecoration(labelText: 'Ngày kết thúc'),
-                    initialValue: Utils.dateFormat.format(fund.endDate),
+                    initialValue: '0',
                     readOnly: true,
                   ),
                   FormBuilderTextField(
@@ -178,7 +178,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                   FormBuilderTextField(
                     name: 'fundLastTakenAmount',
                     decoration: const InputDecoration(labelText: 'Hốt chót'),
-                    initialValue: Utils.moneyFormat.format(fund.lastSessionFundPrice),
+                    initialValue: '0',
                     readOnly: true,
                   ),
                   FormBuilderTextField(
@@ -243,10 +243,11 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                             ownerBankAccountNumber: authenticationModel.subUser.bankNumber,
                             fundName: fund.name,
                             fundStartDate: fund.openDate,
-                            fundEndDate: fund.endDate,
+                            //remember to edit this shit
+                            fundEndDate: fund.openDate,
                             totalMemberCount: fund.membersCount,
                             serviceCost: fund.serviceCost,
-                            lastTakenAmount: fund.lastSessionFundPrice,
+                            lastTakenAmount: 0,
                             nextSessionDateText: replacebleText['takenSessionText']!,
                             nextTakenSessionDeliveryText: replacebleText['newSessionText']!,
                             newSessionMethodText: replacebleText['newSessionMethodText']!,

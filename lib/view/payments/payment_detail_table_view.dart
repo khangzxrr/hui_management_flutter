@@ -162,7 +162,7 @@ class FundSessionDetailWidget extends StatelessWidget {
           'sessionNumber': PlutoCell(value: '${fb.fromSession.sessionNumber}/${fb.fromFund.membersCount}'),
           'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
           'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
-          'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate)),
+          //'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate)),
         },
       );
     }).toList();

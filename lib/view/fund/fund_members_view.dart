@@ -99,63 +99,68 @@ class AddMemberWidget extends StatelessWidget {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          flex: 7,
-          child: FormBuilder(
-            key: _formKey,
-            child: FormBuilderSearchableDropdown<SubUserModel>(
-              popupProps: const PopupProps.dialog(showSearchBox: true),
-              name: 'searchable_dropdown_user',
-              decoration: const InputDecoration(
-                labelText: 'Chọn người dùng',
+        Text('Tổng số thành viên ${fund.membersCount}'),
+        Row(
+          children: [
+            Expanded(
+              flex: 7,
+              child: FormBuilder(
+                key: _formKey,
+                child: FormBuilderSearchableDropdown<SubUserModel>(
+                  popupProps: const PopupProps.dialog(showSearchBox: true),
+                  name: 'searchable_dropdown_user',
+                  decoration: const InputDecoration(
+                    labelText: 'Chọn người dùng',
+                  ),
+                  itemAsString: (user) => user.name,
+                  compareFn: (user1, user2) => user1.name != user2.name,
+                  asyncItems: (filter) async {
+                    final users = await GetIt.I<UserService>().getAll();
+
+                    return users.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
+                  },
+                ),
               ),
-              itemAsString: (user) => user.name,
-              compareFn: (user1, user2) => user1.name != user2.name,
-              asyncItems: (filter) async {
-                final users = await GetIt.I<UserService>().getAll();
-
-                return users.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
-              },
             ),
-          ),
-        ),
-        Container(
-          width: 15.0,
-        ),
-        Expanded(
-          flex: 3,
-          child: ElevatedButton(
-            onPressed: () {
-              final user = _formKey.currentState!.fields['searchable_dropdown_user']?.value as SubUserModel?;
-
-              if (user == null) {
-                return;
-              }
-
-              fundProvider
-                  .addMember(user.id)
-                  .andThen(
-                    () => fundProvider.getFund(fund.id),
-                  )
-                  .andThen(() => generalFundProvider.fetchFunds())
-                  .match(
-                (l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
-                },
-                (r) {
-                  DialogHelper.showSnackBar(context, 'Thêm thành viên mới thành công');
-                },
-              ).run();
-            },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 18.0),
-              child: Text('Thêm hụi viên mới'),
+            Container(
+              width: 15.0,
             ),
-          ),
-        )
+            Expanded(
+              flex: 3,
+              child: ElevatedButton(
+                onPressed: () {
+                  final user = _formKey.currentState!.fields['searchable_dropdown_user']?.value as SubUserModel?;
+
+                  if (user == null) {
+                    return;
+                  }
+
+                  fundProvider
+                      .addMember(user.id)
+                      .andThen(
+                        () => fundProvider.getFund(fund.id),
+                      )
+                      .andThen(() => generalFundProvider.fetchFunds())
+                      .match(
+                    (l) {
+                      log(l);
+                      DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
+                    },
+                    (r) {
+                      DialogHelper.showSnackBar(context, 'Thêm thành viên mới thành công');
+                    },
+                  ).run();
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18.0),
+                  child: Text('Thêm hụi viên mới'),
+                ),
+              ),
+            )
+          ],
+        ),
       ],
     );
   }

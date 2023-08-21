@@ -25,8 +25,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       field: 'name',
       type: PlutoColumnType.text(),
       readOnly: true,
-      enableSorting: true,
-      frozen: PlutoColumnFrozen.start,
+      enableSorting: true,  
     ),
     PlutoColumn(
       title: 'Biệt danh',
