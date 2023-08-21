@@ -94,7 +94,7 @@ class _FundEditScreenState extends State<FundEditScreen> {
                 SizedBox(height: 15),
                 Row(
                   children: [
-                    Text((fundType == 'DayFund') ? 'Khui vào mỗi ' : 'Khui vào ngày '),
+                    Text((fundType == FundType.dayFund) ? 'Khui vào mỗi ' : 'Khui vào ngày '),
                     SizedBox(
                       width: 70,
                       child: FormBuilderTextField(
@@ -109,8 +109,8 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         ),
                       ),
                     ),
-                    Text((fundType == 'DayFund') ? 'ngày ' : 'ngày mỗi '),
-                    (fundType == 'MonthFund')
+                    Text((fundType == FundType.dayFund) ? 'ngày ' : 'ngày mỗi '),
+                    (fundType == FundType.monthFund)
                         ? SizedBox(
                             width: 80,
                             child: FormBuilderTextField(
@@ -126,10 +126,10 @@ class _FundEditScreenState extends State<FundEditScreen> {
                             ),
                           )
                         : SizedBox(),
-                    (fundType == 'MonthFund') ? Text('tháng') : Text(''),
+                    Text((fundType == FundType.monthFund) ? 'tháng' : ''),
                   ],
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 FormBuilderDateTimePicker(
                   name: 'newSessionCreateHourOfDay',
                   decoration: const InputDecoration(labelText: 'Khui vào lúc'),
