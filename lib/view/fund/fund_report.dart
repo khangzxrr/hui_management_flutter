@@ -38,40 +38,30 @@ class GridItem extends StatelessWidget {
 }
 
 class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMixin<FundReportScreen> {
-  Map<String, String> replacebleText = {
-    'takenSessionText': '',
-    'newSessionText': '',
-    'newSessionMethodText': '',
-    'warningText': '',
-  };
-
   List<TakenMemberReportViewModel> takenMemberReportViewModels = [];
+
+  final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
 
-    setState(() {
-      replacebleText['takenSessionText'] = 'Giao vào mỗi ngày 0 kể từ lúc bắt đầu';
-      replacebleText['newSessionText'] = 'Khui vào mỗi ngày 0 kể từ lúc bắt đầu';
-      replacebleText['newSessionMethodText'] = 'Mở thăm trực tiếp hoặc online';
-      replacebleText['warningText'] = '1. Hụi viên đóng hụi ngày 05 & 06, không đóng trễ nhiều lần.\n2. Nếu hụi sống muống ngưng ngang hoặc đóng trễ quá 5 ngày sẽ được thói hụi sau khi trừ lời hụi và hoa hồng.\n3. Nếu hụi chết đóng trễ quá 7 ngày sẽ được công khai hụi trễ lên các group hụi & tính lãi suất bằng ngân hàng.\n4. Nếu có tình hình dịch hay lí do gì về kinh tế cả nước nên hụi viên muốn ngưng hụi thì phải theo biểu quyết của các hụi viên còn sống\n5.Hụi viên có số âm hụi nhiều thì chủ hụi được quyền yêu cầu đóng mãn dây khi hốt.\n6.Không so sánh lịch giao hụi với nơi khác!';
+    _formKey.currentState!.fields['newSessionText']!.didChange(fundProvider.fund.createSessionDurationAt());
+    _formKey.currentState!.fields['newSessionMethodText']!.didChange('Mở thăm trực tiếp hoặc online');
+    _formKey.currentState!.fields['warningText']!.didChange('1. Hụi viên đóng hụi ngày 05 & 06, không đóng trễ nhiều lần.\n2. Nếu hụi sống muống ngưng ngang hoặc đóng trễ quá 5 ngày sẽ được thói hụi sau khi trừ lời hụi và hoa hồng.\n3. Nếu hụi chết đóng trễ quá 7 ngày sẽ được công khai hụi trễ lên các group hụi & tính lãi suất bằng ngân hàng.\n4. Nếu có tình hình dịch hay lí do gì về kinh tế cả nước nên hụi viên muốn ngưng hụi thì phải theo biểu quyết của các hụi viên còn sống\n5.Hụi viên có số âm hụi nhiều thì chủ hụi được quyền yêu cầu đóng mãn dây khi hốt.\n6.Không so sánh lịch giao hụi với nơi khác!');
 
-      takenMemberReportViewModels = fundProvider.fund.sessions.asMap().entries.map((s) {
-        final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == 'Taken').first;
-        final takenMemberReportVM = TakenMemberReportViewModel(
-          index: s.key + 1,
-          name: takenSession.fundMember.subUser.nickName,
-          note: '',
-          takenDate: s.value.takenDate,
-        );
+    takenMemberReportViewModels = fundProvider.fund.sessions.asMap().entries.map((s) {
+      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == 'Taken').first;
+      final takenMemberReportVM = TakenMemberReportViewModel(
+        index: s.key + 1,
+        name: takenSession.fundMember.subUser.nickName,
+        note: '',
+        takenDate: s.value.takenDate,
+      );
 
-        return takenMemberReportVM;
-      }).toList();
-    });
+      return takenMemberReportVM;
+    }).toList();
   }
-
-  final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -154,13 +144,13 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                   FormBuilderTextField(
                     name: 'fundStartDate',
                     decoration: const InputDecoration(labelText: 'Ngày bắt đầu'),
-                    initialValue: Utils.dateFormat.format(fund.openDate),
+                    initialValue: Utils.dateFormat.format(fund.openDate.toLocal()),
                     readOnly: true,
                   ),
                   FormBuilderTextField(
                     name: 'fundEndDate',
                     decoration: const InputDecoration(labelText: 'Ngày kết thúc'),
-                    initialValue: '0',
+                    initialValue: Utils.dateFormat.format(fund.endDate.toLocal()),
                     readOnly: true,
                   ),
                   FormBuilderTextField(
@@ -178,41 +168,25 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                   FormBuilderTextField(
                     name: 'fundLastTakenAmount',
                     decoration: const InputDecoration(labelText: 'Hốt chót'),
-                    initialValue: '0',
+                    initialValue: Utils.moneyFormat.format((fund.membersCount - 1) * fund.fundPrice - fund.serviceCost),
                     readOnly: true,
                   ),
                   FormBuilderTextField(
-                    name: 'fundNextTakenSessionDateText',
+                    name: 'newSessionText',
                     decoration: const InputDecoration(labelText: '*Giờ khui hụi'),
-                    initialValue: replacebleText['newSessionText']!,
-                    onChanged: (value) => setState(() {
-                      replacebleText['newSessionText'] = value!;
-                    }),
                   ),
                   FormBuilderTextField(
-                    name: 'fundNextTakenSessionDeliveryText',
+                    name: 'newSessionText',
                     decoration: const InputDecoration(labelText: '*Giờ giao hụi'),
-                    initialValue: replacebleText['takenSessionText']!,
-                    onChanged: (value) => setState(() {
-                      replacebleText['takenSessionText'] = value!;
-                    }),
                   ),
                   FormBuilderTextField(
-                    name: 'fundNextTakenSessionMethodText',
+                    name: 'newSessionMethodText',
                     decoration: const InputDecoration(labelText: '*Hình thức khui'),
-                    initialValue: replacebleText['newSessionMethodText']!,
-                    onChanged: (value) => setState(() {
-                      replacebleText['newSessionMethodText'] = value!;
-                    }),
                   ),
                   FormBuilderTextField(
                     name: 'warningText',
                     maxLines: 7,
                     decoration: const InputDecoration(labelText: '*Lưu ý'),
-                    initialValue: replacebleText['warningText']!,
-                    onChanged: (value) => setState(() {
-                      replacebleText['warningText'] = value!;
-                    }),
                   ),
                   const SizedBox(height: 8),
                   const Text('Danh sách hốt:'),
@@ -243,15 +217,14 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                             ownerBankAccountNumber: authenticationModel.subUser.bankNumber,
                             fundName: fund.name,
                             fundStartDate: fund.openDate,
-                            //remember to edit this shit
                             fundEndDate: fund.openDate,
                             totalMemberCount: fund.membersCount,
                             serviceCost: fund.serviceCost,
                             lastTakenAmount: 0,
-                            nextSessionDateText: replacebleText['takenSessionText']!,
-                            nextTakenSessionDeliveryText: replacebleText['newSessionText']!,
-                            newSessionMethodText: replacebleText['newSessionMethodText']!,
-                            warningText: replacebleText['warningText']!,
+                            nextSessionDateText: _formKey.currentState!.fields['newSessionText']!.value.toString(),
+                            nextTakenSessionDeliveryText: _formKey.currentState!.fields['newSessionText']!.value.toString(),
+                            newSessionMethodText: _formKey.currentState!.fields['newSessionMethodText']!.value.toString(),
+                            warningText: _formKey.currentState!.fields['warningText']!.value.toString(),
                             takenMemberReportViewModels: takenMemberReportViewModels,
                           );
 

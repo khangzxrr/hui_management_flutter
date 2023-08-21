@@ -42,6 +42,8 @@ class _FundEditScreenState extends State<FundEditScreen> {
 
   final _newSessionCreateDayOfMonthKey = GlobalKey<FormBuilderFieldState>();
 
+  final _newSessionCreateHourOfDayKey = GlobalKey<FormBuilderFieldState>();
+
   int cost = 0;
   int ownerCost = 0;
 
@@ -131,11 +133,12 @@ class _FundEditScreenState extends State<FundEditScreen> {
                 ),
                 const SizedBox(height: 15),
                 FormBuilderDateTimePicker(
+                  key: _newSessionCreateHourOfDayKey,
                   name: 'newSessionCreateHourOfDay',
                   decoration: const InputDecoration(labelText: 'Khui vào lúc'),
-                  initialTime: TimeOfDay.now(),
                   inputType: InputType.time,
                   format: DateFormat('HH:mm'),
+                  initialValue: widget.isNew ? DateTime.now() : widget.fund!.newSessionCreateHourOfDay.toLocal(),
                 ),
                 SizedBox(
                   height: 15,
@@ -193,6 +196,7 @@ class _FundEditScreenState extends State<FundEditScreen> {
                   name: 'openDate',
                   decoration: const InputDecoration(labelText: 'Ngày mở dây hụi'),
                   initialValue: widget.isNew ? DateTime.now() : widget.fund!.openDate,
+                  inputType: InputType.date,
                   format: Utils.dateFormat,
                   autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                   validator: FormBuilderValidators.compose(
@@ -212,12 +216,12 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         fundPrice: double.parse(_costKey.currentState!.value),
                         name: _nameKey.currentState!.value,
                         fundType: _fundTypeKey.currentState!.value,
-                        openDate: _openDateKey.currentState!.value,
+                        openDate: (_openDateKey.currentState!.value as DateTime).toLocal(),
                         endDate: DateTime.now(),
                         serviceCost: double.parse(_ownerCostKey.currentState!.value),
                         newSessionDurationCount: int.parse(_newSessionDurationCountKey.currentState!.value),
                         newSessionCreateDayOfMonth: fundType == FundType.dayFund ? 0 : int.parse(_newSessionCreateDayOfMonthKey.currentState!.value),
-                        newSessionCreateHourOfDay: DateTime.now(),
+                        newSessionCreateHourOfDay: (_newSessionCreateHourOfDayKey.currentState!.value as DateTime).toLocal(),
                         takenSessionDeliveryCount: int.parse(_newSessionDurationCountKey.currentState!.value),
                         membersCount: 0,
                         sessionsCount: 0,

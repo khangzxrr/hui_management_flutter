@@ -66,7 +66,7 @@ class PdfExportReviewScreen extends StatelessWidget {
 
           final nextSessionDeliveryRow = pw.Container(
             padding: pw.EdgeInsets.fromLTRB(10, 0, 10, 10),
-            height: lineCount < 0 ? 30 : lineCount.ceilToDouble() * 30,
+            height: lineCount < 0 ? 30 : lineCount.ceilToDouble() * 40,
             child: pw.GridView(
               crossAxisCount: 2,
               children: [

@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 class Utils {
   static final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
+  static final DateFormat timeFormat = DateFormat("HH:mm");
+
   static final NumberFormat moneyFormat = NumberFormat("#,###", "vi");
 
   static final CurrencyTextInputFormatter currencyTextInputFormatter = CurrencyTextInputFormatter(locale: 'vn', decimalDigits: 0, symbol: 'đ');

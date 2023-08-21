@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../helper/utils.dart';
+
 part 'general_fund_model.g.dart';
 
 enum FundType {
@@ -48,6 +50,14 @@ class GeneralFundModel {
     required this.sessionsCount,
     required this.newSessionCreateDates,
   });
+
+  String createSessionDurationAt() {
+    if (fundType == FundType.dayFund) {
+      return 'Mỗi ${Utils.timeFormat.format(newSessionCreateHourOfDay.toLocal())} mỗi $newSessionDurationCount ngày';
+    }
+
+    return 'Mỗi ${Utils.timeFormat.format(newSessionCreateHourOfDay.toLocal())} ngày $newSessionDurationCount mỗi $newSessionCreateDayOfMonth tháng';
+  }
 
   factory GeneralFundModel.fromJson(Map<String, dynamic> json) => _$GeneralFundModelFromJson(json);
   Map<String, dynamic> toJson() => _$GeneralFundModelToJson(this);
