@@ -111,7 +111,7 @@ class FundSessionListScreen extends StatelessWidget {
         children: [
           TextButton.icon(
             onPressed: () => context.router.push(const CreateSessionSelectMemberRoute()),
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.money),
             label: const Text('Khui hụi'),
           ),
           TextButton.icon(

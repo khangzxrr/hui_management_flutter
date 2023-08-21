@@ -94,7 +94,7 @@ class FundDetailScreen extends StatelessWidget {
                 ),
               ),
               ExpansionTile(
-                title: const Text('Danh sách ngày khui hụi tiếp theo'),
+                title: const Text('Dự đoán ngày khui tiếp theo'),
                 children: fundProvider.fund.newSessionCreateDates
                     .map((date) => Text(
                           Utils.dateFormat.format(date),
