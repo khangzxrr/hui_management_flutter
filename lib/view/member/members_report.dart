@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/pluto_grid_extentions/pluto_filters/pluto_filter_name_start_with.dart';
+import 'package:hui_management/pluto_grid_extentions/pluto_types/pluto_grid_name_field.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 
+import '../../pluto_grid_extentions/pluto_configurations/pluto_language_vietnamese.dart';
 import '../../provider/user_report_provider.dart';
 
 @RoutePage()
@@ -17,20 +20,21 @@ class MemberReportScreen extends StatefulWidget {
 }
 
 class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayoutMixin<MemberReportScreen> {
-  String filterText = '';
+  PlutoGridStateManager? stateManager;
 
   List<PlutoColumn> columns = [
     PlutoColumn(
       title: 'Tên hụi viên',
       field: 'name',
-      type: PlutoColumnType.text(),
+      type: PlutoGridNameField(),
       readOnly: true,
-      enableSorting: true,  
+      enableSorting: true,
+      frozen: PlutoColumnFrozen.start,
     ),
     PlutoColumn(
       title: 'Biệt danh',
       field: 'nickName',
-      type: PlutoColumnType.text(),
+      type: PlutoGridNameField(),
       enableEditingMode: false,
     ),
     PlutoColumn(
@@ -214,24 +218,23 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
             }))
         .toList();
 
-    return userReportProvider.loading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : PlutoGrid(
-            columns: columns,
-            rows: rows,
-            // configuration: PlutoGridConfiguration(
-            //   columnSize: PlutoGridColumnSizeConfig(
-            //     autoSizeMode: PlutoAutoSizeMode.scale,
-            //   ),
-            // ),
-          );
+    if (stateManager != null) {
+      stateManager!.removeAllRows(notify: true);
+      stateManager!.appendRows(rows);
+    }
+
+    return PlutoGrid(
+      columns: columns,
+      rows: rows,
+      onLoaded: (event) => stateManager = event.stateManager,
+      configuration: PlutoGridConfiguration(
+        localeText: PlutoLanguageVietnamese.locateText(),
+      ),
+    );
   }
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
-    print('call after layout');
     final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
 
     await userReportProvider.getAllReport().run();

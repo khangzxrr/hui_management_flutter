@@ -48,7 +48,7 @@ class TakenSessionDetailWidget extends StatelessWidget {
                 session: session,
                 takenSessionDetail: takenSessionDetail,
                 memberCount: memberCount,
-              ))
+              )),
         ],
       ),
     );
@@ -106,9 +106,7 @@ class SessionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widgets = <Widget>[];
-
-    //widgets.add(TakenSessionDetailWidget(takenSessionDetail: session.takenSessionDetail));
+    final widgets = <Widget>[]; 
 
     widgets.addAll(
       session.normalSessionDetails.map(

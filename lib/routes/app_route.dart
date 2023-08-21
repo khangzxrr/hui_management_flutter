@@ -15,6 +15,7 @@ import '../view/fund/fund_edit.dart';
 import '../view/fund/fund_members_view.dart';
 import '../view/fund/fund_report_pdf_view.dart';
 import '../view/fund/funds_view.dart';
+import '../view/fund_session/fund_normal_session_export_pdf_view.dart';
 import '../view/fund_session/fund_sessions_view.dart';
 import '../view/fund_session/session_create_enter_info.dart';
 import '../view/fund_session/session_create_select_member.dart';
@@ -61,5 +62,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: PaymentDetailRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundReportRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PdfExportReviewRoute.page, guards: [AuthGuard()]),
+     
       ];
 }

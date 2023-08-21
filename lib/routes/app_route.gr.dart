@@ -66,6 +66,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const FundMembersScreen(),
       );
     },
+    FundNormalSessionExportPdfRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FundNormalSessionExportPdfScreen(),
+      );
+    },
     FundReportRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -322,6 +328,20 @@ class FundMembersRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'FundMembersRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FundNormalSessionExportPdfScreen]
+class FundNormalSessionExportPdfRoute extends PageRouteInfo<void> {
+  const FundNormalSessionExportPdfRoute({List<PageRouteInfo>? children})
+      : super(
+          FundNormalSessionExportPdfRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FundNormalSessionExportPdfRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
