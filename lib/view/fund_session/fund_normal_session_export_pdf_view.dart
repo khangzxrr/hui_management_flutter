@@ -82,9 +82,9 @@ class _FundNormalSessionExportPdfScreenState extends State<FundNormalSessionExpo
                 final mergedImageBytes = img.encodePng(mergedImage);
 
                 if (kIsWeb) {
-                  await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_hui.png');
+                  await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_giao_hui.png');
                 } else {
-                  await FileSaver.instance.saveAs(name: 'giay_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
+                  await FileSaver.instance.saveAs(name: 'giay_giao_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
                 }
               },
               label: const Text('Tải về tệp ảnh'),
