@@ -22,6 +22,7 @@ class GeneralFundModel {
   int newSessionCreateDayOfMonth;
 
   DateTime newSessionCreateHourOfDay;
+  DateTime takenSessionDeliveryHourOfDay;
 
   DateTime openDate;
   DateTime endDate;
@@ -42,6 +43,7 @@ class GeneralFundModel {
     required this.takenSessionDeliveryCount,
     required this.newSessionCreateDayOfMonth,
     required this.newSessionCreateHourOfDay,
+    required this.takenSessionDeliveryHourOfDay,
     required this.openDate,
     required this.endDate,
     required this.fundPrice,
@@ -51,12 +53,20 @@ class GeneralFundModel {
     required this.newSessionCreateDates,
   });
 
-  String createSessionDurationAt() {
-    if (fundType == FundType.dayFund) {
-      return 'Mỗi ${Utils.timeFormat.format(newSessionCreateHourOfDay.toLocal())} mỗi $newSessionDurationCount ngày';
+  String takenSessionDeliveryAt(){
+    if (fundType == FundType.dayFund){
+      return '${Utils.timeFormat.format(takenSessionDeliveryHourOfDay.toLocal())} mỗi $takenSessionDeliveryCount ngày';
     }
 
-    return 'Mỗi ${Utils.timeFormat.format(newSessionCreateHourOfDay.toLocal())} ngày $newSessionDurationCount mỗi $newSessionCreateDayOfMonth tháng';
+    return '${Utils.timeFormat.format(takenSessionDeliveryHourOfDay.toLocal())} ngày $takenSessionDeliveryCount mỗi $newSessionCreateDayOfMonth tháng';
+  }
+
+  String createSessionDurationAt() {
+    if (fundType == FundType.dayFund) {
+      return '${Utils.timeFormat.format(newSessionCreateHourOfDay.toLocal())} mỗi $newSessionDurationCount ngày';
+    }
+
+    return '${Utils.timeFormat.format(newSessionCreateHourOfDay.toLocal())} ngày $newSessionDurationCount mỗi $newSessionCreateDayOfMonth tháng';
   }
 
   factory GeneralFundModel.fromJson(Map<String, dynamic> json) => _$GeneralFundModelFromJson(json);

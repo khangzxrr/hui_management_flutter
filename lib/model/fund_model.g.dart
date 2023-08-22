@@ -15,6 +15,8 @@ Fund _$FundFromJson(Map<String, dynamic> json) => Fund(
       newSessionCreateDayOfMonth: json['newSessionCreateDayOfMonth'] as int,
       newSessionCreateHourOfDay:
           DateTime.parse(json['newSessionCreateHourOfDay'] as String),
+      takenSessionDeliveryHourOfDay:
+          DateTime.parse(json['takenSessionDeliveryHourOfDay'] as String),
       openDate: DateTime.parse(json['openDate'] as String),
       endDate: DateTime.parse(json['endDate'] as String),
       fundPrice: (json['fundPrice'] as num).toDouble(),
@@ -41,6 +43,8 @@ Map<String, dynamic> _$FundToJson(Fund instance) => <String, dynamic>{
       'newSessionCreateDayOfMonth': instance.newSessionCreateDayOfMonth,
       'newSessionCreateHourOfDay':
           instance.newSessionCreateHourOfDay.toIso8601String(),
+      'takenSessionDeliveryHourOfDay':
+          instance.takenSessionDeliveryHourOfDay.toIso8601String(),
       'openDate': instance.openDate.toIso8601String(),
       'endDate': instance.endDate.toIso8601String(),
       'fundPrice': instance.fundPrice,

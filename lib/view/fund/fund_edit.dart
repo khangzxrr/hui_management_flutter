@@ -44,10 +44,16 @@ class _FundEditScreenState extends State<FundEditScreen> {
 
   final _newSessionCreateHourOfDayKey = GlobalKey<FormBuilderFieldState>();
 
+  final _takenSessionDeliveryHourOfDayKey = GlobalKey<FormBuilderFieldState>();
+
+  final _takenSessionDeliveryCountKey = GlobalKey<FormBuilderFieldState>();
+
   int cost = 0;
   int ownerCost = 0;
 
   FundType fundType = FundType.dayFund;
+
+  int newSessionDurationCount = 0;
 
   @override
   void initState() {
@@ -55,6 +61,7 @@ class _FundEditScreenState extends State<FundEditScreen> {
       cost = widget.fund!.fundPrice.toInt();
       ownerCost = widget.fund!.serviceCost.toInt();
       fundType = widget.fund!.fundType;
+      newSessionDurationCount = widget.fund!.newSessionDurationCount;
     }
     super.initState();
   }
@@ -80,7 +87,7 @@ class _FundEditScreenState extends State<FundEditScreen> {
                   key: _fundTypeKey,
                   wrapAlignment: WrapAlignment.spaceAround,
                   name: 'fundType',
-                  initialValue: widget.isNew ? 'DayFund' : widget.fund!.fundType,
+                  initialValue: widget.isNew ? FundType.dayFund : widget.fund!.fundType,
                   decoration: const InputDecoration(labelText: 'Loại hụi'),
                   options: const [
                     FormBuilderFieldOption(value: FundType.dayFund, child: Text('Hụi ngày')),
@@ -90,10 +97,21 @@ class _FundEditScreenState extends State<FundEditScreen> {
                   onChanged: (fundTypeValue) => setState(() {
                     if (fundTypeValue == null) return;
 
-                    fundType = fundTypeValue as FundType;
+                    fundType = fundTypeValue;
                   }),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(
+                  height: 15,
+                ),
+                FormBuilderDateTimePicker(
+                  key: _newSessionCreateHourOfDayKey,
+                  name: 'newSessionCreateHourOfDay',
+                  decoration: const InputDecoration(labelText: 'Khui vào giờ'),
+                  inputType: InputType.time,
+                  format: DateFormat('HH:mm'),
+                  initialValue: widget.isNew ? DateTime.now() : widget.fund!.newSessionCreateHourOfDay.toLocal(),
+                ),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Text((fundType == FundType.dayFund) ? 'Khui vào mỗi ' : 'Khui vào ngày '),
@@ -107,8 +125,22 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         initialValue: widget.isNew ? "" : widget.fund!.newSessionDurationCount.toString(),
                         autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
                         validator: FormBuilderValidators.compose(
-                          [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                          [
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.numeric(),
+                            FormBuilderValidators.min(1),
+                            FormBuilderValidators.max(30),
+                          ],
                         ),
+                        onChanged: (newSessionDurationCountValue) {
+                          if (newSessionDurationCountValue == null) return;
+
+                          setState(() {
+                            newSessionDurationCount = int.tryParse(newSessionDurationCountValue) ?? 0;
+                          });
+
+                          _takenSessionDeliveryCountKey.currentState?.didChange(newSessionDurationCountValue);
+                        },
                       ),
                     ),
                     Text((fundType == FundType.dayFund) ? 'ngày ' : 'ngày mỗi '),
@@ -133,15 +165,39 @@ class _FundEditScreenState extends State<FundEditScreen> {
                 ),
                 const SizedBox(height: 15),
                 FormBuilderDateTimePicker(
-                  key: _newSessionCreateHourOfDayKey,
-                  name: 'newSessionCreateHourOfDay',
-                  decoration: const InputDecoration(labelText: 'Khui vào lúc'),
+                  key: _takenSessionDeliveryHourOfDayKey,
+                  name: 'takenSessionDeliveryHourOfDay',
+                  decoration: const InputDecoration(labelText: 'Giao vào giờ'),
                   inputType: InputType.time,
                   format: DateFormat('HH:mm'),
-                  initialValue: widget.isNew ? DateTime.now() : widget.fund!.newSessionCreateHourOfDay.toLocal(),
+                  initialValue: widget.isNew ? DateTime.now() : widget.fund!.takenSessionDeliveryHourOfDay.toLocal(),
                 ),
-                SizedBox(
-                  height: 15,
+                FormBuilderTextField(
+                  key: _takenSessionDeliveryCountKey,
+                  name: 'takenSessionDeliveryCount',
+                  decoration: const InputDecoration(labelText: 'Giao vào ngày (số ngày)'),
+                  initialValue: widget.isNew ? "" : widget.fund!.takenSessionDeliveryCount.toString(),
+                  autovalidateMode: widget.isNew ? AutovalidateMode.onUserInteraction : AutovalidateMode.always,
+                  validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required(), FormBuilderValidators.numeric()],
+                  ),
+                  onChanged: (takenSessionDeliveryCountValue) {
+                    if (takenSessionDeliveryCountValue == null) return;
+
+                    final takenSessionDeliveryCountIntValue = int.tryParse(takenSessionDeliveryCountValue) ?? 0;
+
+                    if (takenSessionDeliveryCountIntValue < newSessionDurationCount) {
+                      _takenSessionDeliveryCountKey.currentState?.invalidate('Số ngày giao phải lớn hơn hoặc bằng số ngày khui');
+
+                      return;
+                    } else {
+                      _takenSessionDeliveryCountKey.currentState?.validate();
+                    }
+
+                    setState(() {
+                      newSessionDurationCount = int.tryParse(takenSessionDeliveryCountValue) ?? 0;
+                    });
+                  },
                 ),
                 FormBuilderTextField(
                   key: _nameKey,
@@ -222,7 +278,8 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         newSessionDurationCount: int.parse(_newSessionDurationCountKey.currentState!.value),
                         newSessionCreateDayOfMonth: fundType == FundType.dayFund ? 0 : int.parse(_newSessionCreateDayOfMonthKey.currentState!.value),
                         newSessionCreateHourOfDay: (_newSessionCreateHourOfDayKey.currentState!.value as DateTime).toLocal(),
-                        takenSessionDeliveryCount: int.parse(_newSessionDurationCountKey.currentState!.value),
+                        takenSessionDeliveryCount: int.parse(_takenSessionDeliveryCountKey.currentState!.value),
+                        takenSessionDeliveryHourOfDay: (_takenSessionDeliveryHourOfDayKey.currentState!.value as DateTime).toLocal(),
                         membersCount: 0,
                         sessionsCount: 0,
                         newSessionCreateDates: [],

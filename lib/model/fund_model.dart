@@ -18,6 +18,7 @@ class Fund extends GeneralFundModel {
     required super.takenSessionDeliveryCount,
     required super.newSessionCreateDayOfMonth,
     required super.newSessionCreateHourOfDay,
+    required super.takenSessionDeliveryHourOfDay,
     required super.openDate,
     required super.endDate,
     required super.fundPrice,
