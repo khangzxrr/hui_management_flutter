@@ -47,6 +47,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
 
     _formKey.currentState!.fields['newSessionText']!.didChange(fundProvider.fund.createSessionDurationAt());
+    _formKey.currentState!.fields['takenSessionDeliveryText']!.didChange(fundProvider.fund.takenSessionDeliveryAt());
     _formKey.currentState!.fields['newSessionMethodText']!.didChange('Mở thăm trực tiếp hoặc online');
     _formKey.currentState!.fields['warningText']!.didChange('1. Hụi viên đóng hụi ngày 05 & 06, không đóng trễ nhiều lần.\n2. Nếu hụi sống muống ngưng ngang hoặc đóng trễ quá 5 ngày sẽ được thói hụi sau khi trừ lời hụi và hoa hồng.\n3. Nếu hụi chết đóng trễ quá 7 ngày sẽ được công khai hụi trễ lên các group hụi & tính lãi suất bằng ngân hàng.\n4. Nếu có tình hình dịch hay lí do gì về kinh tế cả nước nên hụi viên muốn ngưng hụi thì phải theo biểu quyết của các hụi viên còn sống\n5.Hụi viên có số âm hụi nhiều thì chủ hụi được quyền yêu cầu đóng mãn dây khi hốt.\n6.Không so sánh lịch giao hụi với nơi khác!');
 
@@ -176,7 +177,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                     decoration: const InputDecoration(labelText: '*Giờ khui hụi'),
                   ),
                   FormBuilderTextField(
-                    name: 'newSessionText',
+                    name: 'takenSessionDeliveryText',
                     decoration: const InputDecoration(labelText: '*Giờ giao hụi'),
                   ),
                   FormBuilderTextField(

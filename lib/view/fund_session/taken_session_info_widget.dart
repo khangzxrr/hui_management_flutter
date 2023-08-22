@@ -11,44 +11,53 @@ class TakenSessionInfoWidget extends StatelessWidget {
 
   final int memberCount;
 
+  final Color textColor;
+
   const TakenSessionInfoWidget({
     super.key,
     required this.takenSessionDetail,
     required this.session,
     required this.memberCount,
+    this.textColor = Colors.black,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Column(
       children: [
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        const SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Ngày khui hụi: '),
-            Text('Lần hốt: '),
-            Text('Thành viên hốt: '),
-            Text('Thăm kêu: '),
-            Text('Chịu lỗ: '),
-            Text('Tiền hốt hụi: '),
-            Text('Trừ hoa hồng: '),
-            Text('Tiền hốt hụi còn lại: '),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Ngày khui hụi: ', style: TextStyle(color: textColor)),
+                Text('Lần hốt: ', style: TextStyle(color: textColor)),
+                Text('Thành viên hốt: ', style: TextStyle(color: textColor)),
+                Text('Thăm kêu: ', style: TextStyle(color: textColor)),
+                Text('Chịu lỗ: ', style: TextStyle(color: textColor)),
+                Text('Tiền hốt hụi: ', style: TextStyle(color: textColor)),
+                Text('Trừ hoa hồng: ', style: TextStyle(color: textColor)),
+                Text('Tiền hốt hụi còn lại: ', style: TextStyle(color: textColor)),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(Utils.dateFormat.format(session.takenDate), style: TextStyle(color: textColor)),
+                Text('${session.sessionNumber}/$memberCount', style: TextStyle(color: textColor)),
+                Text(takenSessionDetail.fundMember.nickName, style: TextStyle(color: textColor)),
+                Text('${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ', style: TextStyle(color: textColor)),
+                Text('${Utils.moneyFormat.format(takenSessionDetail.lossCost)}đ', style: TextStyle(color: textColor)),
+                Text('${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ', style: TextStyle(color: textColor)),
+                Text('${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ', style: TextStyle(color: textColor)),
+                Text('${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ', style: TextStyle(color: textColor)),
+              ],
+            )
           ],
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(Utils.dateFormat.format(session.takenDate)),
-            Text('${session.sessionNumber}/$memberCount'),
-            Text(takenSessionDetail.fundMember.nickName),
-            Text('${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ'),
-            Text('${Utils.moneyFormat.format(takenSessionDetail.lossCost)}đ'),
-            Text('${Utils.moneyFormat.format(takenSessionDetail.fundAmount)}đ'),
-            Text('${Utils.moneyFormat.format(takenSessionDetail.serviceCost)}đ'),
-            Text('${Utils.moneyFormat.format(takenSessionDetail.payCost)}đ'),
-          ],
-        )
+        const SizedBox(height: 20),
       ],
     );
   }

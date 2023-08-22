@@ -49,7 +49,17 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
   final getIt = GetIt.instance;
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {}
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
+    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+
+    final phonenumber = await authenticationProvider.getPreviousPhonenumber();
+    final password = await authenticationProvider.getPreviousPassword();
+
+    if (phonenumber.isNotEmpty && password.isNotEmpty) {
+      _emailFieldKey.currentState?.didChange(phonenumber);
+      _passwordFieldKey.currentState?.didChange(password);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +125,12 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                             }
                             disableLoading();
                           },
-                          (authentication) {
+                          (authentication) async {
                             log(authentication.toString());
+
+                            await authenticationProvider.setPreviousPhonenumber(_emailFieldKey.currentState?.value as String);
+                            await authenticationProvider.setPreviousPassword(_passwordFieldKey.currentState?.value as String);
+
                             authenticationProvider.setAuthentication(authentication);
 
                             SetupService.setupAuthorizeServiced(authentication.token);

@@ -67,9 +67,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     FundNormalSessionExportPdfRoute.name: (routeData) {
+      final args = routeData.argsAs<FundNormalSessionExportPdfRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const FundNormalSessionExportPdfScreen(),
+        child: FundNormalSessionExportPdfScreen(
+          key: args.key,
+          takenSessionDetail: args.takenSessionDetail,
+          session: args.session,
+        ),
       );
     },
     FundReportRoute.name: (routeData) {
@@ -334,16 +339,46 @@ class FundMembersRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [FundNormalSessionExportPdfScreen]
-class FundNormalSessionExportPdfRoute extends PageRouteInfo<void> {
-  const FundNormalSessionExportPdfRoute({List<PageRouteInfo>? children})
-      : super(
+class FundNormalSessionExportPdfRoute
+    extends PageRouteInfo<FundNormalSessionExportPdfRouteArgs> {
+  FundNormalSessionExportPdfRoute({
+    Key? key,
+    required NormalSessionDetail takenSessionDetail,
+    required FundSession session,
+    List<PageRouteInfo>? children,
+  }) : super(
           FundNormalSessionExportPdfRoute.name,
+          args: FundNormalSessionExportPdfRouteArgs(
+            key: key,
+            takenSessionDetail: takenSessionDetail,
+            session: session,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'FundNormalSessionExportPdfRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<FundNormalSessionExportPdfRouteArgs> page =
+      PageInfo<FundNormalSessionExportPdfRouteArgs>(name);
+}
+
+class FundNormalSessionExportPdfRouteArgs {
+  const FundNormalSessionExportPdfRouteArgs({
+    this.key,
+    required this.takenSessionDetail,
+    required this.session,
+  });
+
+  final Key? key;
+
+  final NormalSessionDetail takenSessionDetail;
+
+  final FundSession session;
+
+  @override
+  String toString() {
+    return 'FundNormalSessionExportPdfRouteArgs{key: $key, takenSessionDetail: $takenSessionDetail, session: $session}';
+  }
 }
 
 /// generated route for

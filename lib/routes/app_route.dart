@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hui_management/view/fund/fund_report.dart';
 
 import '../model/fund_member.dart';
+import '../model/fund_normal_session_detail_model.dart';
 import '../model/fund_session_model.dart';
 import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
@@ -62,6 +63,6 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: PaymentDetailRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundReportRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PdfExportReviewRoute.page, guards: [AuthGuard()]),
-     
+        AutoRoute(page: FundNormalSessionExportPdfRoute.page, guards: [AuthGuard()]),
       ];
 }

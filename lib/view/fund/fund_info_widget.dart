@@ -37,9 +37,6 @@ class FundInfoWidget extends StatelessWidget {
             Text(fund.takenSessionDeliveryAt(), textAlign: TextAlign.right),
             Text(Utils.dateFormat.format(fund.openDate.toLocal()), textAlign: TextAlign.right),
             Text(Utils.dateFormat.format(fund.endDate.toLocal()), textAlign: TextAlign.right),
-            // Text(Utils.dateFormat.format(fundProvider.fund.currentSessionDurationDate), textAlign: TextAlign.right),
-            // Text(Utils.dateFormat.format(fundProvider.fund.currentTakenSessionDeliveryDate), textAlign: TextAlign.right),
-            // Text(Utils.dateFormat.format(fundProvider.fund.nextSessionDurationDate), textAlign: TextAlign.right),
           ],
         )
       ],

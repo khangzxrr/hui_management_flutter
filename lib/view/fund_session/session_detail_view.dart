@@ -24,10 +24,21 @@ class TakenSessionDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Theme.of(context).primaryColor,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-              leading: CachedNetworkImage(
+      child: InkWell(
+        onTap: () => context.router.push(FundNormalSessionExportPdfRoute(takenSessionDetail: takenSessionDetail, session: session)),
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            TakenSessionInfoWidget(
+              session: session,
+              takenSessionDetail: takenSessionDetail,
+              memberCount: memberCount,
+              textColor: Colors.white,
+            ),
+            Positioned(
+              top: -40,
+              child: CachedNetworkImage(
                 imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 80.0,
@@ -40,16 +51,9 @@ class TakenSessionDetailWidget extends StatelessWidget {
                 placeholder: (context, url) => const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              title: Text(
-                takenSessionDetail.fundMember.nickName,
-                style: const TextStyle(color: Colors.white),
-              ),
-              subtitle: TakenSessionInfoWidget(
-                session: session,
-                takenSessionDetail: takenSessionDetail,
-                memberCount: memberCount,
-              )),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -106,7 +110,11 @@ class SessionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widgets = <Widget>[]; 
+    final widgets = <Widget>[
+      SizedBox(
+        height: 40,
+      )
+    ];
 
     widgets.addAll(
       session.normalSessionDetails.map(
