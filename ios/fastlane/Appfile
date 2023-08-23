@@ -1,0 +1,8 @@
+app_identifier("com.example.huiManagementFlutter") # The bundle identifier of your app
+apple_id("khangzxrr@gmail.com") # Your Apple Developer Portal username
+
+itc_team_id("124773711") # App Store Connect Team ID
+team_id("UUJPJU7Y6C") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
