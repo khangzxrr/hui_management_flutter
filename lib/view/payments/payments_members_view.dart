@@ -28,7 +28,6 @@ class SingleMemberScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -46,32 +45,90 @@ class SingleMemberScreen extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Tên: '),
-                      const Text('Nick name: '),
-                      const SizedBox(height: 8),
-                      Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'trả'}:  '),
-                      const Text('Đã thanh toán: '),
-                      const Text('Còn nợ: '),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      AutoSizeText(user.name),
-                      AutoSizeText(user.nickName),
-                      const SizedBox(height: 8),
-                      Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
-                      Text('${Utils.moneyFormat.format(user.totalDebtAmount)}đ'), //lazy to change the name!
-                      Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ'),
-                    ],
-                  )
-                ],
+              const SizedBox(
+                width: 8,
               ),
+              Expanded(
+                child: Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        const Text('Tên: '),
+                        AutoSizeText(
+                          user.name,
+                          textAlign: TextAlign.end,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const Text('Nick name: '),
+                        AutoSizeText(
+                          user.nickName,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
+                        AutoSizeText(
+                          '${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ',
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const Text('Đã thanh toán: '),
+                        AutoSizeText(
+                          '${Utils.moneyFormat.format(user.totalDebtAmount)}đ',
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const Text('Còn nợ: '),
+                        AutoSizeText(
+                          '${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ',
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              // Row(
+              //   mainAxisSize: MainAxisSize.max,
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         const Text('Tên: '),
+              //         const Text('Nick name: '),
+              //         const SizedBox(height: 8),
+              //         Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
+              //         const Text('Đã thanh toán: '),
+              //         const Text('Còn nợ: '),
+              //       ],
+              //     ),
+              //     Column(
+              //       crossAxisAlignment: CrossAxisAlignment.end,
+              //       children: [
+              //         AutoSizeText(user.name),
+              //         AutoSizeText(user.nickName),
+              //         const SizedBox(height: 8),
+              //         Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
+              //         Text('${Utils.moneyFormat.format(user.totalDebtAmount)}đ'), //lazy to change the name!
+              //         Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ'),
+              //       ],
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -105,7 +162,9 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
 
     final sherlock = Sherlock(elements: subUsersProvider.subUsersWithPaymentReport.map((e) => e.toJson()).toList());
 
-    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
+    final List<Widget> userWidgets = filterText.isNotEmpty
+        ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList()
+        : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {
