@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -26,33 +25,35 @@ class TakenSessionDetailWidget extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       child: InkWell(
         onTap: () => context.router.push(FundNormalSessionExportPdfRoute(takenSessionDetail: takenSessionDetail, session: session)),
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: <Widget>[
-            TakenSessionInfoWidget(
-              session: session,
-              takenSessionDetail: takenSessionDetail,
-              memberCount: memberCount,
-              textColor: Colors.white,
-            ),
-            Positioned(
-              top: -40,
-              child: CachedNetworkImage(
-                imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 80.0,
-                  height: 80.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
-                  ),
-                ),
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+        child: Container(
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              TakenSessionInfoWidget(
+                session: session,
+                takenSessionDetail: takenSessionDetail,
+                memberCount: memberCount,
+                textColor: Colors.white,
               ),
-            ),
-          ],
+              Positioned(
+                top: -40,
+                child: CachedNetworkImage(
+                  imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                    ),
+                  ),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -140,7 +141,7 @@ class SessionDetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: widgets,

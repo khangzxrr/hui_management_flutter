@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 
@@ -19,10 +20,10 @@ class FundInfoWidget extends StatelessWidget {
             Text('Tên dây hụi: ', textAlign: TextAlign.left),
             Text('Mệnh giá: ', textAlign: TextAlign.left),
             Text('Hoa hồng: ', textAlign: TextAlign.left),
-            Text('Khui vào lúc:', textAlign: TextAlign.left),
-            Text('Giao vào lúc:', textAlign: TextAlign.left),
-            Text('Ngày mở dây hụi: ', textAlign: TextAlign.left),
-            Text('Ngày kết thúc dây hụi: ', textAlign: TextAlign.left),
+            Text('Khui lúc:', textAlign: TextAlign.left),
+            Text('Giao lúc:', textAlign: TextAlign.left),
+            Text('Ngày mở: ', textAlign: TextAlign.left),
+            Text('Ngày kết thúc: ', textAlign: TextAlign.left),
           ],
         ),
         Column(

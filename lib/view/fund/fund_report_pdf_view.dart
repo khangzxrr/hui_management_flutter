@@ -36,20 +36,20 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
       appBar: AppBar(
         title: const Text('Xem trước giấy hụi'),
       ),
-      body: PdfPreview(build: (format) async {
-        final generatedPdfBytes = await _generatePdf(format);
+      body: PdfPreview(
+        build: (format) async {
+          final generatedPdfBytes = await _generatePdf(format);
 
-        setState(() {
           _pdfBytes = generatedPdfBytes;
-        });
 
-        return generatedPdfBytes;
-      }),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton.icon(
+          return generatedPdfBytes;
+        },
+        allowSharing: false,
+        canChangeOrientation: false,
+        canDebug: kDebugMode,
+        useActions: true,
+        actions: [
+          TextButton.icon(
               onPressed: () async {
                 double width = pageWidth * 2; //2 page
                 double height = pageHeight;
@@ -75,11 +75,9 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
                   await FileSaver.instance.saveAs(name: 'giay_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
                 }
               },
-              label: const Text('Tải về tệp ảnh'),
-              icon: const Icon(Icons.image),
-            ),
-          ],
-        ),
+              label: const Text('Tải về tệp ảnh', style: TextStyle(color: Colors.white)),
+              icon: const Icon(Icons.image, color: Colors.white)),
+        ],
       ),
     );
   }

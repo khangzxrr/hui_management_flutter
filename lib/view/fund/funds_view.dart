@@ -92,8 +92,8 @@ class SingleFundScreen extends StatelessWidget {
       // component is not dragged.
       child: Card(
         child: InkWell(
-          onTap: () {
-            fundProvider
+          onTap: () async {
+            await fundProvider
                 .getFund(fund.id)
                 .match(
                   (l) => log(l.toString()),

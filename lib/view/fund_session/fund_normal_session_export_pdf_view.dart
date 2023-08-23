@@ -47,51 +47,52 @@ class _FundNormalSessionExportPdfScreenState extends State<FundNormalSessionExpo
       appBar: AppBar(
         title: const Text('Giấy giao hụi PDF'),
       ),
-      body: PdfPreview(build: (format) async {
-        final fundProvider = Provider.of<FundProvider>(context, listen: false);
-        final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+      body: PdfPreview(
+        build: (format) async {
+          final fundProvider = Provider.of<FundProvider>(context, listen: false);
+          final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false);
 
-        final fund = fundProvider.fund;
-        final owner = authenticationProvider.model!;
+          final fund = fundProvider.fund;
+          final owner = authenticationProvider.model!;
 
-        final pdfBytesValue = await _generatePdf(format, fund, widget.session, widget.takenSessionDetail, owner);
+          final pdfBytesValue = await _generatePdf(format, fund, widget.session, widget.takenSessionDetail, owner);
 
-        pdfBytes = pdfBytesValue;
+          pdfBytes = pdfBytesValue;
 
-        return pdfBytesValue;
-      }),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton.icon(
-              onPressed: () async {
-                final mergedImage = img.Image(width: pageWidth, height: pageHeight);
+          return pdfBytesValue;
+        },
+        canDebug: kDebugMode,
+        allowSharing: false,
+        canChangeOrientation: false,
+        actions: [
+          TextButton.icon(
+            onPressed: () async {
+              final mergedImage = img.Image(width: pageWidth, height: pageHeight);
 
-                int posX = 0;
+              int posX = 0;
 
-                await for (var page in Printing.raster(pdfBytes, pages: [0], dpi: 72)) {
-                  final imageBytes = await page.toPng(); // ...or page.toPng()
-                  final decodedImage = img.decodeImage(imageBytes);
+              await for (var page in Printing.raster(pdfBytes, pages: [0], dpi: 72)) {
+                final imageBytes = await page.toPng(); // ...or page.toPng()
+                final decodedImage = img.decodeImage(imageBytes);
 
-                  img.compositeImage(mergedImage, decodedImage!, dstX: posX, linearBlend: false);
+                img.compositeImage(mergedImage, decodedImage!, dstX: posX, linearBlend: false);
 
-                  posX += decodedImage.width;
-                }
+                posX += decodedImage.width;
+              }
 
-                final mergedImageBytes = img.encodePng(mergedImage);
+              final mergedImageBytes = img.encodePng(mergedImage);
 
-                if (kIsWeb) {
-                  await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_giao_hui.png');
-                } else {
-                  await FileSaver.instance.saveAs(name: 'giay_giao_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
-                }
-              },
-              label: const Text('Tải về tệp ảnh'),
-              icon: const Icon(Icons.image),
-            ),
-          ],
-        ),
+              if (kIsWeb) {
+                await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_giao_hui.png');
+              } else {
+                await FileSaver.instance.saveAs(name: 'giay_giao_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
+              }
+            },
+            label: const Text('Tải về tệp ảnh', style: TextStyle(color: Colors.white)),
+            icon: const Icon(Icons.image, color: Colors.white),
+          ),
+        ],
+        useActions: true,
       ),
     );
   }
