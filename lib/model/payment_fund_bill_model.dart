@@ -14,6 +14,9 @@ class FundBillModel {
 
   FundBillModel({required this.id, required this.fromFund, required this.fromSession, required this.fromSessionDetail});
 
+  @override
+  toString() => 'FundBillModel(id: $id, fromFund: $fromFund, fromSession: $fromSession, fromSessionDetail: $fromSessionDetail)';
+  
   factory FundBillModel.fromJson(Map<String, dynamic> json) => _$FundBillModelFromJson(json);
   Map<String, dynamic> toJson() => _$FundBillModelToJson(this);
 }

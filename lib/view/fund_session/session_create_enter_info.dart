@@ -111,6 +111,12 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                         return;
                       }
 
+                      if (totalFund - fundProvider.fund.serviceCost < 0) {
+                        _formKey.currentState?.fields['predictedPrice']?.invalidate('Tổng tiền còn lại không thể âm');
+
+                        return;
+                      }
+
                       _formKey.currentState?.fields['predictedPrice']?.validate();
 
                       setData(

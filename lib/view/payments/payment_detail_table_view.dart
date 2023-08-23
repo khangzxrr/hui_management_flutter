@@ -152,17 +152,19 @@ class FundSessionDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<PlutoRow> rows = fundBills.map((fb) {
+      print(fb.fromFund);
+
       return PlutoRow(
         cells: {
           'fundName': PlutoCell(value: fb.fromFund.name),
-          'predictedPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromSessionDetail.predictedPrice)}đ'),
-          'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.openDate)),
-          'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromFund.fundPrice)}đ'),
-          'fundOpenText': PlutoCell(value: Utils.dateFormat.format(fb.fromSession.takenDate)),
+          'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromFund.fundPrice)} đ'),
           'sessionNumber': PlutoCell(value: '${fb.fromSession.sessionNumber}/${fb.fromFund.membersCount}'),
-          'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+          'predictedPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromSessionDetail.predictedPrice)}đ'),
+          'fundOpenText': PlutoCell(value: Utils.dateFormat.format(fb.fromSession.takenDate)),
           'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
-          //'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate)),
+          'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+          'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.openDate)),
+          'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate)),
         },
       );
     }).toList();
