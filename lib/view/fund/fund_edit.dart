@@ -193,10 +193,6 @@ class _FundEditScreenState extends State<FundEditScreen> {
                     } else {
                       _takenSessionDeliveryCountKey.currentState?.validate();
                     }
-
-                    setState(() {
-                      newSessionDurationCount = int.tryParse(takenSessionDeliveryCountValue) ?? 0;
-                    });
                   },
                 ),
                 FormBuilderTextField(
