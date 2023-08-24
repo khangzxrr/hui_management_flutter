@@ -75,13 +75,49 @@ class SingleMemberScreen extends StatelessWidget {
             ],
           ),
         ),
-        onTap: () {
-          Provider.of<PaymentProvider>(context, listen: false).getPayments(user).match((l) {
+        onTap: () async {
+          await Provider.of<PaymentProvider>(context, listen: false).getPayments(user).match((l) {
             log(l);
             DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
           }, (r) => context.router.push(PaymentListOfUserRoute(user: user))).run();
         },
       ),
+    );
+  }
+}
+
+class MultiplePaymentMembersFilter extends StatefulWidget {
+  MultiplePaymentMembersFilter({super.key});
+
+  @override
+  State<MultiplePaymentMembersFilter> createState() => _MultiplePaymentMembersFilterState();
+}
+
+class _MultiplePaymentMembersFilterState extends State<MultiplePaymentMembersFilter> {
+  //TODO:
+  Set<SubUserFilter> selectedFilters = {};
+
+  @override
+  Widget build(BuildContext context) {
+    final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: false);
+    return Row(
+      children: [
+        FilterChip(
+          label: Text('Lọc những hụi viên có bill trong hôm nay'),
+          selected: selectedFilters.contains(SubUserFilter.filterByContainToDayPayment),
+          onSelected: (selectedValue) async {
+            setState(() {
+              if (selectedValue) {
+                selectedFilters.add(SubUserFilter.filterByContainToDayPayment);
+              } else {
+                selectedFilters.remove(SubUserFilter.filterByContainToDayPayment);
+              }
+            });
+
+            await subUsersProvider.fetchAndFilterUsers(selectedFilters).run();
+          },
+        )
+      ],
     );
   }
 }
@@ -148,6 +184,7 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
                       ),
                     ],
                   ),
+                  MultiplePaymentMembersFilter(),
                   ...userWidgets,
                 ],
               ),
