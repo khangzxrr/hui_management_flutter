@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:auto_route/annotations.dart';
-import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/view_models/fund_report_to_pdf_vm.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:pdf/pdf.dart';
 import '../../helper/utils.dart';
 
@@ -67,13 +68,15 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
                   posX += decodedImage.width;
                 }
 
-                final mergedImageBytes = img.encodePng(mergedImage);
+                final mergedImageBytes = img.encodeJpg(mergedImage);
 
                 if (kIsWeb) {
                   await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_hui.png');
                 } else {
-                  await FileSaver.instance.saveAs(name: 'giay_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
+                  await ImageGallerySaver.saveImage(mergedImageBytes, name: 'giay_hui', quality: 100);
                 }
+
+                DialogHelper.showSnackBar(context, 'Đã tải về tệp ảnh');
               },
               label: const Text('Tải về tệp ảnh', style: TextStyle(color: Colors.white)),
               icon: const Icon(Icons.image, color: Colors.white)),
@@ -97,14 +100,18 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
     final boldFont = await PdfGoogleFonts.robotoBlack();
     final font = await PdfGoogleFonts.robotoRegular();
 
-    setState(() {
-      pageWidth = format.width;
-      pageHeight = format.height;
-    });
+    pageWidth = format.width;
+    pageHeight = format.height;
 
     pdf.addPage(
       pw.Page(
-        pageFormat: format,
+        pageTheme: pw.PageTheme(
+          pageFormat: format,
+          buildBackground: (context) => pw.FullPage(
+            ignoreMargins: true,
+            child: pw.Container(color: PdfColors.grey50),
+          ),
+        ),
         build: (context) {
           double lineCount = widget.fundReportToPdfViewModel.nextSessionDateText.split(' ').length.toDouble() / 7;
 
@@ -215,7 +222,13 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
 
     pdf.addPage(
       pw.Page(
-        pageFormat: format,
+        pageTheme: pw.PageTheme(
+          pageFormat: format,
+          buildBackground: (context) => pw.FullPage(
+            ignoreMargins: true,
+            child: pw.Container(color: PdfColors.grey50),
+          ),
+        ),
         build: (context) {
           return pw.Column(
             children: [

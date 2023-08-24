@@ -3,13 +3,14 @@ import 'dart:typed_data';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -85,8 +86,10 @@ class _FundNormalSessionExportPdfScreenState extends State<FundNormalSessionExpo
               if (kIsWeb) {
                 await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_giao_hui.png');
               } else {
-                await FileSaver.instance.saveAs(name: 'giay_giao_hui', ext: 'png', mimeType: MimeType.png, bytes: mergedImageBytes);
+                await ImageGallerySaver.saveImage(mergedImageBytes, name: 'giay_giao_hui', quality: 100);
               }
+
+              DialogHelper.showSnackBar(context, 'Đã tải về tệp ảnh');
             },
             label: const Text('Tải về tệp ảnh', style: TextStyle(color: Colors.white)),
             icon: const Icon(Icons.image, color: Colors.white),
@@ -123,7 +126,13 @@ class _FundNormalSessionExportPdfScreenState extends State<FundNormalSessionExpo
 
     pdf.addPage(
       pw.Page(
-          pageFormat: format,
+          pageTheme: pw.PageTheme(
+            pageFormat: format,
+            buildBackground: (context) => pw.FullPage(
+              ignoreMargins: true,
+              child: pw.Container(color: PdfColors.grey50),
+            ),
+          ),
           build: (context) {
             return pw.Column(
               children: [
@@ -171,7 +180,8 @@ class _FundNormalSessionExportPdfScreenState extends State<FundNormalSessionExpo
                       gridTile(pw.Text('Số kỳ: ', style: pw.TextStyle(font: font))),
                       gridTile(pw.Text(fundSession.sessionNumber.toString(), style: pw.TextStyle(font: boldFont), textAlign: pw.TextAlign.right)),
                       gridTile(pw.Text('Tổng sống + chết', style: pw.TextStyle(font: font, color: PdfColors.blue))),
-                      gridTile(pw.Text('${Utils.moneyFormat.format(widget.takenSessionDetail.fundAmount)} đ', style: pw.TextStyle(font: boldFont, color: PdfColors.blue), textAlign: pw.TextAlign.right)),
+                      gridTile(
+                          pw.Text('${Utils.moneyFormat.format(widget.takenSessionDetail.fundAmount)} đ', style: pw.TextStyle(font: boldFont, color: PdfColors.blue), textAlign: pw.TextAlign.right)),
                       gridTile(pw.Text('Trừ thảo', style: pw.TextStyle(font: font))),
                       gridTile(pw.Text('${Utils.moneyFormat.format(widget.takenSessionDetail.serviceCost)} đ', style: pw.TextStyle(font: boldFont), textAlign: pw.TextAlign.right)),
                       gridTile(pw.Text('Còn lại', style: pw.TextStyle(font: font))),
