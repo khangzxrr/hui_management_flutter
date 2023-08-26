@@ -52,6 +52,8 @@ class UserWithPaymentReport extends SubUserModel {
 
   //from json
   factory UserWithPaymentReport.fromJson(Map<String, dynamic> json) => _$UserWithPaymentReportFromJson(json);
+  
+  @override
   Map<String, dynamic> toJson() => _$UserWithPaymentReportToJson(this);
 
   //toString

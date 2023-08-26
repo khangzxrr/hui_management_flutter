@@ -7,11 +7,9 @@ import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
-import 'package:hui_management/view/fund_session/session_detail_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
-import '../../helper/utils.dart';
 import '../../routes/app_route.dart';
 import 'taken_session_info_widget.dart';
 
@@ -47,7 +45,7 @@ class SessionViewWidget extends StatelessWidget {
                 DialogHelper.showSnackBar(context, l);
               }, (r) => DialogHelper.showSnackBar(context, "Xóa kì hụi thành công!")).run();
             },
-            backgroundColor: Color(0xFFFE4A49),
+            backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
           ),
@@ -100,7 +98,7 @@ class FundSessionListScreen extends StatelessWidget {
         title: Text('Quản lí các kì của dây hụi ${fundProvider.fund.name}'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: ListView(
           children: sesionViewWidgets,
         ),

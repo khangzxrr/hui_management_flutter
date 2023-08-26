@@ -159,7 +159,7 @@ class _FundEditScreenState extends State<FundEditScreen> {
                               ),
                             ),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     Text((fundType == FundType.monthFund) ? 'tháng' : ''),
                   ],
                 ),

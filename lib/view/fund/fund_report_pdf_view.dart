@@ -90,7 +90,7 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
       decoration: pw.BoxDecoration(
         border: pw.Border.all(width: 0.5),
       ),
-      padding: pw.EdgeInsets.all(8.0),
+      padding: const pw.EdgeInsets.all(8.0),
       child: child,
     );
   }
@@ -118,7 +118,7 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
           print(lineCount);
 
           final nextSessionDateRow = pw.Container(
-            padding: pw.EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: const pw.EdgeInsets.fromLTRB(10, 0, 10, 0),
             height: lineCount < 0 ? 30 : lineCount.ceilToDouble() * 30,
             child: pw.GridView(
               crossAxisCount: 2,
@@ -134,7 +134,7 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
           print(lineCount);
 
           final nextSessionDeliveryRow = pw.Container(
-            padding: pw.EdgeInsets.fromLTRB(10, 0, 10, 10),
+            padding: const pw.EdgeInsets.fromLTRB(10, 0, 10, 10),
             height: lineCount < 0 ? 30 : lineCount.ceilToDouble() * 40,
             child: pw.GridView(
               crossAxisCount: 2,
@@ -162,7 +162,7 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
               pw.SizedBox(height: 20),
               pw.Text('THÔNG TIN HỤI', style: pw.TextStyle(font: boldFont, fontSize: 30, color: PdfColors.red)),
               pw.Container(
-                padding: pw.EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const pw.EdgeInsets.fromLTRB(10, 0, 10, 0),
                 height: 200,
                 child: pw.GridView(
                   crossAxisCount: 2,

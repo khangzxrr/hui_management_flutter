@@ -31,5 +31,6 @@ class Fund extends GeneralFundModel {
   });
 
   factory Fund.fromJson(Map<String, dynamic> json) => _$FundFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$FundToJson(this);
 }

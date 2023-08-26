@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
-
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
@@ -28,7 +26,7 @@ class FundNormalSessionExportPdfScreen extends StatefulWidget {
   final NormalSessionDetail takenSessionDetail;
   final FundSession session;
 
-  FundNormalSessionExportPdfScreen({super.key, required this.takenSessionDetail, required this.session});
+  const FundNormalSessionExportPdfScreen({super.key, required this.takenSessionDetail, required this.session});
 
   @override
   State<FundNormalSessionExportPdfScreen> createState() => _FundNormalSessionExportPdfScreenState();

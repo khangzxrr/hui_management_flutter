@@ -68,7 +68,7 @@ class SingleFundScreen extends StatelessWidget {
                 generalFundProvider.removeFund(fund);
               }).run();
             },
-            backgroundColor: Color.fromARGB(255, 20, 134, 255),
+            backgroundColor: const Color.fromARGB(255, 20, 134, 255),
             foregroundColor: Colors.white,
             icon: Icons.archive,
           ),
@@ -81,7 +81,7 @@ class SingleFundScreen extends StatelessWidget {
                 ),
               );
             },
-            backgroundColor: Color.fromARGB(255, 255, 134, 20),
+            backgroundColor: const Color.fromARGB(255, 255, 134, 20),
             foregroundColor: Colors.white,
             icon: Icons.edit,
           ),
@@ -100,7 +100,6 @@ class SingleFundScreen extends StatelessWidget {
                   (r) => context.router.push(const FundDetailRoute()),
                 )
                 .run();
-            ;
           },
           child: Column(
             children: <Widget>[

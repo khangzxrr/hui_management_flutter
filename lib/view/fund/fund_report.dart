@@ -191,7 +191,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                   ),
                   const SizedBox(height: 8),
                   const Text('Danh sách hốt:'),
-                  Container(
+                  SizedBox(
                     height: 60 * (takenSessionMemberRows.length + 1),
                     child: PlutoGrid(
                       columns: takenSessionColumns,

@@ -25,35 +25,33 @@ class TakenSessionDetailWidget extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       child: InkWell(
         onTap: () => context.router.push(FundNormalSessionExportPdfRoute(takenSessionDetail: takenSessionDetail, session: session)),
-        child: Container(
-          child: Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: <Widget>[
-              TakenSessionInfoWidget(
-                session: session,
-                takenSessionDetail: takenSessionDetail,
-                memberCount: memberCount,
-                textColor: Colors.white,
-              ),
-              Positioned(
-                top: -40,
-                child: CachedNetworkImage(
-                  imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: 80.0,
-                    height: 80.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
-                    ),
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            TakenSessionInfoWidget(
+              session: session,
+              takenSessionDetail: takenSessionDetail,
+              memberCount: memberCount,
+              textColor: Colors.white,
+            ),
+            Positioned(
+              top: -40,
+              child: CachedNetworkImage(
+                imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
                   ),
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -111,11 +109,7 @@ class SessionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widgets = <Widget>[
-      SizedBox(
-        height: 40,
-      )
-    ];
+    final widgets = <Widget>[const SizedBox(height: 40)];
 
     widgets.addAll(
       session.normalSessionDetails.map(

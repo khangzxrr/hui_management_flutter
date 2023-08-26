@@ -4,7 +4,6 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/utils.dart';
-import '../../model/general_fund_model.dart';
 import '../../routes/app_route.dart';
 import 'fund_info_widget.dart';
 
@@ -115,7 +114,7 @@ class FundDetailScreen extends StatelessWidget {
               label: const Text('Tạo giấy hụi'),
               icon: const Icon(Icons.download_rounded),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             TextButton.icon(
               onPressed: () => context.router.push(const CreateSessionSelectMemberRoute()),
               label: const Text('Khui hụi'),
