@@ -87,7 +87,9 @@ class PaycheckScreen extends StatelessWidget {
                         formKey.currentState!.fields['transactionNote']!.value,
                       )
                       .andThen(() => paymentProvider.getPayments(paymentProvider.selectedUser))
-                      .andThen(() => subUserProvider.getAllWithPaymentReport())
+                      .andThen(
+                        () => subUserProvider.getAllWithPaymentReport(filters: {SubUserFilter.filterByAnyPayment}, usingLoadingIdicator: true),
+                      )
                       .match(
                     (l) {
                       log(l);

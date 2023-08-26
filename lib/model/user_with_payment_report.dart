@@ -5,12 +5,20 @@ part 'user_with_payment_report.g.dart';
 
 @JsonSerializable()
 class UserWithPaymentReport extends SubUserModel {
-  final double totalProcessingAmount; //total cost
-  final double totalDebtAmount; //total transactional cost
+  final double totalProcessingAmount;
+  final double totalDebtAmount;
+  final double totalAliveAmount;
+  final double totalDeadAmount;
+  final double fundRatio;
+  final double totalTakenAmount;
 
   UserWithPaymentReport({
     required this.totalProcessingAmount,
     required this.totalDebtAmount,
+    required this.fundRatio,
+    required this.totalAliveAmount,
+    required this.totalDeadAmount,
+    required this.totalTakenAmount,
     required int id,
     required String imageUrl,
     required String name,

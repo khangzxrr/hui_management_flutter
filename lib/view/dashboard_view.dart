@@ -14,7 +14,6 @@ import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/user_report_provider.dart';
 import '../routes/app_route.dart';
 import '../service/notification_service.dart';
 
@@ -149,14 +148,21 @@ class _DashboardInfoState extends State<DashboardInfo> with AfterLayoutMixin<Das
               tabRouter.setActiveIndex(index);
 
               if (index == 3) {
-                final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport().run();
+                final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport(
+                  filters: {SubUserFilter.filterByAnyPayment},
+                  usingLoadingIdicator: true,
+                ).run();
                 getAllWithPaymentReportResult.match((l) {
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
                 }, (r) => null);
               } else if (index == 4) {
-                final getAllReportResult = await Provider.of<UserReportProvider>(context, listen: false).getAllReport().run();
-                getAllReportResult.match((l) {
+                final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport(
+                  filters: {SubUserFilter.filterByAnyPayment},
+                  usingLoadingIdicator: true,
+                ).run();
+
+                getAllWithPaymentReportResult.match((l) {
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
                 }, (r) => null);

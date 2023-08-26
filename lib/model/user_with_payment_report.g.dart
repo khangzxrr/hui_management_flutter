@@ -11,6 +11,10 @@ UserWithPaymentReport _$UserWithPaymentReportFromJson(
     UserWithPaymentReport(
       totalProcessingAmount: (json['totalProcessingAmount'] as num).toDouble(),
       totalDebtAmount: (json['totalDebtAmount'] as num).toDouble(),
+      fundRatio: (json['fundRatio'] as num).toDouble(),
+      totalAliveAmount: (json['totalAliveAmount'] as num).toDouble(),
+      totalDeadAmount: (json['totalDeadAmount'] as num).toDouble(),
+      totalTakenAmount: (json['totalTakenAmount'] as num).toDouble(),
       id: json['id'] as int,
       imageUrl: json['imageUrl'] as String,
       name: json['name'] as String,
@@ -46,4 +50,8 @@ Map<String, dynamic> _$UserWithPaymentReportToJson(
       'nickName': instance.nickName,
       'totalProcessingAmount': instance.totalProcessingAmount,
       'totalDebtAmount': instance.totalDebtAmount,
+      'totalAliveAmount': instance.totalAliveAmount,
+      'totalDeadAmount': instance.totalDeadAmount,
+      'fundRatio': instance.fundRatio,
+      'totalTakenAmount': instance.totalTakenAmount,
     };

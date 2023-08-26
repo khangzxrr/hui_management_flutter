@@ -81,18 +81,9 @@ class SingleMemberScreen extends StatelessWidget {
                     ),
                     TableRow(
                       children: [
-                        const Text('Đã thanh toán: '),
-                        AutoSizeText(
-                          '${Utils.moneyFormat.format(user.totalDebtAmount)}đ',
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
                         const Text('Còn nợ: '),
                         AutoSizeText(
-                          '${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ',
+                          '${Utils.moneyFormat.format(user.totalDebtAmount.abs())}đ',
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -100,35 +91,6 @@ class SingleMemberScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // Row(
-              //   mainAxisSize: MainAxisSize.max,
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         const Text('Tên: '),
-              //         const Text('Nick name: '),
-              //         const SizedBox(height: 8),
-              //         Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
-              //         const Text('Đã thanh toán: '),
-              //         const Text('Còn nợ: '),
-              //       ],
-              //     ),
-              //     Column(
-              //       crossAxisAlignment: CrossAxisAlignment.end,
-              //       children: [
-              //         AutoSizeText(user.name),
-              //         AutoSizeText(user.nickName),
-              //         const SizedBox(height: 8),
-              //         Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ'),
-              //         Text('${Utils.moneyFormat.format(user.totalDebtAmount)}đ'), //lazy to change the name!
-              //         Text('${Utils.moneyFormat.format(user.totalProcessingAmount.abs() - user.totalDebtAmount)}đ'),
-              //       ],
-              //     )
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -139,42 +101,6 @@ class SingleMemberScreen extends StatelessWidget {
           }, (r) => context.router.push(PaymentListOfUserRoute(user: user))).run();
         },
       ),
-    );
-  }
-}
-
-class MultiplePaymentMembersFilter extends StatefulWidget {
-  MultiplePaymentMembersFilter({super.key});
-
-  @override
-  State<MultiplePaymentMembersFilter> createState() => _MultiplePaymentMembersFilterState();
-}
-
-class _MultiplePaymentMembersFilterState extends State<MultiplePaymentMembersFilter> {
-  //TODO:
-  Set<SubUserFilter> selectedFilters = {};
-
-  @override
-  Widget build(BuildContext context) {
-    final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: false);
-    return Row(
-      children: [
-        FilterChip(
-          label: Text('Lọc những hụi viên có bill trong hôm nay'),
-          selected: selectedFilters.contains(SubUserFilter.filterByContainToDayPayment),
-          onSelected: (selectedValue) async {
-            setState(() {
-              if (selectedValue) {
-                selectedFilters.add(SubUserFilter.filterByContainToDayPayment);
-              } else {
-                selectedFilters.remove(SubUserFilter.filterByContainToDayPayment);
-              }
-            });
-
-            await subUsersProvider.fetchAndFilterUsers(selectedFilters).run();
-          },
-        )
-      ],
     );
   }
 }
@@ -192,19 +118,26 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
 
   List<Result> results = [];
 
+  Set<SubUserFilter> selectedFilters = {
+    SubUserFilter.filterByAnyPayment,
+  };
+
   @override
   Widget build(BuildContext context) {
     final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
     final sherlock = Sherlock(elements: subUsersProvider.subUsersWithPaymentReport.map((e) => e.toJson()).toList());
 
-    final List<Widget> userWidgets = filterText.isNotEmpty
-        ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList()
-        : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
+    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {
-        await subUsersProvider.getAllWithPaymentReport().run();
+        await subUsersProvider.getAllWithPaymentReport(
+          filters: {
+            SubUserFilter.filterByAnyPayment,
+          },
+          usingLoadingIdicator: true,
+        ).run();
       },
       showChildOpacityTransition: false,
       child: Padding(
@@ -243,7 +176,30 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
                       ),
                     ],
                   ),
-                  MultiplePaymentMembersFilter(),
+                  Row(
+                    children: [
+                      FilterChip(
+                        label: const Text('Lọc những hụi viên có bill trong hôm nay'),
+                        selected: selectedFilters.contains(SubUserFilter.filterByContainToDayPayment),
+                        onSelected: (selectedValue) async {
+                          setState(() {
+                            if (selectedValue) {
+                              selectedFilters.add(SubUserFilter.filterByContainToDayPayment);
+                            } else {
+                              selectedFilters.remove(SubUserFilter.filterByContainToDayPayment);
+                            }
+                          });
+
+                          await subUsersProvider
+                              .getAllWithPaymentReport(
+                                filters: selectedFilters,
+                                usingLoadingIdicator: false,
+                              )
+                              .run();
+                        },
+                      )
+                    ],
+                  ),
                   ...userWidgets,
                 ],
               ),

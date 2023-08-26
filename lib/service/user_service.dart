@@ -6,6 +6,7 @@ import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/model/user_with_payment_report.dart';
 
 import '../helper/constants.dart';
+import '../provider/sub_users_provider.dart';
 
 class UserService {
   final httpClient = GetIt.I<AuthorizeHttp>();
@@ -44,22 +45,25 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<UserWithPaymentReport>> getAllWithPaymentReport() async {
+  Future<List<UserWithPaymentReport>> getAllWithPaymentReport(Set<SubUserFilter> filters) async {
     Map<String, String> queryParams = {};
-    queryParams['filterByAnyPayment'] = 'true';
+
+    for (SubUserFilter filter in filters) {
+      queryParams[filter.name] = 'true';
+    }
 
     Uri uri;
 
     if (Constants.apiHostName.contains("https")) {
-      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/subusers', queryParams);
+      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/subusers/reports', queryParams);
     } else {
-      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/subusers', queryParams);
+      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/subusers/reports', queryParams);
     }
 
     final response = await httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      final Iterable jsonObj = jsonDecode(response.body)['subUsers'];
+      final Iterable jsonObj = jsonDecode(response.body)['subUserReportRecords'];
 
       return List<UserWithPaymentReport>.from(jsonObj.map((model) => UserWithPaymentReport.fromJson(model)));
     }
@@ -67,21 +71,11 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<SubUserModel>> getAll({
-    bool filterByAnyPayment = false,
-    bool filterByNotFinishedPayment = false,
-    bool getFundRatio = false,
-  }) async {
+  Future<List<SubUserModel>> getAll(Set<SubUserFilter> filters) async {
     Map<String, String> queryParams = {};
 
-    if (filterByAnyPayment) {
-      queryParams['filterByAnyPayment'] = 'true';
-    }
-    if (filterByNotFinishedPayment) {
-      queryParams['filterByNotFinishedPayment'] = 'true';
-    }
-    if (getFundRatio) {
-      queryParams['getFundRatio'] = 'true';
+    for (SubUserFilter filter in filters) {
+      queryParams[filter.name] = 'true';
     }
 
     Uri uri;

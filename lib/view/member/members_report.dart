@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:hui_management/pluto_grid_extentions/pluto_filters/pluto_filter_name_start_with.dart';
 import 'package:hui_management/pluto_grid_extentions/pluto_types/pluto_grid_name_field.dart';
+import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 
 import '../../pluto_grid_extentions/pluto_configurations/pluto_language_vietnamese.dart';
-import '../../provider/user_report_provider.dart';
 
 @RoutePage()
 class MemberReportScreen extends StatefulWidget {
@@ -203,9 +202,9 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
 
   @override
   Widget build(BuildContext context) {
-    final userReportProvider = Provider.of<UserReportProvider>(context, listen: true);
+    final userReportProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
-    List<PlutoRow> rows = userReportProvider.userReportModels
+    List<PlutoRow> rows = userReportProvider.subUsersWithPaymentReport
         .map((u) => PlutoRow(cells: {
               'name': PlutoCell(value: u.name),
               'nickName': PlutoCell(value: u.nickName),
@@ -235,8 +234,8 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final userReportProvider = Provider.of<UserReportProvider>(context, listen: false);
+    final userReportProvider = Provider.of<SubUsersProvider>(context, listen: false);
 
-    await userReportProvider.getAllReport().run();
+    await userReportProvider.getAllWithPaymentReport(filters: {}, usingLoadingIdicator: true).run();
   }
 }

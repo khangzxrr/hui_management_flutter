@@ -117,7 +117,7 @@ class AddMemberWidget extends StatelessWidget {
                   itemAsString: (user) => user.name,
                   compareFn: (user1, user2) => user1.name != user2.name,
                   asyncItems: (filter) async {
-                    final users = await GetIt.I<UserService>().getAll();
+                    final users = await GetIt.I<UserService>().getAll({});
 
                     return users.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
                   },

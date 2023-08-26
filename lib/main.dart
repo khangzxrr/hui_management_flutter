@@ -5,7 +5,6 @@ import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/payment_provider.dart';
-import 'package:hui_management/provider/user_report_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/setup_service.dart';
@@ -31,7 +30,6 @@ void main() async {
       ChangeNotifierProvider(create: (context) => GeneralFundProvider()),
       ChangeNotifierProvider(create: (context) => FundProvider()),
       ChangeNotifierProvider(create: (context) => PaymentProvider()),
-      ChangeNotifierProvider(create: (context) => UserReportProvider()),
     ],
     child: const MyApp(),
   ));
