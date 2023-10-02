@@ -13,19 +13,31 @@ class SetupService {
   static final getIt = GetIt.instance;
 
   static void setup() {
+    if (getIt.isRegistered<LoginService>()){
+      getIt.unregister<LoginService>();
+      getIt.unregister<UserService>();
+      getIt.unregister<FundService>();
+      getIt.unregister<PaymentService>();
+      getIt.unregister<ImageService>();
+      getIt.unregister<NotificationService>();
+    }
     log('registing normal services');
-    getIt.registerFactory(() => LoginService());
-    getIt.registerFactory(() => UserService());
-    getIt.registerFactory(() => FundService());
-    getIt.registerFactory(() => PaymentService());
-    getIt.registerFactory(() => ImageService());
-    getIt.registerFactory(() => NotificationService());
+    getIt.registerLazySingleton(() => LoginService());
+    getIt.registerLazySingleton(() => UserService());
+    getIt.registerLazySingleton(() => FundService());
+    getIt.registerLazySingleton(() => PaymentService());
+    getIt.registerLazySingleton(() => ImageService());
+    getIt.registerLazySingleton(() => NotificationService());
   }
 
   static void setupAuthorizeServiced(String token) {
     log('regis authorize service..');
     log(token);
 
-    getIt.registerFactory(() => AuthorizeHttp(token: token));
+    if (getIt.isRegistered<AuthorizeHttp>()){
+      getIt.unregister<AuthorizeHttp>();
+    }
+
+    getIt.registerLazySingleton(() => AuthorizeHttp(token: token));
   }
 }
