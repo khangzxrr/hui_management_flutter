@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +99,7 @@ class MembersScreen extends StatefulWidget {
 
 enum AdditionalFilter { sortByAZ }
 
-class _MembersScreenState extends State<MembersScreen> {
+class _MembersScreenState extends State<MembersScreen> with AfterLayoutMixin<MembersScreen> {
   Set<AdditionalFilter> additionalFilters = {
     AdditionalFilter.sortByAZ,
   };
@@ -130,7 +132,8 @@ class _MembersScreenState extends State<MembersScreen> {
 
     return LiquidPullToRefresh(
       onRefresh: () async {
-        await usersProvider.getAllUsers().run();
+        final getAllUsersResult = await usersProvider.getAllUsers().run();
+
       },
       showChildOpacityTransition: false,
       child: usersProvider.loading
@@ -194,5 +197,11 @@ class _MembersScreenState extends State<MembersScreen> {
               ],
             ),
     );
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
+    final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
+    await usersProvider.getAllUsers().run();
   }
 }

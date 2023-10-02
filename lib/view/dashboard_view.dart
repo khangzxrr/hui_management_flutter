@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';

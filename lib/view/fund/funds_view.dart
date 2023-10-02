@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -22,11 +24,13 @@ class SingleFundScreen extends StatelessWidget {
   final GeneralFundModel fund;
   final BuildContext parentContext;
 
-  const SingleFundScreen({super.key, required this.fund, required this.parentContext});
+  const SingleFundScreen(
+      {super.key, required this.fund, required this.parentContext});
 
   @override
   Widget build(BuildContext context) {
-    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
+    final generalFundProvider =
+        Provider.of<GeneralFundProvider>(context, listen: false);
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
 
     return Slidable(
@@ -39,17 +43,22 @@ class SingleFundScreen extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) {
-              DialogHelper.showConfirmDialog(parentContext, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa dây hụi này, dây hụi bạn xóa sẽ không thể khôi phục lại.').then(
+              DialogHelper.showConfirmDialog(parentContext, 'Xác nhận xóa',
+                      'Bạn có chắc chắn muốn xóa dây hụi này, dây hụi bạn xóa sẽ không thể khôi phục lại.')
+                  .then(
                 (result) async {
                   if (result == null || !result) return;
 
-                  final isSuccessEither = await fundProvider.removeFund(fund.id).run();
+                  final isSuccessEither =
+                      await fundProvider.removeFund(fund.id).run();
 
                   isSuccessEither.match((l) {
                     log(l);
-                    DialogHelper.showSnackBar(parentContext, 'Có lỗi xảy ra, Xóa dây hụi thất bại');
+                    DialogHelper.showSnackBar(
+                        parentContext, 'Có lỗi xảy ra, Xóa dây hụi thất bại');
                   }, (r) {
-                    DialogHelper.showSnackBar(parentContext, 'Xóa dây hụi thành công');
+                    DialogHelper.showSnackBar(
+                        parentContext, 'Xóa dây hụi thành công');
                     generalFundProvider.removeFund(fund);
                   });
                 },
@@ -62,7 +71,8 @@ class SingleFundScreen extends StatelessWidget {
           // A SlidableAction can have an icon and/or a label.
           SlidableAction(
             onPressed: (context) async {
-              final isSuccessEither = GetIt.I<FundService>().archived(fund.id, true);
+              final isSuccessEither =
+                  GetIt.I<FundService>().archived(fund.id, true);
 
               isSuccessEither.match((l) => {}, (r) {
                 generalFundProvider.removeFund(fund);
@@ -77,7 +87,8 @@ class SingleFundScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FundEditScreen(isNew: false, fund: fund),
+                  builder: (context) =>
+                      FundEditScreen(isNew: false, fund: fund),
                 ),
               );
             },
@@ -106,7 +117,9 @@ class SingleFundScreen extends StatelessWidget {
               ListTile(
                 dense: true,
                 title: FundInfoWidget(fund: fund),
-                subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
+                subtitle: Chip(
+                    label:
+                        Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
               ),
             ],
           ),
@@ -124,7 +137,8 @@ class MultipleFundsScreen extends StatefulWidget {
   State<MultipleFundsScreen> createState() => _MultipleFundsScreenState();
 }
 
-class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
+class _MultipleFundsScreenState extends State<MultipleFundsScreen>
+    with AfterLayoutMixin<MultipleFundsScreen> {
   String filterText = '';
 
   List<Result> results = [];
@@ -133,7 +147,9 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
   Widget build(BuildContext context) {
     final generalFundProvider = Provider.of<GeneralFundProvider>(context);
 
-    final sherlock = Sherlock(elements: generalFundProvider.getFunds().map((e) => e.toJson()).toList());
+    final sherlock = Sherlock(
+        elements:
+            generalFundProvider.getFunds().map((e) => e.toJson()).toList());
 
     List<Widget> generalFundWigets = filterText.isNotEmpty
         ? results
@@ -162,7 +178,8 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(children: [
-                Text('Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
+                Text(
+                    'Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
                 const SizedBox(
                   width: 8,
                   height: 8,
@@ -176,7 +193,8 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
                           labelText: 'Tìm kiếm hụi (tên,...))',
                         ),
                         onChanged: (text) async {
-                          final searchResults = await sherlock.search(input: text);
+                          final searchResults =
+                              await sherlock.search(input: text);
 
                           setState(() {
                             filterText = text;
@@ -199,5 +217,18 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
               ]),
             ),
     );
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
+    final fetchFundsResult =
+        await Provider.of<GeneralFundProvider>(context, listen: false)
+            .fetchFunds()
+            .run();
+            
+    fetchFundsResult.match((l) {
+      log(l);
+      DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách dây hụi');
+    }, (r) => null);
   }
 }

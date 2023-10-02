@@ -14,18 +14,18 @@ class SetupService {
 
   static void setup() {
     log('registing normal services');
-    getIt.registerLazySingleton(() => LoginService());
-    getIt.registerLazySingleton(() => UserService());
-    getIt.registerLazySingleton(() => FundService());
-    getIt.registerLazySingleton(() => PaymentService());
-    getIt.registerLazySingleton(() => ImageService());
-    getIt.registerLazySingleton(() => NotificationService());
+    getIt.registerFactory(() => LoginService());
+    getIt.registerFactory(() => UserService());
+    getIt.registerFactory(() => FundService());
+    getIt.registerFactory(() => PaymentService());
+    getIt.registerFactory(() => ImageService());
+    getIt.registerFactory(() => NotificationService());
   }
 
   static void setupAuthorizeServiced(String token) {
     log('regis authorize service..');
     log(token);
 
-    getIt.registerLazySingleton(() => AuthorizeHttp(token: token));
+    getIt.registerFactory(() => AuthorizeHttp(token: token));
   }
 }
