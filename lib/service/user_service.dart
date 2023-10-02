@@ -9,9 +9,11 @@ import '../helper/constants.dart';
 import '../provider/sub_users_provider.dart';
 
 class UserService {
-  final httpClient = GetIt.I<AuthorizeHttp>();
+  
 
   Future<bool> delete(int id) async {
+    final httpClient = GetIt.I<AuthorizeHttp>();
+
     final response = await httpClient.delete(Uri.parse('${Constants.apiHostName}/subusers/$id'));
 
     if (response.statusCode == 200) {
@@ -22,6 +24,8 @@ class UserService {
   }
 
   Future<SubUserModel?> update(SubUserModel updateUser) async {
+    final httpClient = GetIt.I<AuthorizeHttp>();
+
     final response = await httpClient.put(Uri.parse('${Constants.apiHostName}/subusers'), body: jsonEncode(updateUser.toJson()));
 
     if (response.statusCode == 200) {
@@ -34,6 +38,8 @@ class UserService {
   }
 
   Future<SubUserModel> createNew(SubUserModel user) async {
+    final httpClient = GetIt.I<AuthorizeHttp>();
+
     final response = await httpClient.post(Uri.parse('${Constants.apiHostName}/subusers'), body: jsonEncode(user.toJson()));
 
     if (response.statusCode == 200) {
@@ -46,6 +52,8 @@ class UserService {
   }
 
   Future<List<UserWithPaymentReport>> getAllWithPaymentReport(Set<SubUserFilter> filters) async {
+    final httpClient = GetIt.I<AuthorizeHttp>();
+
     Map<String, String> queryParams = {};
 
     for (SubUserFilter filter in filters) {
@@ -72,6 +80,8 @@ class UserService {
   }
 
   Future<List<SubUserModel>> getAll(Set<SubUserFilter> filters) async {
+    final httpClient = GetIt.I<AuthorizeHttp>();
+    
     Map<String, String> queryParams = {};
 
     for (SubUserFilter filter in filters) {
