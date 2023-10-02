@@ -8,7 +8,7 @@ print(row[1])
 
 headers = {
     'accept': 'text/plain',
-    'Authorization': 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiT3duZXIiLCJleHAiOjE3MDc0MTg3NTksImlzcyI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIiwiYXVkIjoiSldUU2VydmljZVBvc3RtYW5DbGllbnQifQ.CYbEVUYiqvsjoE3e6fY0xNvPHWZUM4np74WAhqvZryI',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiT3duZXIiLCJleHAiOjE3MTEyMTMwNzEsImlzcyI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIiwiYXVkIjoiSldUU2VydmljZVBvc3RtYW5DbGllbnQifQ.I_f79oUObM5FuFwvmz8b1m_g3RK0k3pW0AJjYt3GSaY',
     'Content-Type': 'application/json',
 }
 
@@ -45,8 +45,8 @@ for row in range(3, len(dataFrame.index)):
 
     try:
         response = requests.post(
-            #'https://hui-container.calmground-37e371eb.southeastasia.azurecontainerapps.io/subusers',
-            'http://localhost:57679/subusers',
+            'https://huimanagementbackend.gentlesmoke-0f05f43d.southeastasia.azurecontainerapps.io/subusers',
+            #'http://localhost:57679/subusers',
             headers=headers,
             json=json_data,
         )

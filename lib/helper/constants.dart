@@ -1,5 +1,5 @@
 class Constants {
-  static const String apiHostName = "https://hui-container.calmground-37e371eb.southeastasia.azurecontainerapps.io";
+  static const String apiHostName = "https://huimanagementbackend.gentlesmoke-0f05f43d.southeastasia.azurecontainerapps.io";
   //static const String apiHostName = "http://localhost:57679";
   //static const String apiHostName = "http://192.168.1.12:57679";
   //static const String apiHostName = "http://10.0.2.2:57679";
