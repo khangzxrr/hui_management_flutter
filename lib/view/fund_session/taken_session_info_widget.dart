@@ -45,7 +45,7 @@ class TakenSessionInfoWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(Utils.dateFormat.format(session.takenDate), style: TextStyle(color: textColor)),
+                Text(Utils.dateFormat.format(session.takenDate.toLocal()), style: TextStyle(color: textColor)),
                 Text('${session.sessionNumber}/$memberCount', style: TextStyle(color: textColor)),
                 Text(takenSessionDetail.fundMember.nickName, style: TextStyle(color: textColor)),
                 Text('${Utils.moneyFormat.format(takenSessionDetail.predictedPrice)}đ', style: TextStyle(color: textColor)),

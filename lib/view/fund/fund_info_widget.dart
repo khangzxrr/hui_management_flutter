@@ -35,8 +35,8 @@ class FundInfoWidget extends StatelessWidget {
             Text('${Utils.moneyFormat.format(fund.serviceCost)}đ', textAlign: TextAlign.right),
             Text(fund.createSessionDurationAt(), textAlign: TextAlign.right),
             Text(fund.takenSessionDeliveryAt(), textAlign: TextAlign.right),
-            Text(Utils.dateFormat.format(fund.openDate.toLocal()), textAlign: TextAlign.right),
-            Text(Utils.dateFormat.format(fund.endDate.toLocal()), textAlign: TextAlign.right),
+            Text(Utils.dateFormat.format(fund.openDate), textAlign: TextAlign.right),
+            Text(Utils.dateFormat.format(fund.endDate), textAlign: TextAlign.right),
           ],
         )
       ],

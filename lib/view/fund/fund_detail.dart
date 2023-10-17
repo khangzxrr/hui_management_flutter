@@ -96,7 +96,7 @@ class FundDetailScreen extends StatelessWidget {
                 title: const Text('Dự đoán ngày khui tiếp theo'),
                 children: fundProvider.fund.newSessionCreateDates
                     .map((date) => Text(
-                          Utils.dateFormat.format(date.toLocal()),
+                          Utils.dateFormat.format(date),
                           textAlign: TextAlign.start,
                         ))
                     .toList(),

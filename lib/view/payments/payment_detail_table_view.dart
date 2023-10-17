@@ -59,7 +59,7 @@ class TransactionListWidget extends StatelessWidget {
               'amount': PlutoCell(value: '${Utils.moneyFormat.format(t.amount)}đ'),
               'note': PlutoCell(value: t.description),
               'paymentMethod': PlutoCell(value: t.method == 'ByCash' ? 'Tiền mặt' : 'Chuyển khoản'),
-              'createAt': PlutoCell(value: Utils.dateFormat.format(t.createAt)),
+              'createAt': PlutoCell(value: Utils.dateFormat.format(t.createAt.toLocal())),
             },
           ),
         )
@@ -160,11 +160,11 @@ class FundSessionDetailWidget extends StatelessWidget {
           'fundPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromFund.fundPrice)} đ'),
           'sessionNumber': PlutoCell(value: '${fb.fromSession.sessionNumber}/${fb.fromFund.membersCount}'),
           'predictedPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromSessionDetail.predictedPrice)}đ'),
-          'fundOpenText': PlutoCell(value: Utils.dateFormat.format(fb.fromSession.takenDate)),
+          'fundOpenText': PlutoCell(value: Utils.dateFormat.format(fb.fromSession.takenDate.toLocal())),
           'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
           'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
-          'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.openDate)),
-          'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate)),
+          'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.openDate.toLocal())),
+          'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate.toLocal())),
         },
       );
     }).toList();
@@ -192,7 +192,7 @@ class PaymentDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: isSmallScreen ? Text('Bill của ${paymentProvider.selectedUser.name}\nngày ${Utils.dateFormat.format(payment.createAt)}') : Text('Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
+        title: isSmallScreen ? Text('Bill của ${paymentProvider.selectedUser.name}\nngày ${Utils.dateFormat.format(payment.createAt.toLocal())}') : Text('Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt.toLocal())}'),
       ),
       body: Container(
           padding: const EdgeInsets.all(14),

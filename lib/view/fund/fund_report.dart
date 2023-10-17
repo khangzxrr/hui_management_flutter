@@ -86,7 +86,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
       return PlutoRow(
         cells: {
           'index': PlutoCell(value: s.key + 1),
-          'takenDate': PlutoCell(value: Utils.dateFormat.format(s.value.takenDate)),
+          'takenDate': PlutoCell(value: Utils.dateFormat.format(s.value.takenDate.toLocal())),
           'takenBy': PlutoCell(value: takenSession.fundMember.nickName),
           'note': PlutoCell(value: ''),
         },

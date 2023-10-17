@@ -29,7 +29,7 @@ class PaycheckScreen extends StatelessWidget {
     double remainCost = payment.totalCost.abs() - payment.totalTransactionCost;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Xử lí Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt)}'),
+        title: Text('Xử lí Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt.toLocal())}'),
       ),
       body: Container(
         padding: const EdgeInsets.all(14),
