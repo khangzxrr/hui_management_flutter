@@ -132,8 +132,7 @@ class _MembersScreenState extends State<MembersScreen> with AfterLayoutMixin<Mem
 
     return LiquidPullToRefresh(
       onRefresh: () async {
-        final getAllUsersResult = await usersProvider.getAllUsers().run();
-
+        await usersProvider.getAllUsers().run();
       },
       showChildOpacityTransition: false,
       child: usersProvider.loading

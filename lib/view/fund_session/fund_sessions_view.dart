@@ -10,6 +10,7 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/dialog.dart';
+import '../../provider/general_fund_provider.dart';
 import '../../routes/app_route.dart';
 import 'taken_session_info_widget.dart';
 
@@ -23,6 +24,8 @@ class SessionViewWidget extends StatelessWidget {
     final isOnPhone = MediaQuery.of(context).size.width < Constants.smallScreenSize;
 
     final fundProvider = Provider.of<FundProvider>(context);
+
+    final genalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
     NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == "Taken").first;
     return Slidable(
@@ -40,6 +43,7 @@ class SessionViewWidget extends StatelessWidget {
                   .andThen(
                     () => fundProvider.getFund(fundProvider.fund.id),
                   )
+                  .andThen(() => genalFundProvider.fetchFunds())
                   .match((l) {
                 log(l);
                 DialogHelper.showSnackBar(context, l);

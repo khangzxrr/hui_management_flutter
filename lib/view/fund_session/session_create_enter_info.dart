@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/provider/fund_provider.dart';
+import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:number_to_vietnamese_words/number_to_vietnamese_words.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,7 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final genalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -170,6 +172,7 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                           .andThen(
                             () => fundProvider.getFund(fundProvider.fund.id),
                           )
+                          .andThen(() => genalFundProvider.fetchFunds())
                           .match((l) {
                         log(l);
                         DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
