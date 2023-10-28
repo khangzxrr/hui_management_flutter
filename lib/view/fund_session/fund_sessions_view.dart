@@ -112,7 +112,7 @@ class FundSessionListScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton.icon(
-            onPressed: () => context.router.push(const CreateSessionSelectMemberRoute()),
+            onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const CreateSessionSelectMemberRoute()),
             icon: const Icon(Icons.money),
             label: const Text('Khui hụi'),
           ),

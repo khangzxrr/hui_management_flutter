@@ -116,7 +116,7 @@ class FundDetailScreen extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             TextButton.icon(
-              onPressed: () => context.router.push(const CreateSessionSelectMemberRoute()),
+              onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const CreateSessionSelectMemberRoute()),
               label: const Text('Khui hụi'),
               icon: const Icon(Icons.money_rounded),
             ),
