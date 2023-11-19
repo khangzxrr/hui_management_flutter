@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/pluto_grid_extentions/pluto_types/pluto_grid_name_field.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../grid_datasource/member_reports_datasource.dart';
 import '../../pluto_grid_extentions/pluto_configurations/pluto_language_vietnamese.dart';
 
 @RoutePage()
@@ -19,223 +22,171 @@ class MemberReportScreen extends StatefulWidget {
 }
 
 class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayoutMixin<MemberReportScreen> {
-  PlutoGridStateManager? stateManager;
+  late MemberReportsDataSource dataSource;
 
-  List<PlutoColumn> columns = [
-    PlutoColumn(
-      title: 'Tên hụi viên',
-      field: 'name',
-      type: PlutoGridNameField(),
-      readOnly: true,
-      enableSorting: true,
-      frozen: PlutoColumnFrozen.start,
-    ),
-    PlutoColumn(
-      title: 'Biệt danh',
-      field: 'nickName',
-      type: PlutoGridNameField(),
-      enableEditingMode: false,
-    ),
-    PlutoColumn(
-      title: 'Tiền đóng',
-      field: 'totalProcessingAmount',
-      type: PlutoColumnType.currency(
-        name: 'VNĐ',
-        decimalDigits: 0,
-        format: '#,### đ',
-      ),
-      enableSorting: true,
-      readOnly: true,
-      footerRenderer: (rendererContext) {
-        return PlutoAggregateColumnFooter(
-          rendererContext: rendererContext,
-          type: PlutoAggregateColumnType.sum,
-          alignment: Alignment.centerLeft,
-          titleSpanBuilder: (text) {
-            return [
-              const TextSpan(text: 'Tổng tiền đóng: '),
-              TextSpan(
-                text: text,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ];
-          },
-        );
-      },
-    ),
-    PlutoColumn(
-      title: 'Tiền nợ',
-      field: 'totalDebtAmount',
-      type: PlutoColumnType.currency(
-        name: 'VNĐ',
-        decimalDigits: 0,
-        format: '#,### đ',
-      ),
-      enableSorting: true,
-      readOnly: true,
-      footerRenderer: (rendererContext) {
-        return PlutoAggregateColumnFooter(
-          rendererContext: rendererContext,
-          type: PlutoAggregateColumnType.sum,
-          alignment: Alignment.centerLeft,
-          titleSpanBuilder: (text) {
-            return [
-              const TextSpan(text: 'Tổng tiền nợ: '),
-              TextSpan(
-                text: text,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ];
-          },
-        );
-      },
-    ),
-    PlutoColumn(
-      title: 'Tiền hụi sống',
-      field: 'totalAliveAmount',
-      enableSorting: true,
-      readOnly: true,
-      type: PlutoColumnType.currency(
-        name: 'VNĐ',
-        decimalDigits: 0,
-        format: '#,### đ',
-      ),
-      footerRenderer: (rendererContext) {
-        return PlutoAggregateColumnFooter(
-          rendererContext: rendererContext,
-          type: PlutoAggregateColumnType.sum,
-          alignment: Alignment.centerLeft,
-          titleSpanBuilder: (text) {
-            return [
-              const TextSpan(text: 'Tổng tiền hụi sống: '),
-              TextSpan(
-                text: text,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ];
-          },
-        );
-      },
-    ),
-    PlutoColumn(
-      title: 'Tổng tiền hụi chết',
-      field: 'totalDeadAmount',
-      enableSorting: true,
-      readOnly: true,
-      type: PlutoColumnType.currency(
-        name: 'VNĐ',
-        decimalDigits: 0,
-        format: '#,### đ',
-      ),
-      footerRenderer: (rendererContext) {
-        return PlutoAggregateColumnFooter(
-          rendererContext: rendererContext,
-          type: PlutoAggregateColumnType.sum,
-          alignment: Alignment.centerLeft,
-          titleSpanBuilder: (text) {
-            return [
-              const TextSpan(text: 'Tổng tiền hụi chết: '),
-              TextSpan(
-                text: text,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ];
-          },
-        );
-      },
-    ),
-    PlutoColumn(
-      title: 'Tiền hốt',
-      field: 'totalTakenAmount',
-      enableSorting: true,
-      readOnly: true,
-      type: PlutoColumnType.currency(
-        name: 'VNĐ',
-        decimalDigits: 0,
-        format: '#,### đ',
-      ),
-      footerRenderer: (rendererContext) {
-        return PlutoAggregateColumnFooter(
-          rendererContext: rendererContext,
-          type: PlutoAggregateColumnType.sum,
-          alignment: Alignment.centerLeft,
-          titleSpanBuilder: (text) {
-            return [
-              const TextSpan(text: 'Tổng tiền hốt: '),
-              TextSpan(
-                text: text,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ];
-          },
-        );
-      },
-    ),
-    PlutoColumn(
-      title: 'Âm/Dương',
-      field: 'fundRatio',
-      enableSorting: true,
-      readOnly: true,
-      type: PlutoColumnType.currency(
-        name: 'VNĐ',
-        decimalDigits: 0,
-        format: '#,### đ',
-      ),
-      footerRenderer: (rendererContext) {
-        return PlutoAggregateColumnFooter(
-          rendererContext: rendererContext,
-          type: PlutoAggregateColumnType.sum,
-          alignment: Alignment.centerLeft,
-          titleSpanBuilder: (text) {
-            return [
-              const TextSpan(text: 'Tổng Âm/Dương: '),
-              TextSpan(
-                text: text,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ];
-          },
-        );
-      },
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    dataSource = MemberReportsDataSource();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final userReportProvider = Provider.of<SubUsersProvider>(context, listen: true);
+    final userWithPaymentReports = Provider.of<SubUsersProvider>(context, listen: true).subUsersWithPaymentReport;
+    dataSource.setReportsData(userWithPaymentReports);
 
-    List<PlutoRow> rows = userReportProvider.subUsersWithPaymentReport
-        .map((u) => PlutoRow(cells: {
-              'name': PlutoCell(value: u.name),
-              'nickName': PlutoCell(value: u.nickName),
-              'totalAliveAmount': PlutoCell(value: u.totalAliveAmount),
-              'totalDeadAmount': PlutoCell(value: u.totalDeadAmount),
-              'totalTakenAmount': PlutoCell(value: u.totalTakenAmount),
-              'totalProcessingAmount': PlutoCell(value: u.totalProcessingAmount),
-              'totalDebtAmount': PlutoCell(value: u.totalDebtAmount),
-              'fundRatio': PlutoCell(value: u.fundRatio),
-            }))
-        .toList();
+    dataSource.sortedColumns.clear();
+    dataSource.sortedColumns.add(const SortColumnDetails(name: 'name', sortDirection: DataGridSortDirection.ascending));
+    dataSource.sort();
 
-    if (stateManager != null) {
-      stateManager!.removeAllRows(notify: true);
-      stateManager!.appendRows(rows);
-    }
-
-    return PlutoGrid(
-      columns: columns,
-      rows: rows,
-      onLoaded: (event) => stateManager = event.stateManager,
-      configuration: PlutoGridConfiguration(
-        localeText: PlutoLanguageVietnamese.locateText(),
-      ),
+    return SfDataGrid(
+      frozenColumnsCount: 1,
+      allowPullToRefresh: false,
+      allowMultiColumnSorting: true,
+      columnWidthMode: ColumnWidthMode.fitByCellValue,
+      source: dataSource,
+      gridLinesVisibility: GridLinesVisibility.both,
+      headerGridLinesVisibility: GridLinesVisibility.both,
+      allowSorting: true,
+      showSortNumbers: true,
+      allowColumnsResizing: false,
+      columnResizeMode: ColumnResizeMode.onResize,
+      columns: buildColumns(),
+      tableSummaryRows: buildTableSummaryRows(),
+      columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
     );
   }
 
-  @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final userReportProvider = Provider.of<SubUsersProvider>(context, listen: false);
-
-    await userReportProvider.getAllWithPaymentReport(filters: {}, usingLoadingIdicator: true).run();
+  List<GridTableSummaryRow> buildTableSummaryRows() {
+    return <GridTableSummaryRow>[
+      GridTableSummaryRow(
+        title: 'Tổng số thành viên: {totalMemberCount}',
+        columns: <GridSummaryColumn>[
+          const GridSummaryColumn(
+            name: 'totalMemberCount',
+            columnName: 'name',
+            summaryType: GridSummaryType.count,
+          ),
+        ],
+        position: GridTableSummaryRowPosition.top,
+      ),
+      GridTableSummaryRow(
+        showSummaryInRow: false,
+        columns: <GridSummaryColumn>[
+          const GridSummaryColumn(
+            name: 'sumTotalProcessingAmount',
+            columnName: 'totalProcessingAmount',
+            summaryType: GridSummaryType.sum,
+          ),
+          const GridSummaryColumn(
+            name: 'sumTotalDebtAmount',
+            columnName: 'totalDebtAmount',
+            summaryType: GridSummaryType.sum,
+          ),
+          const GridSummaryColumn(
+            name: 'sumTotalAliveAmount',
+            columnName: 'totalAliveAmount',
+            summaryType: GridSummaryType.sum,
+          ),
+          const GridSummaryColumn(
+            name: 'sumTotalDeadAmount',
+            columnName: 'totalDeadAmount',
+            summaryType: GridSummaryType.sum,
+          ),
+          const GridSummaryColumn(
+            name: 'sumTotalTakenAmount',
+            columnName: 'totalTakenAmount',
+            summaryType: GridSummaryType.sum,
+          ),
+          const GridSummaryColumn(
+            name: 'sumFundRatio',
+            columnName: 'fundRatio',
+            summaryType: GridSummaryType.sum,
+          ),
+        ],
+        position: GridTableSummaryRowPosition.bottom,
+      ),
+    ];
   }
+
+  List<GridColumn> buildColumns() {
+    return [
+      GridColumn(
+        columnName: 'name',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tên hụi viên'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'nickName',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Biệt danh'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'totalProcessingAmount',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tiền đóng'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'totalDebtAmount',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tiền nợ'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'totalAliveAmount',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tiền hụi sống'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'totalDeadAmount',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tổng tiền hụi chết'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'totalTakenAmount',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tổng tiền hốt'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'fundRatio',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Âm/Dương'),
+        ),
+      ),
+    ];
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) async {}
 }

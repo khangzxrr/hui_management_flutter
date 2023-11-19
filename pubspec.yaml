@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.6 <=3.1.2'
+  sdk: '>=2.19.6 <= 3.13.9'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -66,6 +66,8 @@ dependencies:
   image_downloader_web: ^2.0.2
   image_gallery_saver: ^2.0.3
   flutter_launcher_icons: ^0.13.1
+  syncfusion_flutter_datagrid: ^23.1.42
+  collection: ^1.17.2
   
 
 dev_dependencies:
