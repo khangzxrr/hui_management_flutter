@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/pluto_grid_extentions/pluto_types/pluto_grid_name_field.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
@@ -21,7 +22,7 @@ class MemberReportScreen extends StatefulWidget {
   State<MemberReportScreen> createState() => _MemberReportScreenState();
 }
 
-class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayoutMixin<MemberReportScreen> {
+class _MemberReportScreenState extends State<MemberReportScreen> {
   late MemberReportsDataSource dataSource;
 
   @override
@@ -40,11 +41,13 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
     dataSource.sortedColumns.add(const SortColumnDetails(name: 'name', sortDirection: DataGridSortDirection.ascending));
     dataSource.sort();
 
+    bool isMobile = MediaQuery.of(context).size.width < Constants.smallScreenSize;
+
     return SfDataGrid(
       frozenColumnsCount: 1,
       allowPullToRefresh: false,
       allowMultiColumnSorting: true,
-      columnWidthMode: ColumnWidthMode.fitByCellValue,
+      columnWidthMode: isMobile ? ColumnWidthMode.fitByCellValue : ColumnWidthMode.fill,
       source: dataSource,
       gridLinesVisibility: GridLinesVisibility.both,
       headerGridLinesVisibility: GridLinesVisibility.both,
@@ -186,7 +189,4 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       ),
     ];
   }
-
-  @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {}
 }
