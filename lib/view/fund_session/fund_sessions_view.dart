@@ -27,7 +27,7 @@ class SessionViewWidget extends StatelessWidget {
 
     final genalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
-    NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == "Taken").first;
+    NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.fakeTaken).first;
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(
@@ -44,10 +44,12 @@ class SessionViewWidget extends StatelessWidget {
                     () => fundProvider.getFund(fundProvider.fund.id),
                   )
                   .andThen(() => genalFundProvider.fetchFunds())
-                  .match((l) {
-                log(l);
-                DialogHelper.showSnackBar(context, l);
-              }, (r) => DialogHelper.showSnackBar(context, "Xóa kì hụi thành công!")).run();
+                  .mapLeft(
+                (l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, l);
+                },
+              ).run();
             },
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,

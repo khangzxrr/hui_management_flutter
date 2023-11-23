@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:hui_management/model/fund_member.dart';
+import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,7 @@ class _CreateSessionSelectMemberScreenState extends State<CreateSessionSelectMem
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
                     final isNotExistTaken = sessions.any(
-                      (session) => session.normalSessionDetails.where((d) => d.type == "Taken" && d.fundMember.id == mem.id).isNotEmpty,
+                      (session) => session.normalSessionDetails.where((d) => (d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.fakeTaken) && d.fundMember.id == mem.id).isNotEmpty,
                     );
 
                     return nameContain && !isNotExistTaken;

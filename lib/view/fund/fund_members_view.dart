@@ -60,6 +60,10 @@ class FundMemberWidget extends StatelessWidget {
       // The child of the Slidable is what the user sees when the
       // component is not dragged.
       child: Card(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: fundMember.hasFinalSettlementForDeadSessionBill ? Colors.blue : Colors.white, width: 2.0),
+          borderRadius: BorderRadius.circular(4.0),
+        ),
         child: Column(
           children: <Widget>[
             ListTile(
@@ -77,7 +81,7 @@ class FundMemberWidget extends StatelessWidget {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               title: Text(fundMember.nickName),
-              subtitle: Text('${fundMember.subUser.identity}\n${fundMember.subUser.phoneNumber}\n${fundMember.subUser.bankName} - ${fundMember.subUser.bankNumber}\n${fundMember.subUser.address}\n${fundMember.subUser.additionalInfo}'),
+              subtitle: Text('${fundMember.subUser.identity}\n${fundMember.subUser.phoneNumber}\n${fundMember.subUser.bankName} - ${fundMember.subUser.bankNumber}\n${fundMember.subUser.address}\n${fundMember.subUser.additionalInfo}\n${fundMember.hasFinalSettlementForDeadSessionBill ? '⭐ Đã tất toán hụi chết ' : ''} '),
             )
           ],
         ),

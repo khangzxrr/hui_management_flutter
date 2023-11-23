@@ -58,6 +58,74 @@ class TakenSessionDetailWidget extends StatelessWidget {
   }
 }
 
+class FakeAliveSessionDetailMemberWidget extends StatelessWidget {
+  final NormalSessionDetail normalSessionDetail;
+
+  const FakeAliveSessionDetailMemberWidget({super.key, required this.normalSessionDetail});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.orange,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: CachedNetworkImage(
+              imageUrl: normalSessionDetail.fundMember.subUser.imageUrl,
+              imageBuilder: (context, imageProvider) => Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            title: Text(normalSessionDetail.fundMember.nickName),
+            subtitle: Text('Tiền hụi sống (Đã hốt hụi trước): ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class EmergencySessionDetailMemberWidget extends StatelessWidget {
+  final NormalSessionDetail normalSessionDetail;
+
+  const EmergencySessionDetailMemberWidget({super.key, required this.normalSessionDetail});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.orange,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: CachedNetworkImage(
+              imageUrl: normalSessionDetail.fundMember.subUser.imageUrl,
+              imageBuilder: (context, imageProvider) => Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            title: Text(normalSessionDetail.fundMember.nickName),
+            subtitle: Text('Hốt hụi trước: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class NormalSessionDetailMemberWidget extends StatelessWidget {
   final NormalSessionDetail normalSessionDetail;
 
@@ -67,7 +135,7 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String fundSessionType = "";
 
-    if (normalSessionDetail.type == "Alive") {
+    if (normalSessionDetail.type == NormalSessionDetailType.alive) {
       fundSessionType = "Tiền hụi sống";
     } else {
       fundSessionType = "Tiền hụi chết";
@@ -109,19 +177,30 @@ class SessionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widgets = <Widget>[const SizedBox(height: 40)];
+    final List<Widget> sessionDetailWidgets = [];
 
-    widgets.addAll(
-      session.normalSessionDetails.map(
-        (normalSessionDetail) => normalSessionDetail.type == "Taken"
-            ? TakenSessionDetailWidget(
-                takenSessionDetail: normalSessionDetail,
-                session: session,
-                memberCount: memberCount,
-              )
-            : NormalSessionDetailMemberWidget(normalSessionDetail: normalSessionDetail),
-      ),
-    );
+    for (final NormalSessionDetail sessionDetail in session.normalSessionDetails) {
+      switch (sessionDetail.type) {
+        case NormalSessionDetailType.taken:
+          sessionDetailWidgets.add(TakenSessionDetailWidget(takenSessionDetail: sessionDetail, session: session, memberCount: memberCount));
+          break;
+        case NormalSessionDetailType.fakeTaken:
+          sessionDetailWidgets.add(TakenSessionDetailWidget(takenSessionDetail: sessionDetail, session: session, memberCount: memberCount));
+          break;
+        case NormalSessionDetailType.dead:
+          sessionDetailWidgets.add(NormalSessionDetailMemberWidget(normalSessionDetail: sessionDetail));
+          break;
+        case NormalSessionDetailType.alive:
+          sessionDetailWidgets.add(NormalSessionDetailMemberWidget(normalSessionDetail: sessionDetail));
+          break;
+        case NormalSessionDetailType.emergencyTaken:
+          sessionDetailWidgets.add(EmergencySessionDetailMemberWidget(normalSessionDetail: sessionDetail));
+          break;
+        case NormalSessionDetailType.fakeAlive:
+          sessionDetailWidgets.add(FakeAliveSessionDetailMemberWidget(normalSessionDetail: sessionDetail));
+          break;
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -138,7 +217,10 @@ class SessionDetailScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: widgets,
+            children: [
+              const SizedBox(height: 40),
+              ...sessionDetailWidgets,
+            ],
           ),
         ),
       ),

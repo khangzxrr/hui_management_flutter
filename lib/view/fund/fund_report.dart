@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hui_management/helper/utils.dart';
+import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/view_models/fund_report_to_pdf_vm.dart';
@@ -52,7 +53,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
     _formKey.currentState!.fields['warningText']!.didChange('1. Hụi viên đóng hụi ngày 05 & 06, không đóng trễ nhiều lần.\n2. Nếu hụi sống muống ngưng ngang hoặc đóng trễ quá 5 ngày sẽ được thói hụi sau khi trừ lời hụi và hoa hồng.\n3. Nếu hụi chết đóng trễ quá 7 ngày sẽ được công khai hụi trễ lên các group hụi & tính lãi suất bằng ngân hàng.\n4. Nếu có tình hình dịch hay lí do gì về kinh tế cả nước nên hụi viên muốn ngưng hụi thì phải theo biểu quyết của các hụi viên còn sống\n5.Hụi viên có số âm hụi nhiều thì chủ hụi được quyền yêu cầu đóng mãn dây khi hốt.\n6.Không so sánh lịch giao hụi với nơi khác!');
 
     takenMemberReportViewModels = fundProvider.fund.sessions.asMap().entries.map((s) {
-      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == 'Taken').first;
+      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken).first;
       final takenMemberReportVM = TakenMemberReportViewModel(
         index: s.key + 1,
         name: takenSession.fundMember.subUser.nickName,
@@ -81,7 +82,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
     ];
 
     final takenSessionMemberRows = fundProvider.fund.sessions.asMap().entries.map((s) {
-      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == 'Taken').first;
+      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken || nsd.type == NormalSessionDetailType.fakeTaken).first;
 
       return PlutoRow(
         cells: {
@@ -206,7 +207,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {

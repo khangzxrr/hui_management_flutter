@@ -45,6 +45,16 @@ class FundProvider with ChangeNotifier {
         (error, stackTrace) => error.toString(),
       );
 
+  TaskEither<String, bool> addEmergencySession(int fundId, List<int> memberIds) => TaskEither.tryCatch(
+        () async => GetIt.I<FundService>().addEmergencySession(fundId, memberIds),
+        (error, stackTrace) => error.toString(),
+      );
+
+  TaskEither<String, bool> createFinalSettlementForDeadSession(int fundId, int memberId) => TaskEither.tryCatch(
+        () async => GetIt.I<FundService>().createFinalSettlementForDeadSession(fundId, memberId),
+        (error, stackTrace) => error.toString(),
+      );
+
   TaskEither<String, bool> removeMember(int memberId) => TaskEither.tryCatch(
         () async => GetIt.I<FundService>().removeMember(_fund.id, memberId),
         (error, stackTrace) => error.toString(),

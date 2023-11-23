@@ -10,8 +10,6 @@ class MemberReportsDataSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => reportRows;
 
-  MemberReportsDataSource() {}
-
   void setReportsData(List<UserWithPaymentReport> reports) {
     reportRows = reports
         .map<DataGridRow>(
@@ -79,10 +77,10 @@ class MemberReportsDataSource extends DataGridSource {
   }
 
   @override
-  int compare(DataGridRow? rowA, DataGridRow? rowB, SortColumnDetails sortColumn) {
+  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
     if (sortColumn.name == 'name') {
-      final String? rowAValue = rowA?.getCells().firstWhereOrNull((r) => r.columnName == sortColumn.name)?.value?.toString();
-      final String? rowBValue = rowB?.getCells().firstWhereOrNull((r) => r.columnName == sortColumn.name)?.value?.toString();
+      final String? rowAValue = a?.getCells().firstWhereOrNull((r) => r.columnName == sortColumn.name)?.value?.toString();
+      final String? rowBValue = b?.getCells().firstWhereOrNull((r) => r.columnName == sortColumn.name)?.value?.toString();
 
       if (rowAValue == null || rowBValue == null) {
         return 0;
@@ -101,6 +99,6 @@ class MemberReportsDataSource extends DataGridSource {
       return 0;
     }
 
-    return super.compare(rowA, rowB, sortColumn);
+    return super.compare(a, b, sortColumn);
   }
 }

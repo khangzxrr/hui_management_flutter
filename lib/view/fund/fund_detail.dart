@@ -13,7 +13,7 @@ class FundDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fundProvider = Provider.of<FundProvider>(context);
+    final fundProvider = Provider.of<FundProvider>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -101,6 +101,14 @@ class FundDetailScreen extends StatelessWidget {
                         ))
                     .toList(),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextButton.icon(
+                onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const FinalSettlementForDeadSessionRoute()),
+                label: const Text('Tất toán hụi chết'),
+                icon: const Icon(Icons.payment),
+              ),
             ],
           ),
         ),
@@ -120,6 +128,13 @@ class FundDetailScreen extends StatelessWidget {
               label: const Text('Khui hụi'),
               icon: const Icon(Icons.money_rounded),
             ),
+            const SizedBox(width: 10),
+            TextButton.icon(
+              onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const EmergencySessionCreateSelectMemberRoute()),
+              label: const Text('Hốt giao trước'),
+              icon: const Icon(Icons.money_rounded),
+            ),
+            const SizedBox(width: 10),
           ],
         ),
       ),

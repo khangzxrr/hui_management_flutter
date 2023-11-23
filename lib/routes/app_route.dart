@@ -11,11 +11,13 @@ import '../model/sub_user_model.dart';
 import '../model/user_with_payment_report.dart';
 import '../view/dashboard_info.dart';
 import '../view/dashboard_view.dart';
+import '../view/fund/final_settlement_for_dead_session_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
 import '../view/fund/fund_members_view.dart';
 import '../view/fund/fund_report_pdf_view.dart';
 import '../view/fund/funds_view.dart';
+import '../view/fund_session/emergency_session_create_select_member.dart';
 import '../view/fund_session/fund_normal_session_export_pdf_view.dart';
 import '../view/fund_session/fund_sessions_view.dart';
 import '../view/fund_session/session_create_enter_info.dart';
@@ -54,9 +56,11 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: FundMembersRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundEditRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundDetailRoute.page, guards: [AuthGuard()]),
-        AutoRoute(page: FundSessionListRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: CreateSessionSelectMemberRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: CreateSessionEnterInfoRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: EmergencySessionCreateSelectMemberRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: FinalSettlementForDeadSessionRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: FundSessionListRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: SessionDetailRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PaymentListOfUserRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PaycheckRoute.page, guards: [AuthGuard()]),

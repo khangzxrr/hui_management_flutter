@@ -13,7 +13,7 @@ NormalSessionDetail _$NormalSessionDetailFromJson(Map<String, dynamic> json) =>
       fundAmount: (json['fundAmount'] as num).toDouble(),
       serviceCost: (json['serviceCost'] as num).toDouble(),
       payCost: (json['payCost'] as num).toDouble(),
-      type: json['type'] as String,
+      type: $enumDecode(_$NormalSessionDetailTypeEnumMap, json['type']),
       fundMember:
           FundMember.fromJson(json['fundMember'] as Map<String, dynamic>),
       lossCost: (json['lossCost'] as num).toDouble(),
@@ -28,6 +28,15 @@ Map<String, dynamic> _$NormalSessionDetailToJson(
       'lossCost': instance.lossCost,
       'serviceCost': instance.serviceCost,
       'payCost': instance.payCost,
-      'type': instance.type,
+      'type': _$NormalSessionDetailTypeEnumMap[instance.type]!,
       'fundMember': instance.fundMember,
     };
+
+const _$NormalSessionDetailTypeEnumMap = {
+  NormalSessionDetailType.alive: 'Alive',
+  NormalSessionDetailType.dead: 'Dead',
+  NormalSessionDetailType.taken: 'Taken',
+  NormalSessionDetailType.fakeAlive: 'FakeAlive',
+  NormalSessionDetailType.emergencyTaken: 'EmergencyTaken',
+  NormalSessionDetailType.fakeTaken: 'FakeTaken',
+};

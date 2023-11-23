@@ -10,6 +10,8 @@ FundMember _$FundMemberFromJson(Map<String, dynamic> json) => FundMember(
       id: json['id'] as int,
       nickName: json['nickName'] as String,
       subUser: SubUserModel.fromJson(json['subUser'] as Map<String, dynamic>),
+      hasFinalSettlementForDeadSessionBill:
+          json['hasFinalSettlementForDeadSessionBill'] as bool,
     );
 
 Map<String, dynamic> _$FundMemberToJson(FundMember instance) =>
@@ -17,4 +19,6 @@ Map<String, dynamic> _$FundMemberToJson(FundMember instance) =>
       'id': instance.id,
       'nickName': instance.nickName,
       'subUser': instance.subUser,
+      'hasFinalSettlementForDeadSessionBill':
+          instance.hasFinalSettlementForDeadSessionBill,
     };

@@ -10,7 +10,9 @@ class FundMember {
 
   SubUserModel subUser;
 
-  FundMember({required this.id, required this.nickName, required this.subUser});
+  bool hasFinalSettlementForDeadSessionBill;
+
+  FundMember({required this.id, required this.nickName, required this.subUser, required this.hasFinalSettlementForDeadSessionBill});
 
   factory FundMember.fromJson(Map<String, dynamic> json) => _$FundMemberFromJson(json);
   Map<String, dynamic> toJson() => _$FundMemberToJson(this);

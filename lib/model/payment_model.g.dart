@@ -12,6 +12,9 @@ PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
       paymentTransactions: (json['paymentTransactions'] as List<dynamic>)
           .map((e) => PaymentTransaction.fromJson(e as Map<String, dynamic>))
           .toList(),
+      customBills: (json['customBills'] as List<dynamic>)
+          .map((e) => CustomBill.fromJson(e as Map<String, dynamic>))
+          .toList(),
       fundBills: (json['fundBills'] as List<dynamic>)
           .map((e) => FundBillModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -26,6 +29,7 @@ Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
       'createAt': instance.createAt.toIso8601String(),
       'paymentTransactions': instance.paymentTransactions,
       'fundBills': instance.fundBills,
+      'customBills': instance.customBills,
       'totalCost': instance.totalCost,
       'totalTransactionCost': instance.totalTransactionCost,
       'status': instance.status,

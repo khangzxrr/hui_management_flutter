@@ -3,6 +3,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'fund_normal_session_detail_model.g.dart';
 
+enum NormalSessionDetailType {
+  @JsonValue('Alive')
+  alive,
+  @JsonValue('Dead')
+  dead,
+  @JsonValue('Taken')
+  taken,
+  @JsonValue('FakeAlive')
+  fakeAlive,
+  @JsonValue('EmergencyTaken')
+  emergencyTaken,
+  @JsonValue('FakeTaken')
+  fakeTaken
+}
+
 @JsonSerializable()
 class NormalSessionDetail {
   int id;
@@ -13,7 +28,7 @@ class NormalSessionDetail {
   double serviceCost;
 
   double payCost;
-  String type;
+  NormalSessionDetailType type;
   FundMember fundMember;
 
   NormalSessionDetail({required this.id, required this.predictedPrice, required this.fundAmount, required this.serviceCost, required this.payCost, required this.type, required this.fundMember, required this.lossCost});

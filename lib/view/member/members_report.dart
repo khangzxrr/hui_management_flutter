@@ -1,18 +1,13 @@
-import 'dart:async';
 
-import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/constants.dart';
-import 'package:hui_management/helper/dialog.dart';
-import 'package:hui_management/pluto_grid_extentions/pluto_types/pluto_grid_name_field.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../grid_datasource/member_reports_datasource.dart';
-import '../../pluto_grid_extentions/pluto_configurations/pluto_language_vietnamese.dart';
+
 
 @RoutePage()
 class MemberReportScreen extends StatefulWidget {
@@ -45,7 +40,6 @@ class _MemberReportScreenState extends State<MemberReportScreen> {
 
     return SfDataGrid(
       frozenColumnsCount: 1,
-      allowPullToRefresh: false,
       allowMultiColumnSorting: true,
       columnWidthMode: isMobile ? ColumnWidthMode.fitByCellValue : ColumnWidthMode.fill,
       source: dataSource,
@@ -53,8 +47,6 @@ class _MemberReportScreenState extends State<MemberReportScreen> {
       headerGridLinesVisibility: GridLinesVisibility.both,
       allowSorting: true,
       showSortNumbers: true,
-      allowColumnsResizing: false,
-      columnResizeMode: ColumnResizeMode.onResize,
       columns: buildColumns(),
       tableSummaryRows: buildTableSummaryRows(),
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,

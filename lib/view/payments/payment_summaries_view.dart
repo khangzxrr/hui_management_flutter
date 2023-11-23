@@ -68,15 +68,15 @@ class PaymentListOfUserScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Bill của ${user.name}'),
-          bottom: const TabBar(tabs: [
+          bottom: TabBar(tabs: [
             Tab(
-              text: 'Bill đang xử lí',
+              text: '${processingBillsWidget.length} Bill đang xử lí',
             ),
             Tab(
-              text: 'Bill nợ',
+              text: '${debtingBillsWidget.length} Bill nợ',
             ),
             Tab(
-              text: 'Bill thành công',
+              text: '${finishedBillsWidget.length} Bill thành công',
             )
           ]),
         ),

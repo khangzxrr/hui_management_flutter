@@ -32,17 +32,28 @@ class FundService {
     throw Exception(response.body);
   }
 
-  Future<bool> addSession(int fundId, int memberId, double predictPrice) async {
-    final response = await httpClient.post(
-      Uri.parse('${Constants.apiHostName}/funds/$fundId/sessions/add'),
-      body: jsonEncode({"memberId": memberId, "predictPrice": predictPrice}),
+  Future<bool> createFinalSettlementForDeadSession(int fundId, int memberId) async {
+    await httpClient.postJson('${Constants.apiHostName}/funds/$fundId/sessions/final-settlement-for-dead-session/add', {'memberId': memberId});
+
+    return true;
+  }
+
+  Future<bool> addEmergencySession(int fundId, List<int> memberIds) async {
+    await httpClient.postJson(
+      '${Constants.apiHostName}/funds/$fundId/sessions/add-emergency',
+      {"memberIds": memberIds},
     );
 
-    if (response.statusCode == 200) {
-      return true;
-    }
+    return true;
+  }
 
-    throw Exception(response.body);
+  Future<bool> addSession(int fundId, int memberId, double predictPrice) async {
+    await httpClient.postJson('${Constants.apiHostName}/funds/$fundId/sessions/add', {
+      "memberId": memberId,
+      "predictPrice": predictPrice,
+    });
+
+    return true;
   }
 
   Future<bool> removeMember(int fundId, int memberId) async {

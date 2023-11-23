@@ -1,12 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/grid_datasource/custom_bill_datasource.dart';
+import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/utils.dart';
+import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/payment_fund_bill_model.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/payment_transaction_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../model/custom_bill_model.dart';
 import '../../provider/payment_provider.dart';
 import '../../routes/app_route.dart';
 
@@ -152,8 +157,6 @@ class FundSessionDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<PlutoRow> rows = fundBills.map((fb) {
-      print(fb.fromFund);
-
       return PlutoRow(
         cells: {
           'fundName': PlutoCell(value: fb.fromFund.name),
@@ -161,8 +164,8 @@ class FundSessionDetailWidget extends StatelessWidget {
           'sessionNumber': PlutoCell(value: '${fb.fromSession.sessionNumber}/${fb.fromFund.membersCount}'),
           'predictedPrice': PlutoCell(value: '${Utils.moneyFormat.format(fb.fromSessionDetail.predictedPrice)}đ'),
           'fundOpenText': PlutoCell(value: Utils.dateFormat.format(fb.fromSession.takenDate.toLocal())),
-          'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
-          'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == 'Taken') ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+          'takeFromFundMemberPrice': PlutoCell(value: (fb.fromSessionDetail.type != NormalSessionDetailType.taken) ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
+          'takeFromOwnerPrice': PlutoCell(value: (fb.fromSessionDetail.type == NormalSessionDetailType.taken) ? '${Utils.moneyFormat.format(fb.fromSessionDetail.payCost)}đ' : ''),
           'fundOpenDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.openDate.toLocal())),
           'fundEndDate': PlutoCell(value: Utils.dateFormat.format(fb.fromFund.endDate.toLocal())),
         },
@@ -170,6 +173,58 @@ class FundSessionDetailWidget extends StatelessWidget {
     }).toList();
 
     return PlutoGrid(mode: PlutoGridMode.readOnly, columns: columns, rows: rows);
+  }
+}
+
+class CustomBillTableWidget extends StatelessWidget {
+  final List<CustomBill> customBills;
+
+  const CustomBillTableWidget({super.key, required this.customBills});
+
+  @override
+  Widget build(BuildContext context) {
+    CustomBillDataSource customBillDataSource = CustomBillDataSource(customBills);
+
+    return SfDataGrid(
+      source: customBillDataSource,
+      columns: buildColumns(),
+      columnWidthMode: ColumnWidthMode.fitByCellValue,
+      allowMultiColumnSorting: true,
+      gridLinesVisibility: GridLinesVisibility.both,
+      headerGridLinesVisibility: GridLinesVisibility.both,
+    );
+  }
+
+  List<GridColumn> buildColumns() {
+    return [
+      GridColumn(
+        columnName: 'description',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Mô tả'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'type',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Loại Bill'),
+        ),
+      ),
+      GridColumn(
+        columnName: 'payCost',
+        minimumWidth: 100,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Giá tiền'),
+        ),
+      ),
+    ];
   }
 }
 
@@ -183,12 +238,15 @@ class PaymentDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
 
-    double totalTaken = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == 'Taken') ? element.fromSessionDetail.payCost : 0));
-    double totalAliveOrDead = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type != 'Taken') ? element.fromSessionDetail.payCost : 0));
+    double totalPaid = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == NormalSessionDetailType.taken || element.fromSessionDetail.type == NormalSessionDetailType.emergencyTaken) ? element.fromSessionDetail.payCost : 0));
+    totalPaid += payment.customBills.fold(0, (previousValue, element) => previousValue + ((element.type == CustomBillType.ownerPaid) ? element.payCost : 0));
 
-    double ratio = totalTaken - totalAliveOrDead;
+    double totalTake = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type != NormalSessionDetailType.taken && element.fromSessionDetail.type != NormalSessionDetailType.emergencyTaken) ? element.fromSessionDetail.payCost : 0));
+    totalTake = payment.customBills.fold(0, (previousValue, element) => previousValue + ((element.type == CustomBillType.ownerTake) ? element.payCost : 0));
 
-    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+    double ratio = totalPaid - totalTake;
+
+    final isSmallScreen = MediaQuery.of(context).size.width < Constants.smallScreenSize;
 
     return Scaffold(
       appBar: AppBar(
@@ -216,18 +274,20 @@ class PaymentDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 4,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 50.0 * (payment.fundBills.length + 1),
-                child: FundSessionDetailWidget(fundBills: payment.fundBills),
-              ),
+              payment.fundBills.isEmpty
+                  ? const SizedBox(
+                      height: 0,
+                    )
+                  : SizedBox(
+                      height: 50.0 * (payment.fundBills.length + 1),
+                      child: FundSessionDetailWidget(fundBills: payment.fundBills),
+                    ),
               const SizedBox(
                 height: 20,
+              ),
+              SizedBox(
+                height: 60.0 * (payment.customBills.length + 1),
+                child: CustomBillTableWidget(customBills: payment.customBills),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -246,12 +306,12 @@ class PaymentDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '${Utils.moneyFormat.format(totalAliveOrDead)}đ',
+                        '${Utils.moneyFormat.format(totalTake)}đ',
                         textAlign: TextAlign.right,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '${Utils.moneyFormat.format(totalTaken)}đ',
+                        '${Utils.moneyFormat.format(totalPaid)}đ',
                         textAlign: TextAlign.right,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),

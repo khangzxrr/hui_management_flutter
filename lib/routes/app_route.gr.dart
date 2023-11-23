@@ -43,6 +43,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DashboardScreen(),
       );
     },
+    EmergencySessionCreateSelectMemberRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EmergencySessionCreateSelectMemberScreen(),
+      );
+    },
+    FinalSettlementForDeadSessionRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FinalSettlementForDeadSessionScreen(),
+      );
+    },
     FundDetailRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -262,6 +274,34 @@ class DashboardRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DashboardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [EmergencySessionCreateSelectMemberScreen]
+class EmergencySessionCreateSelectMemberRoute extends PageRouteInfo<void> {
+  const EmergencySessionCreateSelectMemberRoute({List<PageRouteInfo>? children})
+      : super(
+          EmergencySessionCreateSelectMemberRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EmergencySessionCreateSelectMemberRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FinalSettlementForDeadSessionScreen]
+class FinalSettlementForDeadSessionRoute extends PageRouteInfo<void> {
+  const FinalSettlementForDeadSessionRoute({List<PageRouteInfo>? children})
+      : super(
+          FinalSettlementForDeadSessionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FinalSettlementForDeadSessionRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

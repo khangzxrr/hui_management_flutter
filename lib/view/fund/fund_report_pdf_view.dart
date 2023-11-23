@@ -115,8 +115,6 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
         build: (context) {
           double lineCount = widget.fundReportToPdfViewModel.nextSessionDateText.split(' ').length.toDouble() / 7;
 
-          print(lineCount);
-
           final nextSessionDateRow = pw.Container(
             padding: const pw.EdgeInsets.fromLTRB(10, 0, 10, 0),
             height: lineCount < 0 ? 30 : lineCount.ceilToDouble() * 30,
@@ -130,8 +128,6 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
           );
 
           lineCount = widget.fundReportToPdfViewModel.nextTakenSessionDeliveryText.split(' ').length.toDouble() / 7;
-
-          print(lineCount);
 
           final nextSessionDeliveryRow = pw.Container(
             padding: const pw.EdgeInsets.fromLTRB(10, 0, 10, 10),
