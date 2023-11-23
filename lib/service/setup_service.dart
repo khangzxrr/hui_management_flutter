@@ -13,7 +13,7 @@ class SetupService {
   static final getIt = GetIt.instance;
 
   static void setup() {
-    if (getIt.isRegistered<LoginService>()){
+    if (getIt.isRegistered<LoginService>()) {
       getIt.unregister<LoginService>();
       getIt.unregister<UserService>();
       getIt.unregister<FundService>();
@@ -31,10 +31,7 @@ class SetupService {
   }
 
   static void setupAuthorizeServiced(String token) {
-    log('regis authorize service..');
-    log(token);
-
-    if (getIt.isRegistered<AuthorizeHttp>()){
+    if (getIt.isRegistered<AuthorizeHttp>()) {
       getIt.unregister<AuthorizeHttp>();
     }
 

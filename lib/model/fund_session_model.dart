@@ -1,3 +1,4 @@
+import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,6 +11,20 @@ class FundSession {
   DateTime takenDate;
 
   List<NormalSessionDetail> normalSessionDetails;
+
+  List<FundMember> getTakenFundMember(bool includeEmergencyTaken) {
+    final takenSessions = getTakenSessionDetaills(includeEmergencyTaken);
+
+    return takenSessions.map((ts) => ts.fundMember).toList();
+  }
+
+  List<NormalSessionDetail> getTakenSessionDetaills(bool includeEmergencyTaken) {
+    if (includeEmergencyTaken) {
+      return normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken || nsd.type == NormalSessionDetailType.fakeTaken).toList();
+    }
+
+    return normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken).toList();
+  }
 
   FundSession({required this.id, required this.sessionNumber, required this.takenDate, required this.normalSessionDetails});
 

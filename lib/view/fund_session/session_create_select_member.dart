@@ -47,17 +47,10 @@ class _CreateSessionSelectMemberScreenState extends State<CreateSessionSelectMem
                 itemAsString: (fundMember) => fundMember.nickName,
                 compareFn: (fundMember1, fundMember2) => fundMember1.nickName != fundMember2.nickName,
                 asyncItems: (filter) async {
-                  final members = fundProvider.fund.members;
-                  final sessions = fundProvider.fund.sessions;
-
-                  return members.where((mem) {
+                  return fundProvider.getNotTakenFundMember(includeEmergencyTaken: true).where((mem) {
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
-                    final isNotExistTaken = sessions.any(
-                      (session) => session.normalSessionDetails.where((d) => (d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.fakeTaken) && d.fundMember.id == mem.id).isNotEmpty,
-                    );
-
-                    return nameContain && !isNotExistTaken;
+                    return nameContain;
                   }).toList();
                 },
                 onChanged: (mem) {

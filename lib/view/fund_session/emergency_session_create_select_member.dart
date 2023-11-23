@@ -7,7 +7,6 @@ import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/helper/translate_exception.dart';
 import 'package:hui_management/model/fund_member.dart';
-import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/fund_provider.dart';
@@ -65,25 +64,18 @@ class _EmergencySessionCreateSelectMemberScreenState extends State<EmergencySess
                 itemAsString: (fundMember) => fundMember.nickName,
                 compareFn: (fundMember1, fundMember2) => fundMember1.nickName != fundMember2.nickName,
                 asyncItems: (filter) async {
-                  final members = fundProvider.fund.members;
-                  final sessions = fundProvider.fund.sessions;
+                  final notTakenMembers = fundProvider.getNotTakenFundMember(includeEmergencyTaken: true);
 
-                  return members.where((mem) {
+                  return notTakenMembers.where((mem) {
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
-                    final isNotExistTaken = sessions.any(
-                      (session) => session.normalSessionDetails.where((d) => (d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.emergencyTaken) && d.fundMember.id == mem.id).isNotEmpty,
-                    );
-
-                    return nameContain && !isNotExistTaken;
+                    return nameContain;
                   }).toList();
                 },
                 onChanged: (mem) {
                   if (mem == null) {
                     return;
                   }
-
-                  log('valid!');
 
                   setState(() {
                     selectedMembers.add(mem);

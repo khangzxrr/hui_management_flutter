@@ -177,20 +177,6 @@ class FundMembersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context);
 
-    List<Widget> widgets = [];
-
-    if (fundProvider.fund.sessionsCount == 0) {
-      widgets.add(AddMemberWidget(fund: fundProvider.fund));
-    }
-
-    final members = fundProvider.fund.members
-        .map(
-          (fundMember) => FundMemberWidget(fundMember: fundMember),
-        )
-        .toList();
-
-    widgets.addAll(members);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quản lí thành viên'),
@@ -205,7 +191,11 @@ class FundMembersScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
-          children: widgets,
+          children: [
+            fundProvider.fund.sessions.isEmpty ? AddMemberWidget(fund: fundProvider.fund) : const SizedBox(height: 10),
+            Text(fundProvider.fund.sessions.isNotEmpty ? '*Bạn sẽ không thể xóa sửa thành viên nếu đã có những KÌ HỤI' : ''),
+            ...fundProvider.fund.members.map((fundMember) => FundMemberWidget(fundMember: fundMember)).toList(),
+          ],
         ),
       ),
     );

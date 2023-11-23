@@ -46,12 +46,8 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
 
   final _passwordFieldKey = GlobalKey<FormBuilderFieldState>();
 
-
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    
-    
-  }
+  FutureOr<void> afterFirstLayout(BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +105,10 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
 
                         authenticationEither.match(
                           (error) {
-                            log(error);
                             if (error.contains('XMLHttpRequest error')) {
                               DialogHelper.showSnackBar(context, 'Lỗi kết nối đến máy chủ, vui lòng thử lại sau');
+                            } else if (error.contains('Connection refused')) {
+                              DialogHelper.showSnackBar(context, 'Không thể kết nối đến máy chủ, vui lòng thử lại sau');
                             } else {
                               DialogHelper.showSnackBar(context, 'Sai tài khoản hoặc mật khẩu');
                             }

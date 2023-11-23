@@ -3,12 +3,33 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
 import 'package:hui_management/model/fund_report_model.dart';
 import 'package:hui_management/service/fund_service.dart';
 
 class FundProvider with ChangeNotifier {
   late Fund _fund;
+
+  List<FundMember> getNotTakenFundMember({required bool includeEmergencyTaken}) {
+    final List<int> takenFundMemberIds = [];
+
+    for (final session in _fund.sessions) {
+      takenFundMemberIds.addAll(session.getTakenFundMember(includeEmergencyTaken).map((member) => member.id));
+    }
+
+    return _fund.members.where((member) => !takenFundMemberIds.contains(member.id)).toList();
+  }
+
+  List<FundMember> getTakenFundMember({required bool includeEmergencyTaken}) {
+    final List<FundMember> takenFundMember = [];
+
+    for (final session in _fund.sessions) {
+      takenFundMember.addAll(session.getTakenFundMember(includeEmergencyTaken));
+    }
+
+    return takenFundMember;
+  }
 
   TaskEither<String, FundReportModel> getReport(String reportCode) => TaskEither.tryCatch(
         () async => await GetIt.I<FundService>().getReport(reportCode),
