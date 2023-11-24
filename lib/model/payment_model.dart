@@ -6,6 +6,15 @@ import 'custom_bill_model.dart';
 
 part 'payment_model.g.dart';
 
+enum PaymentStatus {
+  @JsonValue("Processing")
+  processing,
+  @JsonValue("Debting")
+  debting,
+  @JsonValue("Finish")
+  finish
+}
+
 @JsonSerializable()
 class PaymentModel {
   int id;
@@ -18,8 +27,12 @@ class PaymentModel {
 
   double totalCost;
   double totalTransactionCost;
+  double totalOwnerMustPaid;
+  double totalOwnerMustTake;
+  double ownerPaidTakeDiff;
+  double remainPayCost;
 
-  String status;
+  PaymentStatus status;
 
   PaymentModel({
     required this.id,
@@ -29,6 +42,10 @@ class PaymentModel {
     required this.fundBills,
     required this.totalCost,
     required this.totalTransactionCost,
+    required this.remainPayCost,
+    required this.totalOwnerMustPaid,
+    required this.totalOwnerMustTake,
+    required this.ownerPaidTakeDiff,
     required this.status,
   });
 

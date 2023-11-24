@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';

@@ -188,7 +188,7 @@ class CustomBillTableWidget extends StatelessWidget {
     return SfDataGrid(
       source: customBillDataSource,
       columns: buildColumns(),
-      columnWidthMode: ColumnWidthMode.fitByCellValue,
+      columnWidthMode: ColumnWidthMode.fill,
       allowMultiColumnSorting: true,
       gridLinesVisibility: GridLinesVisibility.both,
       headerGridLinesVisibility: GridLinesVisibility.both,
@@ -237,14 +237,6 @@ class PaymentDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
-
-    double totalPaid = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type == NormalSessionDetailType.taken || element.fromSessionDetail.type == NormalSessionDetailType.emergencyTaken) ? element.fromSessionDetail.payCost : 0));
-    totalPaid += payment.customBills.fold(0, (previousValue, element) => previousValue + ((element.type == CustomBillType.ownerPaid) ? element.payCost : 0));
-
-    double totalTake = payment.fundBills.fold(0, (previousValue, element) => previousValue + ((element.fromSessionDetail.type != NormalSessionDetailType.taken && element.fromSessionDetail.type != NormalSessionDetailType.emergencyTaken) ? element.fromSessionDetail.payCost : 0));
-    totalTake = payment.customBills.fold(0, (previousValue, element) => previousValue + ((element.type == CustomBillType.ownerTake) ? element.payCost : 0));
-
-    double ratio = totalPaid - totalTake;
 
     final isSmallScreen = MediaQuery.of(context).size.width < Constants.smallScreenSize;
 
@@ -299,19 +291,19 @@ class PaymentDetailScreen extends StatelessWidget {
                       const Text('Tổng tiền phải đóng:\t'),
                       const Text('Tổng tiền hốt:\t'),
                       const Text('Tổng tiền đã hoàn thành:\t'),
-                      Text(payment.status == 'debting' ? 'Nợ còn lại: ' : 'Tổng còn lại phải thanh toán: '),
+                      Text(payment.status == PaymentStatus.debting ? 'Nợ còn lại: ' : 'Tổng còn lại phải thanh toán: '),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '${Utils.moneyFormat.format(totalTake)}đ',
+                        '${Utils.moneyFormat.format(payment.totalOwnerMustTake)}đ',
                         textAlign: TextAlign.right,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '${Utils.moneyFormat.format(totalPaid)}đ',
+                        '${Utils.moneyFormat.format(payment.totalOwnerMustPaid)}đ',
                         textAlign: TextAlign.right,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -321,7 +313,7 @@ class PaymentDetailScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           )),
                       Text(
-                        '${Utils.moneyFormat.format(ratio.abs() - payment.totalTransactionCost)}đ',
+                        '${Utils.moneyFormat.format(payment.remainPayCost)}đ',
                         textAlign: TextAlign.right,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -338,11 +330,11 @@ class PaymentDetailScreen extends StatelessWidget {
                   children: <TextSpan>[
                     const TextSpan(text: 'Chủ hụi phải '),
                     TextSpan(
-                      text: (ratio > 0) ? 'chi tiền' : 'thu tiền',
+                      text: (payment.ownerPaidTakeDiff > 0) ? 'chi tiền' : 'thu tiền',
                       style: const TextStyle(fontWeight: FontWeight.bold, backgroundColor: Colors.red, color: Colors.white),
                     ),
                     TextSpan(
-                      text: (ratio > 0) ? ' cho ' : ' từ ',
+                      text: (payment.ownerPaidTakeDiff > 0) ? ' cho ' : ' từ ',
                     ),
                     const TextSpan(text: 'hụi viên'),
                   ],
@@ -361,8 +353,8 @@ class PaymentDetailScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () => (payment.status == 'Finish') ? {} : context.router.push(PaycheckRoute(payment: payment)),
-                  child: Text(payment.status == 'Finish' ? 'Đã thanh toán thành công' : 'Thanh toán bill này'),
+                  onPressed: () => (payment.status == PaymentStatus.finish) ? {} : context.router.push(PaycheckRoute(payment: payment)),
+                  child: Text(payment.status == PaymentStatus.finish ? 'Đã thanh toán thành công' : 'Thanh toán bill này'),
                 ),
               )
             ],

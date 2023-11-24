@@ -287,7 +287,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                           );
 
                           if (widget.isCreateNew) {
-                            usersProvider.createUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
+                            await usersProvider.createUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
                               (l) {
                                 log(l);
                                 DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo thành viên mới CODE: $l');
@@ -299,7 +299,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                               },
                             ).run();
                           } else {
-                            usersProvider.updateUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
+                            await usersProvider.updateUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
                               (l) {
                                 log(l);
                                 DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi cập nhật thông tin CODE: $l');

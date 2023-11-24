@@ -7,6 +7,8 @@ import '../../helper/utils.dart';
 import '../../routes/app_route.dart';
 import 'taken_session_info_widget.dart';
 
+enum SessionDetailMenuOption { payment, billTaken }
+
 class TakenSessionDetailWidget extends StatelessWidget {
   final NormalSessionDetail takenSessionDetail;
   final FundSession session;
@@ -29,6 +31,21 @@ class TakenSessionDetailWidget extends StatelessWidget {
           alignment: Alignment.center,
           clipBehavior: Clip.none,
           children: <Widget>[
+            Positioned(
+                right: 0,
+                child: PopupMenuButton<SessionDetailMenuOption>(
+                  onSelected: (SessionDetailMenuOption menuOption) => {},
+                  itemBuilder: (context) => <PopupMenuEntry<SessionDetailMenuOption>>[
+                    const PopupMenuItem<SessionDetailMenuOption>(
+                      value: SessionDetailMenuOption.payment,
+                      child: Text('Bill thanh toán'),
+                    ),
+                    const PopupMenuItem<SessionDetailMenuOption>(
+                      value: SessionDetailMenuOption.billTaken,
+                      child: Text('Bill giao hụi'),
+                    )
+                  ],
+                )),
             TakenSessionInfoWidget(
               session: session,
               takenSessionDetail: takenSessionDetail,

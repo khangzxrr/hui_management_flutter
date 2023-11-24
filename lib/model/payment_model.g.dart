@@ -20,7 +20,11 @@ PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
           .toList(),
       totalCost: (json['totalCost'] as num).toDouble(),
       totalTransactionCost: (json['totalTransactionCost'] as num).toDouble(),
-      status: json['status'] as String,
+      remainPayCost: (json['remainPayCost'] as num).toDouble(),
+      totalOwnerMustPaid: (json['totalOwnerMustPaid'] as num).toDouble(),
+      totalOwnerMustTake: (json['totalOwnerMustTake'] as num).toDouble(),
+      ownerPaidTakeDiff: (json['ownerPaidTakeDiff'] as num).toDouble(),
+      status: $enumDecode(_$PaymentStatusEnumMap, json['status']),
     );
 
 Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
@@ -32,5 +36,15 @@ Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
       'customBills': instance.customBills,
       'totalCost': instance.totalCost,
       'totalTransactionCost': instance.totalTransactionCost,
-      'status': instance.status,
+      'totalOwnerMustPaid': instance.totalOwnerMustPaid,
+      'totalOwnerMustTake': instance.totalOwnerMustTake,
+      'ownerPaidTakeDiff': instance.ownerPaidTakeDiff,
+      'remainPayCost': instance.remainPayCost,
+      'status': _$PaymentStatusEnumMap[instance.status]!,
     };
+
+const _$PaymentStatusEnumMap = {
+  PaymentStatus.processing: 'Processing',
+  PaymentStatus.debting: 'Debting',
+  PaymentStatus.finish: 'Finish',
+};

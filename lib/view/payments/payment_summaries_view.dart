@@ -43,21 +43,21 @@ class PaymentListOfUserScreen extends StatelessWidget {
     final paymentProvider = Provider.of<PaymentProvider>(context);
 
     final List<Widget> processingBillsWidget = paymentProvider.payments
-        .where((p) => p.status == 'Processing')
+        .where((p) => p.status == PaymentStatus.processing)
         .map(
           (payment) => PaymentWidget(payment: payment),
         )
         .toList();
 
     final List<Widget> debtingBillsWidget = paymentProvider.payments
-        .where((p) => p.status == 'Debting')
+        .where((p) => p.status == PaymentStatus.debting)
         .map(
           (payment) => PaymentWidget(payment: payment),
         )
         .toList();
 
     final List<Widget> finishedBillsWidget = paymentProvider.payments
-        .where((p) => p.status == 'Finish')
+        .where((p) => p.status == PaymentStatus.finish)
         .map(
           (payment) => PaymentWidget(payment: payment),
         )
