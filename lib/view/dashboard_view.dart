@@ -24,12 +24,9 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin<DashboardScreen> {
-
   @override
   Widget build(BuildContext context) {
     final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: true); //must not listen to avoid infinite loop
-
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -77,18 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> with AfterLayoutMixin
   }
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final authenticationProvider = Provider.of<AuthenticationProvider>(context, listen: false); //must not listen to avoid infinite loop
-
-    final model = await authenticationProvider.getPreviousAuthenticationModel();
-
-
-    if (model == null) {
-      context.router.pushAndPopUntil(const LoginRoute(), predicate: (_) => false);
-    } else {
-      SetupService.setupAuthorizeServiced(model.token);
-    }
-  }
+  FutureOr<void> afterFirstLayout(BuildContext context) async {}
 }
 
 class DashboardInfo extends StatefulWidget {
@@ -196,6 +182,4 @@ class _DashboardInfoState extends State<DashboardInfo> {
       },
     );
   }
-
-
 }

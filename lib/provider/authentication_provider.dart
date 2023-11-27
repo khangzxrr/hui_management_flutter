@@ -11,7 +11,7 @@ class AuthenticationProvider with ChangeNotifier {
   void setAuthentication(AuthenticationModel model) async {
     this.model = model;
 
-    setPreviousAuthenticationModel(model);
+    //setPreviousAuthenticationModel(model);
 
     SetupService.setupAuthorizeServiced(model.token);
     SetupService.setup();
@@ -19,26 +19,26 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<AuthenticationModel?> getPreviousAuthenticationModel() async {
-    if (model != null) return model;
+  // Future<AuthenticationModel?> getPreviousAuthenticationModel() async {
+  //   if (model != null) return model;
 
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey('authenticationModel')) {
-      model = AuthenticationModel.fromJson(jsonDecode(sharedPreferences.getString('authenticationModel')!));
+  //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   if (sharedPreferences.containsKey('authenticationModel')) {
+  //     model = AuthenticationModel.fromJson(jsonDecode(sharedPreferences.getString('authenticationModel')!));
 
-      notifyListeners();
+  //     notifyListeners();
 
-      return model;
-    }
+  //     return model;
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
-  Future<void> setPreviousAuthenticationModel(AuthenticationModel model) async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  // Future<void> setPreviousAuthenticationModel(AuthenticationModel model) async {
+  //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    sharedPreferences.setString('authenticationModel', jsonEncode(model));
-  }
+  //   sharedPreferences.setString('authenticationModel', jsonEncode(model));
+  // }
 
   Future<String> getPreviousPassword() async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
