@@ -9,6 +9,7 @@ part of 'payment_model.dart';
 PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
       id: json['id'] as int,
       createAt: DateTime.parse(json['createAt'] as String),
+      owner: SubUserModel.fromJson(json['owner'] as Map<String, dynamic>),
       paymentTransactions: (json['paymentTransactions'] as List<dynamic>)
           .map((e) => PaymentTransaction.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -31,6 +32,7 @@ Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createAt': instance.createAt.toIso8601String(),
+      'owner': instance.owner,
       'paymentTransactions': instance.paymentTransactions,
       'fundBills': instance.fundBills,
       'customBills': instance.customBills,

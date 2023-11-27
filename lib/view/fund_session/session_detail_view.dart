@@ -1,13 +1,61 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/fund_normal_session_detail_model.dart';
 import 'package:hui_management/model/fund_session_model.dart';
+import 'package:hui_management/provider/payment_provider.dart';
+import 'package:provider/provider.dart';
 import '../../helper/utils.dart';
 import '../../routes/app_route.dart';
 import 'taken_session_info_widget.dart';
 
 enum SessionDetailMenuOption { payment, billTaken }
+
+class SessionDetailPopupMenuWidget extends StatelessWidget {
+  final NormalSessionDetail sessionDetail;
+  final FundSession? session;
+
+  const SessionDetailPopupMenuWidget({super.key, required this.sessionDetail, this.session});
+
+  @override
+  Widget build(BuildContext context) {
+    final paymentProvider = Provider.of<PaymentProvider>(context, listen: true);
+
+    return PopupMenuButton<SessionDetailMenuOption>(
+      onSelected: (SessionDetailMenuOption menuOption) async {
+        if (menuOption == SessionDetailMenuOption.payment) {
+          await paymentProvider
+              .getPaymentsFilterBy(subUserId: sessionDetail.fundMember.subUser.id, sessionDetailId: sessionDetail.id)
+              .match(
+                (l) => DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi lấy thông tin thanh toán CODE: $l'),
+                (r) => context.router.push(PaymentDetailRoute(payment: r.first)),
+              )
+              .run();
+        } else if (menuOption == SessionDetailMenuOption.billTaken && session != null) {
+          context.router.push(FundNormalSessionExportPdfRoute(takenSessionDetail: sessionDetail, session: session!));
+        }
+      },
+      itemBuilder: (context) {
+        final menu = <PopupMenuEntry<SessionDetailMenuOption>>[
+          const PopupMenuItem<SessionDetailMenuOption>(
+            value: SessionDetailMenuOption.payment,
+            child: Text('Bill thanh toán'),
+          ),
+        ];
+
+        if (sessionDetail.type == NormalSessionDetailType.emergencyTaken || sessionDetail.type == NormalSessionDetailType.fakeTaken || sessionDetail.type == NormalSessionDetailType.taken) {
+          menu.add(const PopupMenuItem<SessionDetailMenuOption>(
+            value: SessionDetailMenuOption.billTaken,
+            child: Text('Bill giao hụi'),
+          ));
+        }
+
+        return menu;
+      },
+    );
+  }
+}
 
 class TakenSessionDetailWidget extends StatelessWidget {
   final NormalSessionDetail takenSessionDetail;
@@ -31,21 +79,7 @@ class TakenSessionDetailWidget extends StatelessWidget {
           alignment: Alignment.center,
           clipBehavior: Clip.none,
           children: <Widget>[
-            Positioned(
-                right: 0,
-                child: PopupMenuButton<SessionDetailMenuOption>(
-                  onSelected: (SessionDetailMenuOption menuOption) => {},
-                  itemBuilder: (context) => <PopupMenuEntry<SessionDetailMenuOption>>[
-                    const PopupMenuItem<SessionDetailMenuOption>(
-                      value: SessionDetailMenuOption.payment,
-                      child: Text('Bill thanh toán'),
-                    ),
-                    const PopupMenuItem<SessionDetailMenuOption>(
-                      value: SessionDetailMenuOption.billTaken,
-                      child: Text('Bill giao hụi'),
-                    )
-                  ],
-                )),
+            Positioned(right: 0, child: SessionDetailPopupMenuWidget(sessionDetail: takenSessionDetail, session: session)),
             TakenSessionInfoWidget(
               session: session,
               takenSessionDetail: takenSessionDetail,
@@ -101,8 +135,14 @@ class FakeAliveSessionDetailMemberWidget extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             title: Text(normalSessionDetail.fundMember.nickName),
-            subtitle: Text('Tiền hụi sống (Đã hốt hụi trước): ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
-          )
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('Tiền hụi sống (Đã hốt hụi trước): ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+                SessionDetailPopupMenuWidget(sessionDetail: normalSessionDetail),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -135,7 +175,13 @@ class EmergencySessionDetailMemberWidget extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             title: Text(normalSessionDetail.fundMember.nickName),
-            subtitle: Text('Hốt hụi trước: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('Hốt hụi trước: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+                SessionDetailPopupMenuWidget(sessionDetail: normalSessionDetail),
+              ],
+            ),
           )
         ],
       ),
@@ -176,8 +222,14 @@ class NormalSessionDetailMemberWidget extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             title: Text(normalSessionDetail.fundMember.nickName),
-            subtitle: Text('$fundSessionType: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
-          )
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('$fundSessionType: ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
+                SessionDetailPopupMenuWidget(sessionDetail: normalSessionDetail),
+              ],
+            ),
+          ),
         ],
       ),
     );

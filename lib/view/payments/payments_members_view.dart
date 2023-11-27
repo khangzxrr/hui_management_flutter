@@ -40,12 +40,10 @@ class SingleMemberScreen extends StatelessWidget {
                     height: 40.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.scaleDown),
+                      image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
                     ),
                   ),
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
@@ -76,8 +74,7 @@ class SingleMemberScreen extends StatelessWidget {
                     ),
                     TableRow(
                       children: [
-                        Text(
-                            'Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
+                        Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
                         AutoSizeText(
                           '${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ',
                           textAlign: TextAlign.end,
@@ -100,14 +97,10 @@ class SingleMemberScreen extends StatelessWidget {
           ),
         ),
         onTap: () async {
-          await Provider.of<PaymentProvider>(context, listen: false)
-              .getPayments(user)
-              .match((l) {
+          await Provider.of<PaymentProvider>(context, listen: false).getPayments(user.id).match((l) {
             log(l);
             DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
-          },
-                  (r) => context.router
-                      .push(PaymentListOfUserRoute(user: user))).run();
+          }, (r) => context.router.push(PaymentListOfUserRoute(user: user))).run();
         },
       ),
     );
@@ -119,13 +112,10 @@ class MultiplePaymentMembersScreen extends StatefulWidget {
   const MultiplePaymentMembersScreen({super.key});
 
   @override
-  State<MultiplePaymentMembersScreen> createState() =>
-      _MultiplePaymentMembersScreenState();
+  State<MultiplePaymentMembersScreen> createState() => _MultiplePaymentMembersScreenState();
 }
 
-class _MultiplePaymentMembersScreenState
-    extends State<MultiplePaymentMembersScreen>
-    with AfterLayoutMixin<MultiplePaymentMembersScreen> {
+class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScreen> with AfterLayoutMixin<MultiplePaymentMembersScreen> {
   String filterText = '';
 
   List<Result> results = [];
@@ -136,22 +126,11 @@ class _MultiplePaymentMembersScreenState
 
   @override
   Widget build(BuildContext context) {
-    final subUsersProvider =
-        Provider.of<SubUsersProvider>(context, listen: true);
+    final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
-    final sherlock = Sherlock(
-        elements: subUsersProvider.subUsersWithPaymentReport
-            .map((e) => e.toJson())
-            .toList());
+    final sherlock = Sherlock(elements: subUsersProvider.subUsersWithPaymentReport.map((e) => e.toJson()).toList());
 
-    final List<Widget> userWidgets = filterText.isNotEmpty
-        ? results
-            .map((e) => SingleMemberScreen(
-                user: UserWithPaymentReport.fromJson(e.element)))
-            .toList()
-        : subUsersProvider.subUsersWithPaymentReport
-            .map((e) => SingleMemberScreen(user: e))
-            .toList();
+    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {
@@ -177,12 +156,10 @@ class _MultiplePaymentMembersScreenState
                         child: TextField(
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText:
-                                'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
+                            labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
                           ),
                           onChanged: (text) async {
-                            final searchResults =
-                                await sherlock.search(input: text);
+                            final searchResults = await sherlock.search(input: text);
 
                             setState(() {
                               filterText = text;
@@ -204,18 +181,14 @@ class _MultiplePaymentMembersScreenState
                   Row(
                     children: [
                       FilterChip(
-                        label: const Text(
-                            'Lọc những hụi viên có bill trong hôm nay'),
-                        selected: selectedFilters.contains(
-                            SubUserFilter.filterByContainToDayPayment),
+                        label: const Text('Lọc những hụi viên có bill trong hôm nay'),
+                        selected: selectedFilters.contains(SubUserFilter.filterByContainToDayPayment),
                         onSelected: (selectedValue) async {
                           setState(() {
                             if (selectedValue) {
-                              selectedFilters.add(
-                                  SubUserFilter.filterByContainToDayPayment);
+                              selectedFilters.add(SubUserFilter.filterByContainToDayPayment);
                             } else {
-                              selectedFilters.remove(
-                                  SubUserFilter.filterByContainToDayPayment);
+                              selectedFilters.remove(SubUserFilter.filterByContainToDayPayment);
                             }
                           });
 
@@ -238,13 +211,11 @@ class _MultiplePaymentMembersScreenState
 
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final getAllWithPaymentReportResult =
-        await Provider.of<SubUsersProvider>(context, listen: false)
-            .getAllWithPaymentReport(
+    final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport(
       filters: {SubUserFilter.filterByAnyPayment},
       usingLoadingIdicator: true,
     ).run();
-    
+
     getAllWithPaymentReportResult.match((l) {
       log(l);
       DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');

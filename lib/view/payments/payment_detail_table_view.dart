@@ -242,7 +242,7 @@ class PaymentDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: isSmallScreen ? Text('Bill của ${paymentProvider.selectedUser.name}\nngày ${Utils.dateFormat.format(payment.createAt.toLocal())}') : Text('Bill của ${paymentProvider.selectedUser.name} ngày ${Utils.dateFormat.format(payment.createAt.toLocal())}'),
+        title: isSmallScreen ? Text('Bill của ${payment.owner.name}\nngày ${Utils.dateFormat.format(payment.createAt.toLocal())}') : Text('Bill của ${payment.owner.name} ngày ${Utils.dateFormat.format(payment.createAt.toLocal())}'),
       ),
       body: Container(
           padding: const EdgeInsets.all(14),
@@ -256,13 +256,13 @@ class PaymentDetailScreen extends StatelessWidget {
                     const TextSpan(
                       text: 'Tên hụi viên: ',
                     ),
-                    TextSpan(text: '${paymentProvider.selectedUser.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${payment.owner.name}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Tên ngân hàng: '),
-                    TextSpan(text: '${paymentProvider.selectedUser.bankName}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${payment.owner.bankName}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số tài khoản: '),
-                    TextSpan(text: '${paymentProvider.selectedUser.bankNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${payment.owner.bankNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                     const TextSpan(text: 'Số điện thoại: '),
-                    TextSpan(text: '${paymentProvider.selectedUser.phoneNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: '${payment.owner.phoneNumber}\n', style: const TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),

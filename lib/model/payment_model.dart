@@ -1,5 +1,6 @@
 import 'package:hui_management/model/payment_fund_bill_model.dart';
 import 'package:hui_management/model/payment_transaction_model.dart';
+import 'package:hui_management/model/sub_user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'custom_bill_model.dart';
@@ -20,6 +21,8 @@ class PaymentModel {
   int id;
   DateTime createAt;
 
+  SubUserModel owner;
+
   List<PaymentTransaction> paymentTransactions;
   List<FundBillModel> fundBills;
 
@@ -37,6 +40,7 @@ class PaymentModel {
   PaymentModel({
     required this.id,
     required this.createAt,
+    required this.owner,
     required this.paymentTransactions,
     required this.customBills,
     required this.fundBills,
