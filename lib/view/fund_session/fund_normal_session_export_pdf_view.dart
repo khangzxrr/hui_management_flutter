@@ -3,12 +3,12 @@ import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/fund_model.dart';
-import 'package:image_downloader_web/image_downloader_web.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:hui_management/service/download_service.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -81,13 +81,13 @@ class _FundNormalSessionExportPdfScreenState extends State<FundNormalSessionExpo
 
               final mergedImageBytes = img.encodePng(mergedImage);
 
-              if (kIsWeb) {
-                await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_giao_hui.png');
-              } else {
-                await ImageGallerySaver.saveImage(mergedImageBytes, name: 'giay_giao_hui', quality: 100);
-              }
-
-              DialogHelper.showSnackBar(context, 'Đã tải về tệp ảnh');
+              await GetIt.I<DownloadService>()
+                  .download(mergedImageBytes)
+                  .match(
+                    (l) => DialogHelper.showSnackBar(context, 'Có lỗi xảy ra, CODE: ${l.toString()}'),
+                    (r) => DialogHelper.showSnackBar(context, 'Đã tải về tệp ảnh'),
+                  )
+                  .run();
             },
             label: const Text('Tải về tệp ảnh', style: TextStyle(color: Colors.white)),
             icon: const Icon(Icons.image, color: Colors.white),

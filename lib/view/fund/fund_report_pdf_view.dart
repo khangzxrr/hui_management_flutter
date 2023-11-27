@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/view_models/fund_report_to_pdf_vm.dart';
-import 'package:image_downloader_web/image_downloader_web.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:pdf/pdf.dart';
 import '../../helper/utils.dart';
 
@@ -14,6 +13,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import 'package:image/image.dart' as img;
+
+import '../../service/download_service.dart';
 
 @RoutePage()
 class PdfExportReviewScreen extends StatefulWidget {
@@ -70,13 +71,13 @@ class _PdfExportReviewScreenState extends State<PdfExportReviewScreen> {
 
                 final mergedImageBytes = img.encodeJpg(mergedImage);
 
-                if (kIsWeb) {
-                  await WebImageDownloader.downloadImageFromUInt8List(uInt8List: mergedImageBytes, name: 'giay_hui.png');
-                } else {
-                  await ImageGallerySaver.saveImage(mergedImageBytes, name: 'giay_hui', quality: 100);
-                }
-
-                DialogHelper.showSnackBar(context, 'Đã tải về tệp ảnh');
+                await GetIt.I<DownloadService>()
+                    .download(mergedImageBytes)
+                    .match(
+                      (l) => DialogHelper.showSnackBar(context, 'Có lỗi xảy ra, CODE: ${l.toString()}'),
+                      (r) => DialogHelper.showSnackBar(context, 'Đã tải về tệp ảnh'),
+                    )
+                    .run();
               },
               label: const Text('Tải về tệp ảnh', style: TextStyle(color: Colors.white)),
               icon: const Icon(Icons.image, color: Colors.white)),

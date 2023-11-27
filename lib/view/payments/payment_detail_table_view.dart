@@ -8,11 +8,9 @@ import 'package:hui_management/model/payment_fund_bill_model.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/model/payment_transaction_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../model/custom_bill_model.dart';
-import '../../provider/payment_provider.dart';
 import '../../routes/app_route.dart';
 
 class TransactionListWidget extends StatelessWidget {
@@ -236,7 +234,6 @@ class PaymentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
 
     final isSmallScreen = MediaQuery.of(context).size.width < Constants.smallScreenSize;
 

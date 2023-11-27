@@ -232,11 +232,12 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                           String imageUrl = '';
 
                           if (avatar.first is XFile) {
-                            try {
-                              imageUrl = await FormHelper.upload(avatar.first);
-                            } catch (e) {
-                              DialogHelper.showSnackBar(context, 'Lỗi khi tải ảnh lên CODE $e');
-                            }
+                            await FormHelper.upload(avatar.first).match((l) {
+                              log(l.toString());
+                              DialogHelper.showSnackBar(context, 'Lỗi khi tải ảnh lên, CODE ${l.toString()}');
+                            }, (r) {
+                              imageUrl = r;
+                            }).run();
                           } else {
                             imageUrl = avatar.first;
                           }
@@ -245,27 +246,31 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                           String? identityFrontImageUrl;
 
                           if (identityFrontImages.isNotEmpty && identityFrontImages.first is XFile) {
-                            try {
-                              identityFrontImageUrl = await FormHelper.upload(identityFrontImages.first);
-                            } catch (e) {
-                              DialogHelper.showSnackBar(context, 'Lỗi khi tải ảnh lên CODE: $e');
-                              setState(() {
-                                isLoading = false;
-                              });
-                            }
+                            await FormHelper.upload(identityFrontImages.first).match((l) {
+                              log(l.toString());
+                              DialogHelper.showSnackBar(context, 'Lỗi khi tải ảnh lên, CODE ${l.toString()}');
+                            }, (r) {
+                              identityFrontImageUrl = r;
+                            }).run();
+
+                            setState(() {
+                              isLoading = false;
+                            });
                           }
                           List<dynamic> identityBackImages = _identityBackImageKey.currentState!.value;
                           String? identityBackImageUrl;
 
                           if (identityBackImages.isNotEmpty && identityBackImages.first is XFile) {
-                            try {
-                              identityBackImageUrl = await FormHelper.upload(identityBackImages.first);
-                            } catch (e) {
-                              DialogHelper.showSnackBar(context, 'Lỗi khi tải ảnh lên CODE: $e');
-                              setState(() {
-                                isLoading = false;
-                              });
-                            }
+                            await FormHelper.upload(identityBackImages.first).match((l) {
+                              log(l.toString());
+                              DialogHelper.showSnackBar(context, 'Lỗi khi tải ảnh lên, CODE ${l.toString()}');
+                            }, (r) {
+                              identityBackImageUrl = r;
+                            }).run();
+
+                            setState(() {
+                              isLoading = false;
+                            });
                           }
 
                           final modifyUser = SubUserModel(

@@ -10,7 +10,6 @@ import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
-import 'package:hui_management/service/setup_service.dart';
 import 'package:provider/provider.dart';
 
 import '../routes/app_route.dart';
