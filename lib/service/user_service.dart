@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/authorize_http.dart';
 import 'package:hui_management/model/sub_user_model.dart';
-import 'package:hui_management/model/user_with_payment_report.dart';
+import 'package:hui_management/model/sub_user_with_payment_report.dart';
 
 import '../helper/constants.dart';
 import '../provider/sub_users_provider.dart';
 
 class UserService {
-  
-
   Future<bool> delete(int id) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
 
@@ -51,7 +49,7 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<UserWithPaymentReport>> getAllWithPaymentReport(Set<SubUserFilter> filters) async {
+  Future<List<SubUserWithPaymentReport>> getAllWithPaymentReport(Set<SubUserFilter> filters) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
 
     Map<String, String> queryParams = {};
@@ -73,7 +71,7 @@ class UserService {
     if (response.statusCode == 200) {
       final Iterable jsonObj = jsonDecode(response.body)['subUserReportRecords'];
 
-      return List<UserWithPaymentReport>.from(jsonObj.map((model) => UserWithPaymentReport.fromJson(model)));
+      return List<SubUserWithPaymentReport>.from(jsonObj.map((model) => SubUserWithPaymentReport.fromJson(model)));
     }
 
     throw Exception(response.body);
@@ -81,7 +79,7 @@ class UserService {
 
   Future<List<SubUserModel>> getAll(Set<SubUserFilter> filters) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
-    
+
     Map<String, String> queryParams = {};
 
     for (SubUserFilter filter in filters) {
