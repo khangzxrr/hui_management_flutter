@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:hui_management/model/payment_model.dart';
-import 'package:hui_management/model/user_with_payment_report.dart';
+import 'package:hui_management/model/sub_user_with_payment_report.dart';
 import 'package:hui_management/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class PaymentWidget extends StatelessWidget {
 
 @RoutePage()
 class PaymentListOfUserScreen extends StatelessWidget {
-  final UserWithPaymentReport user;
+  final SubUserWithPaymentReport user;
   const PaymentListOfUserScreen({super.key, required this.user});
 
   @override
