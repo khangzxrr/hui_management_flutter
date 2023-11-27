@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -78,40 +80,21 @@ class _FinalSettlementForDeadSessionScreenState extends State<FinalSettlementFor
                   return;
                 }
 
-                await fundProvider
+                final result = await fundProvider
                     .createFinalSettlementForDeadSession(fundProvider.fund.id, fundMember!.id)
                     .andThen(
                       () => fundProvider.getFund(fundProvider.fund.id),
                     )
-                    .match((l) {
-                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra: $l');
-                },
-                        (r) => showDialog<bool>(
-                              context: context,
-                              barrierDismissible: false, // user must tap button!
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Thông báo'),
-                                  content: const SingleChildScrollView(
-                                    child: ListBody(
-                                      children: <Widget>[
-                                        Text('Đã tất toán thành công, vui lòng kiểm tra bill của hụi viên'),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('Chấp nhận'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(true);
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            )).run();
+                    .run();
+
+                result.match((l) {
+                  log(l);
+                  DialogHelper.showSnackBar(context, 'Có lỗi xảy ra, vui lòng thử lại. ERROR CODE: $l');
+                }, (r) {
+                  DialogHelper.showSnackBar(context, 'Tất toán thành công!');
+                  context.router.pop();
+                });
               },
-              style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),
               child: const Text('Xác nhận tất toán'),
             )
           ],
