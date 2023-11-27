@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hui_management/helper/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:collection/collection.dart';
-import '../model/user_with_payment_report.dart';
+import '../model/sub_user_with_payment_report.dart';
 
 class MemberReportsDataSource extends DataGridSource {
   List<DataGridRow> reportRows = [];
@@ -10,7 +10,7 @@ class MemberReportsDataSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => reportRows;
 
-  void setReportsData(List<UserWithPaymentReport> reports) {
+  void setReportsData(List<SubUserWithPaymentReport> reports) {
     reportRows = reports
         .map<DataGridRow>(
           (r) => DataGridRow(

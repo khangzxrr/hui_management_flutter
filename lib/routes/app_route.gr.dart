@@ -643,7 +643,7 @@ class PaymentDetailRouteArgs {
 class PaymentListOfUserRoute extends PageRouteInfo<PaymentListOfUserRouteArgs> {
   PaymentListOfUserRoute({
     Key? key,
-    required UserWithPaymentReport user,
+    required SubUserWithPaymentReport user,
     List<PageRouteInfo>? children,
   }) : super(
           PaymentListOfUserRoute.name,
@@ -668,7 +668,7 @@ class PaymentListOfUserRouteArgs {
 
   final Key? key;
 
-  final UserWithPaymentReport user;
+  final SubUserWithPaymentReport user;
 
   @override
   String toString() {

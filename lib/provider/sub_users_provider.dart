@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/sub_user_model.dart';
-import 'package:hui_management/model/user_with_payment_report.dart';
+import 'package:hui_management/model/sub_user_with_payment_report.dart';
 import 'package:hui_management/service/user_service.dart';
 
 enum SubUserFilter { filterByAnyPayment, getFundRatio, filterByNotFinishedPayment, filterByContainToDayPayment }
@@ -11,7 +11,7 @@ class SubUsersProvider with ChangeNotifier {
   bool loading = false;
 
   List<SubUserModel> subUsers = [];
-  List<UserWithPaymentReport> subUsersWithPaymentReport = [];
+  List<SubUserWithPaymentReport> subUsersWithPaymentReport = [];
 
   TaskEither<String, List<SubUserModel>> fetchAndFilterUsers(Set<SubUserFilter> filters) => TaskEither.tryCatch(() async {
         final users = await GetIt.I<UserService>().getAll(filters);
@@ -25,7 +25,7 @@ class SubUsersProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  TaskEither<String, List<UserWithPaymentReport>> getAllWithPaymentReport({
+  TaskEither<String, List<SubUserWithPaymentReport>> getAllWithPaymentReport({
     required Set<SubUserFilter> filters,
     required bool usingLoadingIdicator,
   }) =>

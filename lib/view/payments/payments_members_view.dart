@@ -6,7 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hui_management/model/user_with_payment_report.dart';
+import 'package:hui_management/model/sub_user_with_payment_report.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
@@ -19,9 +19,9 @@ import '../../provider/payment_provider.dart';
 import '../../routes/app_route.dart';
 
 class SingleMemberScreen extends StatelessWidget {
-  final UserWithPaymentReport user;
+  final SubUserWithPaymentReport subUserReports;
 
-  const SingleMemberScreen({super.key, required this.user});
+  const SingleMemberScreen({super.key, required this.subUserReports});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class SingleMemberScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CachedNetworkImage(
-                  imageUrl: user.imageUrl,
+                  imageUrl: subUserReports.imageUrl,
                   imageBuilder: (context, imageProvider) => Container(
                     width: 40.0,
                     height: 40.0,
@@ -57,7 +57,7 @@ class SingleMemberScreen extends StatelessWidget {
                       children: [
                         const Text('Tên: '),
                         AutoSizeText(
-                          user.name,
+                          subUserReports.name,
                           textAlign: TextAlign.end,
                           maxLines: 1,
                         ),
@@ -67,16 +67,16 @@ class SingleMemberScreen extends StatelessWidget {
                       children: [
                         const Text('Nick name: '),
                         AutoSizeText(
-                          user.nickName,
+                          subUserReports.nickName,
                           textAlign: TextAlign.end,
                         ),
                       ],
                     ),
                     TableRow(
                       children: [
-                        Text('Tổng tiền cần ${(user.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
+                        Text('Tổng tiền cần ${(subUserReports.totalProcessingAmount > 0) ? 'thu' : 'chi'}:  '),
                         AutoSizeText(
-                          '${Utils.moneyFormat.format(user.totalProcessingAmount.abs())}đ',
+                          '${Utils.moneyFormat.format(subUserReports.totalProcessingAmount.abs())}đ',
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -85,7 +85,7 @@ class SingleMemberScreen extends StatelessWidget {
                       children: [
                         const Text('Còn nợ: '),
                         AutoSizeText(
-                          '${Utils.moneyFormat.format(user.totalDebtAmount.abs())}đ',
+                          '${Utils.moneyFormat.format(subUserReports.totalDebtAmount.abs())}đ',
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -97,10 +97,10 @@ class SingleMemberScreen extends StatelessWidget {
           ),
         ),
         onTap: () async {
-          await Provider.of<PaymentProvider>(context, listen: false).getPayments(user.id).match((l) {
+          await Provider.of<PaymentProvider>(context, listen: false).getPayments(subUserReports.id).match((l) {
             log(l);
             DialogHelper.showSnackBar(context, 'Lỗi khi lấy bill thanh toán');
-          }, (r) => context.router.push(PaymentListOfUserRoute(user: user))).run();
+          }, (r) => context.router.push(PaymentListOfUserRoute(user: subUserReports))).run();
         },
       ),
     );
@@ -130,7 +130,7 @@ class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScr
 
     final sherlock = Sherlock(elements: subUsersProvider.subUsersWithPaymentReport.map((e) => e.toJson()).toList());
 
-    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(user: UserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(user: e)).toList();
+    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(subUserReports: SubUserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(subUserReports: e)).toList();
 
     return LiquidPullToRefresh(
       onRefresh: () async {

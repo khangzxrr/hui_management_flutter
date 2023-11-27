@@ -8,7 +8,7 @@ import '../model/fund_session_model.dart';
 import '../model/general_fund_model.dart';
 import '../model/payment_model.dart';
 import '../model/sub_user_model.dart';
-import '../model/user_with_payment_report.dart';
+import '../model/sub_user_with_payment_report.dart';
 import '../view/dashboard_info.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/final_settlement_for_dead_session_view.dart';

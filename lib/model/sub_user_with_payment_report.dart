@@ -1,10 +1,10 @@
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_with_payment_report.g.dart';
+part 'sub_user_with_payment_report.g.dart';
 
 @JsonSerializable()
-class UserWithPaymentReport extends SubUserModel {
+class SubUserWithPaymentReport extends SubUserModel {
   final double totalProcessingAmount;
   final double totalDebtAmount;
   final double totalAliveAmount;
@@ -12,7 +12,7 @@ class UserWithPaymentReport extends SubUserModel {
   final double fundRatio;
   final double totalTakenAmount;
 
-  UserWithPaymentReport({
+  SubUserWithPaymentReport({
     required this.totalProcessingAmount,
     required this.totalDebtAmount,
     required this.fundRatio,
@@ -51,14 +51,14 @@ class UserWithPaymentReport extends SubUserModel {
         );
 
   //from json
-  factory UserWithPaymentReport.fromJson(Map<String, dynamic> json) => _$UserWithPaymentReportFromJson(json);
-  
+  factory SubUserWithPaymentReport.fromJson(Map<String, dynamic> json) => _$SubUserWithPaymentReportFromJson(json);
+
   @override
-  Map<String, dynamic> toJson() => _$UserWithPaymentReportToJson(this);
+  Map<String, dynamic> toJson() => _$SubUserWithPaymentReportToJson(this);
 
   //toString
   @override
   String toString() {
-    return 'UserWithPaymentReport{totalCost: $totalProcessingAmount, totalTransactionCost: $totalDebtAmount, id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName}';
+    return 'SubUserWithPaymentReport{totalCost: $totalProcessingAmount, totalTransactionCost: $totalDebtAmount, id: $id, imageUrl: $imageUrl, name: $name, identity: $identity, identityCreateDate: $identityCreateDate, identityAddress: $identityAddress, phoneNumber: $phoneNumber, bankName: $bankName, bankNumber: $bankNumber, address: $address, additionalInfo: $additionalInfo, identityImageFrontUrl: $identityImageFrontUrl, identityImageBackUrl: $identityImageBackUrl, nickName: $nickName}';
   }
 }

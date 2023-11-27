@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_with_payment_report.dart';
+part of 'sub_user_with_payment_report.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserWithPaymentReport _$UserWithPaymentReportFromJson(
+SubUserWithPaymentReport _$SubUserWithPaymentReportFromJson(
         Map<String, dynamic> json) =>
-    UserWithPaymentReport(
+    SubUserWithPaymentReport(
       totalProcessingAmount: (json['totalProcessingAmount'] as num).toDouble(),
       totalDebtAmount: (json['totalDebtAmount'] as num).toDouble(),
       fundRatio: (json['fundRatio'] as num).toDouble(),
@@ -31,8 +31,8 @@ UserWithPaymentReport _$UserWithPaymentReportFromJson(
       nickName: json['nickName'] as String,
     );
 
-Map<String, dynamic> _$UserWithPaymentReportToJson(
-        UserWithPaymentReport instance) =>
+Map<String, dynamic> _$SubUserWithPaymentReportToJson(
+        SubUserWithPaymentReport instance) =>
     <String, dynamic>{
       'id': instance.id,
       'imageUrl': instance.imageUrl,
