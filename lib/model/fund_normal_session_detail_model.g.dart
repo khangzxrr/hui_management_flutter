@@ -36,7 +36,5 @@ const _$NormalSessionDetailTypeEnumMap = {
   NormalSessionDetailType.alive: 'Alive',
   NormalSessionDetailType.dead: 'Dead',
   NormalSessionDetailType.taken: 'Taken',
-  NormalSessionDetailType.fakeAlive: 'FakeAlive',
   NormalSessionDetailType.emergencyTaken: 'EmergencyTaken',
-  NormalSessionDetailType.fakeTaken: 'FakeTaken',
 };

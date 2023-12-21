@@ -82,7 +82,7 @@ class _FundReportScreenState extends State<FundReportScreen> with AfterLayoutMix
     ];
 
     final takenSessionMemberRows = fundProvider.fund.sessions.asMap().entries.map((s) {
-      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken || nsd.type == NormalSessionDetailType.fakeTaken).first;
+      final takenSession = s.value.normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken || nsd.type == NormalSessionDetailType.emergencyTaken).first;
 
       return PlutoRow(
         cells: {

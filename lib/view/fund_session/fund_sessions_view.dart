@@ -27,7 +27,7 @@ class SessionViewWidget extends StatelessWidget {
 
     final genalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
-    NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.fakeTaken).first;
+    NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == NormalSessionDetailType.taken).first;
     return Slidable(
       // The start action pane is the one at the left or the top side.
       startActionPane: ActionPane(

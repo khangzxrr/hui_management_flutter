@@ -54,7 +54,7 @@ class _FinalSettlementForDeadSessionScreenState extends State<FinalSettlementFor
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
                     final isExistTaken = sessions.any(
-                      (session) => session.normalSessionDetails.where((d) => (d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.fakeTaken) && d.fundMember.id == mem.id && !d.fundMember.hasFinalSettlementForDeadSessionBill).isNotEmpty,
+                      (session) => session.normalSessionDetails.where((d) => (d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.emergencyTaken) && d.fundMember.id == mem.id && !d.fundMember.hasFinalSettlementForDeadSessionBill).isNotEmpty,
                     );
 
                     return nameContain && isExistTaken;

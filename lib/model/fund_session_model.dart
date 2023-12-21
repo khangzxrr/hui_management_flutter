@@ -20,7 +20,7 @@ class FundSession {
 
   List<NormalSessionDetail> getTakenSessionDetaills(bool includeEmergencyTaken) {
     if (includeEmergencyTaken) {
-      return normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken || nsd.type == NormalSessionDetailType.fakeTaken).toList();
+      return normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken || nsd.type == NormalSessionDetailType.emergencyTaken).toList();
     }
 
     return normalSessionDetails.where((nsd) => nsd.type == NormalSessionDetailType.taken).toList();

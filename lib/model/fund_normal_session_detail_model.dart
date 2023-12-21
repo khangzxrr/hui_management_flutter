@@ -10,12 +10,8 @@ enum NormalSessionDetailType {
   dead,
   @JsonValue('Taken')
   taken,
-  @JsonValue('FakeAlive')
-  fakeAlive,
   @JsonValue('EmergencyTaken')
-  emergencyTaken,
-  @JsonValue('FakeTaken')
-  fakeTaken
+  emergencyTaken
 }
 
 @JsonSerializable()

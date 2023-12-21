@@ -44,7 +44,7 @@ class SessionDetailPopupMenuWidget extends StatelessWidget {
           ),
         ];
 
-        if (sessionDetail.type == NormalSessionDetailType.emergencyTaken || sessionDetail.type == NormalSessionDetailType.fakeTaken || sessionDetail.type == NormalSessionDetailType.taken) {
+        if (sessionDetail.type == NormalSessionDetailType.emergencyTaken || sessionDetail.type == NormalSessionDetailType.taken) {
           menu.add(const PopupMenuItem<SessionDetailMenuOption>(
             value: SessionDetailMenuOption.billTaken,
             child: Text('Bill giao hụi'),
@@ -104,46 +104,6 @@ class TakenSessionDetailWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class FakeAliveSessionDetailMemberWidget extends StatelessWidget {
-  final NormalSessionDetail normalSessionDetail;
-
-  const FakeAliveSessionDetailMemberWidget({super.key, required this.normalSessionDetail});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.orange,
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: CachedNetworkImage(
-              imageUrl: normalSessionDetail.fundMember.subUser.imageUrl,
-              imageBuilder: (context, imageProvider) => Container(
-                width: 80.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
-                ),
-              ),
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            title: Text(normalSessionDetail.fundMember.nickName),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text('Tiền hụi sống (Đã hốt hụi trước): ${Utils.moneyFormat.format(normalSessionDetail.payCost)}đ', textAlign: TextAlign.right, style: const TextStyle(color: Colors.black)),
-                SessionDetailPopupMenuWidget(sessionDetail: normalSessionDetail),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -253,9 +213,6 @@ class SessionDetailScreen extends StatelessWidget {
         case NormalSessionDetailType.taken:
           sessionDetailWidgets.add(TakenSessionDetailWidget(takenSessionDetail: sessionDetail, session: session, memberCount: memberCount));
           break;
-        case NormalSessionDetailType.fakeTaken:
-          sessionDetailWidgets.add(TakenSessionDetailWidget(takenSessionDetail: sessionDetail, session: session, memberCount: memberCount));
-          break;
         case NormalSessionDetailType.dead:
           sessionDetailWidgets.add(NormalSessionDetailMemberWidget(normalSessionDetail: sessionDetail));
           break;
@@ -264,9 +221,6 @@ class SessionDetailScreen extends StatelessWidget {
           break;
         case NormalSessionDetailType.emergencyTaken:
           sessionDetailWidgets.add(EmergencySessionDetailMemberWidget(normalSessionDetail: sessionDetail));
-          break;
-        case NormalSessionDetailType.fakeAlive:
-          sessionDetailWidgets.add(FakeAliveSessionDetailMemberWidget(normalSessionDetail: sessionDetail));
           break;
       }
     }
