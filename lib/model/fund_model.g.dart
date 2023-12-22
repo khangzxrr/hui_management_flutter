@@ -23,6 +23,7 @@ Fund _$FundFromJson(Map<String, dynamic> json) => Fund(
       serviceCost: (json['serviceCost'] as num).toDouble(),
       membersCount: json['membersCount'] as int,
       sessionsCount: json['sessionsCount'] as int,
+      emergencySessionsCount: json['emergencySessionsCount'] as int,
       members: (json['members'] as List<dynamic>)
           .map((e) => FundMember.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -51,6 +52,7 @@ Map<String, dynamic> _$FundToJson(Fund instance) => <String, dynamic>{
       'serviceCost': instance.serviceCost,
       'membersCount': instance.membersCount,
       'sessionsCount': instance.sessionsCount,
+      'emergencySessionsCount': instance.emergencySessionsCount,
       'newSessionCreateDates': instance.newSessionCreateDates
           .map((e) => e.toIso8601String())
           .toList(),

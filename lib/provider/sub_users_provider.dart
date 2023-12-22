@@ -25,11 +25,7 @@ class SubUsersProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  TaskEither<String, List<SubUserWithPaymentReport>> getAllWithPaymentReport({
-    required Set<SubUserFilter> filters,
-    required bool usingLoadingIdicator,
-  }) =>
-      TaskEither.tryCatch(() async {
+  TaskEither<String, List<SubUserWithPaymentReport>> getAllWithPaymentReport({required Set<SubUserFilter> filters, required bool usingLoadingIdicator}) => TaskEither.tryCatch(() async {
         if (usingLoadingIdicator) setLoading(true);
 
         final users = await GetIt.I<UserService>().getAllWithPaymentReport(filters);

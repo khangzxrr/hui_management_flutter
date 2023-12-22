@@ -83,7 +83,7 @@ class FundDetailScreen extends StatelessWidget {
                           ),
                           Container(height: 10),
                           Text(
-                            'Các kỳ đã khui ${fundProvider.fund.sessionsCount} (còn lại ${fundProvider.fund.membersCount - fundProvider.fund.sessionsCount} kỳ)',
+                            'Các kỳ đã khui ${fundProvider.fund.sessionsCount} - Đã giao trước ${fundProvider.fund.emergencySessionsCount} Kì (còn lại ${fundProvider.fund.membersCount - fundProvider.fund.sessionsCount - fundProvider.fund.emergencySessionsCount} kỳ)',
                             style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                           )
                         ]),
@@ -105,7 +105,7 @@ class FundDetailScreen extends StatelessWidget {
                 height: 10,
               ),
               TextButton.icon(
-                onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const FinalSettlementForDeadSessionRoute()),
+                onPressed: fundProvider.fund.isFinished() ? null : () => context.router.push(const FinalSettlementForDeadSessionRoute()),
                 label: const Text('Tất toán hụi chết'),
                 icon: const Icon(Icons.payment),
               ),
@@ -124,13 +124,13 @@ class FundDetailScreen extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             TextButton.icon(
-              onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const CreateSessionSelectMemberRoute()),
+              onPressed: fundProvider.fund.isFinished() ? null : () => context.router.push(const CreateSessionSelectMemberRoute()),
               label: const Text('Khui hụi'),
               icon: const Icon(Icons.money_rounded),
             ),
             const SizedBox(width: 10),
             TextButton.icon(
-              onPressed: (fundProvider.fund.sessionsCount == fundProvider.fund.membersCount) ? null : () => context.router.push(const EmergencySessionCreateSelectMemberRoute()),
+              onPressed: fundProvider.fund.isFinished() ? null : () => context.router.push(const EmergencySessionCreateSelectMemberRoute()),
               label: const Text('Hốt giao trước'),
               icon: const Icon(Icons.money_rounded),
             ),

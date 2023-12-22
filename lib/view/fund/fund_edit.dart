@@ -278,6 +278,7 @@ class _FundEditScreenState extends State<FundEditScreen> {
                         takenSessionDeliveryHourOfDay: (_takenSessionDeliveryHourOfDayKey.currentState!.value as DateTime),
                         membersCount: 0,
                         sessionsCount: 0,
+                        emergencySessionsCount: 0,
                         newSessionCreateDates: [],
                       );
 

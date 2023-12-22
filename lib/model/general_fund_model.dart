@@ -32,6 +32,7 @@ class GeneralFundModel {
 
   int membersCount;
   int sessionsCount;
+  int emergencySessionsCount;
 
   List<DateTime> newSessionCreateDates;
 
@@ -50,11 +51,16 @@ class GeneralFundModel {
     required this.serviceCost,
     required this.membersCount,
     required this.sessionsCount,
+    required this.emergencySessionsCount,
     required this.newSessionCreateDates,
   });
 
-  String takenSessionDeliveryAt(){
-    if (fundType == FundType.dayFund){
+  bool isFinished() {
+    return emergencySessionsCount + sessionsCount == membersCount;
+  }
+
+  String takenSessionDeliveryAt() {
+    if (fundType == FundType.dayFund) {
       return '${Utils.timeFormat.format(takenSessionDeliveryHourOfDay.toLocal())} mỗi $takenSessionDeliveryCount ngày';
     }
 
