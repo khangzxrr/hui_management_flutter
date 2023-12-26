@@ -83,7 +83,7 @@ class FundDetailScreen extends StatelessWidget {
                           ),
                           Container(height: 10),
                           Text(
-                            'Các kỳ đã khui ${fundProvider.fund.sessionsCount} - Đã giao trước ${fundProvider.fund.emergencySessionsCount} Kì (còn lại ${fundProvider.fund.membersCount - fundProvider.fund.sessionsCount - fundProvider.fund.emergencySessionsCount} kỳ)',
+                            'Các kỳ đã khui ${fundProvider.fund.sessionsCount} Kì (còn lại ${fundProvider.fund.membersCount - fundProvider.fund.sessionsCount} kỳ)',
                             style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                           )
                         ]),

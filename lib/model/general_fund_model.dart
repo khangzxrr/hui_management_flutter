@@ -56,7 +56,7 @@ class GeneralFundModel {
   });
 
   bool isFinished() {
-    return emergencySessionsCount + sessionsCount == membersCount;
+    return sessionsCount == membersCount;
   }
 
   String takenSessionDeliveryAt() {

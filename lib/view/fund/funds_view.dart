@@ -40,6 +40,7 @@ class SingleFundScreen extends StatelessWidget {
         // All actions are defined in the children parameter.
         children: [
           SlidableAction(
+            key: const ValueKey('delete_fund_action'),
             onPressed: (context) {
               DialogHelper.showConfirmDialog(parentContext, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa dây hụi này, dây hụi bạn xóa sẽ không thể khôi phục lại.').then(
                 (result) async {
@@ -108,7 +109,7 @@ class SingleFundScreen extends StatelessWidget {
               ListTile(
                 dense: true,
                 title: FundInfoWidget(fund: fund),
-                subtitle: Chip(label: Text('Kì ${fund.sessionsCount + fund.emergencySessionsCount}/${fund.membersCount}')),
+                subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
               ),
             ],
           ),

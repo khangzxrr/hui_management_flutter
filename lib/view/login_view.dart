@@ -123,7 +123,9 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
                           },
                         );
                       },
-                      child: const Text('Đăng nhập')),
+                      key: GlobalKey(debugLabel: 'loginButton'),
+                      child: const Text('Đăng nhập'),
+                    ),
             ],
           ),
         ),
