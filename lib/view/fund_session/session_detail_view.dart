@@ -8,6 +8,7 @@ import 'package:hui_management/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 import '../../helper/utils.dart';
 import '../../routes/app_route.dart';
+import 'emergency_receivable_session_detail_info_widget.dart';
 import 'taken_session_info_widget.dart';
 
 enum SessionDetailMenuOption { payment, billTaken }
@@ -90,6 +91,58 @@ class TakenSessionDetailWidget extends StatelessWidget {
               top: -40,
               child: CachedNetworkImage(
                 imageUrl: takenSessionDetail.fundMember.subUser.imageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(image: imageProvider, fit: BoxFit.scaleDown),
+                  ),
+                ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EmergencyReceivableSessionDetail extends StatelessWidget {
+  final NormalSessionDetail emergencyReceivableSessionDetail;
+  final FundSession session;
+  final int memberCount;
+
+  const EmergencyReceivableSessionDetail({
+    super.key,
+    required this.emergencyReceivableSessionDetail,
+    required this.session,
+    required this.memberCount,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.green,
+      child: InkWell(
+        onTap: () => context.router.push(FundNormalSessionExportPdfRoute(takenSessionDetail: emergencyReceivableSessionDetail, session: session)),
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            Positioned(right: 0, child: SessionDetailPopupMenuWidget(sessionDetail: emergencyReceivableSessionDetail, session: session)),
+            EmergencyReceivableSessionDetailInfoWidget(
+              session: session,
+              takenSessionDetail: emergencyReceivableSessionDetail,
+              memberCount: memberCount,
+              textColor: Colors.white,
+            ),
+            Positioned(
+              top: -40,
+              child: CachedNetworkImage(
+                imageUrl: emergencyReceivableSessionDetail.fundMember.subUser.imageUrl,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 80.0,
                   height: 80.0,
@@ -221,6 +274,9 @@ class SessionDetailScreen extends StatelessWidget {
           break;
         case NormalSessionDetailType.emergencyTaken:
           sessionDetailWidgets.add(EmergencySessionDetailMemberWidget(normalSessionDetail: sessionDetail));
+          break;
+        case NormalSessionDetailType.emergencyReceivable:
+          sessionDetailWidgets.add(EmergencyReceivableSessionDetail(emergencyReceivableSessionDetail: sessionDetail, session: session, memberCount: memberCount));
           break;
       }
     }

@@ -11,7 +11,9 @@ enum NormalSessionDetailType {
   @JsonValue('Taken')
   taken,
   @JsonValue('EmergencyTaken')
-  emergencyTaken
+  emergencyTaken,
+  @JsonValue('EmergencyReceivable')
+  emergencyReceivable
 }
 
 @JsonSerializable()

@@ -46,7 +46,7 @@ class _CreateSessionSelectMemberScreenState extends State<CreateSessionSelectMem
                 itemAsString: (fundMember) => fundMember.nickName,
                 compareFn: (fundMember1, fundMember2) => fundMember1.nickName != fundMember2.nickName,
                 asyncItems: (filter) async {
-                  return fundProvider.getNotTakenFundMember(includeEmergencyTaken: true).where((mem) {
+                  return fundProvider.getNotTakenFundMember(includeEmergencyTaken: false).where((mem) {
                     final nameContain = mem.nickName.toLowerCase().contains(filter.toLowerCase());
 
                     return nameContain;
