@@ -24,6 +24,7 @@ class FundMemberWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
     return Slidable(
       // The start action pane is the one at the left or the top side.
@@ -44,6 +45,7 @@ class FundMemberWidget extends StatelessWidget {
                         DialogHelper.showSnackBar(context, 'Có lỗi khi xóa thành viên');
                       },
                       (r) {
+                        generalFundProvider.updateGeneralFundMemberCount(fundProvider.fund.id, -1);
                         log("OK");
                         DialogHelper.showSnackBar(context, 'Xóa thành viên thành công');
                       },
@@ -145,13 +147,13 @@ class AddMemberWidget extends StatelessWidget {
                       .andThen(
                         () => fundProvider.getFund(fund.id),
                       )
-                      .andThen(() => generalFundProvider.fetchFunds())
                       .match(
                     (l) {
                       log(l);
                       DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
                     },
                     (r) {
+                      generalFundProvider.updateGeneralFundMemberCount(fund.id, 1);
                       DialogHelper.showSnackBar(context, 'Thêm thành viên mới thành công');
                     },
                   ).run();
