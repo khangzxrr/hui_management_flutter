@@ -134,43 +134,32 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> with AfterLay
   Widget build(BuildContext context) {
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: true);
 
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              onChanged: (String searchTerm) {
-                EasyDebounce.debounce('fundsSearch', const Duration(milliseconds: 500), () {
-                  _searchTerm = searchTerm;
-                  generalFundProvider.refreshPagingState(_searchTerm);
-                });
-              },
-              decoration: const InputDecoration(labelText: 'Tìm kiếm ở đây'),
+    return RefreshIndicator(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  onChanged: (String searchTerm) {
+                    EasyDebounce.debounce('fundsSearch', const Duration(milliseconds: 500), () {
+                      _searchTerm = searchTerm;
+                      generalFundProvider.refreshPagingState(_searchTerm);
+                    });
+                  },
+                  decoration: const InputDecoration(labelText: 'Tìm kiếm ở đây'),
+                ),
+              ),
             ),
-          ),
+            PagedSliverList(
+              pagingController: _pagingController..value = generalFundProvider.pagingState,
+              builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
+                itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
+              ),
+            ),
+          ],
         ),
-        PagedSliverList(
-          pagingController: _pagingController..value = generalFundProvider.pagingState,
-          builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
-            itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
-          ),
-        ),
-      ],
-    );
-    // return RefreshIndicator(
-    //   child: CustomScrollView(
-    //     slivers: [
-    //       PagedListView(
-    //         pagingController: _pagingController..value = generalFundProvider.pagingState,
-    //         builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
-    //           itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    //   onRefresh: () => generalFundProvider.refreshPagingState(),
-    // );
+        onRefresh: () => generalFundProvider.refreshPagingState(_searchTerm));
   }
 
   @override
