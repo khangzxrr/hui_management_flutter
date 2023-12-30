@@ -72,4 +72,11 @@ class GeneralFundProvider with ChangeNotifier {
     _funds.clear();
     await fetchFunds(0, Constants.pageSize).run();
   }
+
+  void updateSessionCount(int fundId, int sessionCountOffset) {
+    final fund = _funds.where((f) => f.id == fundId).first;
+    fund.sessionsCount += sessionCountOffset;
+
+    updateFund(fund);
+  }
 }

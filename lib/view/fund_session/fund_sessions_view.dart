@@ -25,7 +25,7 @@ class SessionViewWidget extends StatelessWidget {
 
     final fundProvider = Provider.of<FundProvider>(context);
 
-    final genalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
     NormalSessionDetail takenSessionDetail = session.normalSessionDetails.where((d) => d.type == NormalSessionDetailType.taken || d.type == NormalSessionDetailType.emergencyReceivable).first;
     return Slidable(
@@ -43,13 +43,12 @@ class SessionViewWidget extends StatelessWidget {
                   .andThen(
                     () => fundProvider.getFund(fundProvider.fund.id),
                   )
-                  .andThen(() => genalFundProvider.fetchFunds())
-                  .mapLeft(
-                (l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, l);
-                },
-              ).run();
+                  .match((l) {
+                log(l);
+                DialogHelper.showSnackBar(context, l);
+              }, (r) {
+                generalFundProvider.updateSessionCount(fundProvider.fund.id, -1);
+              }).run();
             },
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,

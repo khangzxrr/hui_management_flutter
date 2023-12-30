@@ -172,11 +172,11 @@ class _SessionCreateEnterInfoWidget extends State<CreateSessionEnterInfoScreen> 
                           .andThen(
                             () => fundProvider.getFund(fundProvider.fund.id),
                           )
-                          .andThen(() => genalFundProvider.fetchFunds())
                           .match((l) {
                         log(l);
                         DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo kì hụi mới');
                       }, (r) {
+                        genalFundProvider.updateSessionCount(fundProvider.fund.id, 1);
                         DialogHelper.showSnackBar(context, 'Tạo kì hụi mới thành công');
                         context.router.pushAndPopUntil(const FundSessionListRoute(), predicate: (route) => route.settings.name == FundDetailRoute.name);
                       }).run();
