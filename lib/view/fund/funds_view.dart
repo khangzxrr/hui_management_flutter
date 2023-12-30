@@ -6,16 +6,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
 import 'package:hui_management/view/fund/fund_info_widget.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
-import 'package:sherlock/result.dart';
-import 'package:sherlock/sherlock.dart';
 
 import '../../routes/app_route.dart';
 import 'fund_edit.dart';
@@ -40,7 +39,6 @@ class SingleFundScreen extends StatelessWidget {
         // All actions are defined in the children parameter.
         children: [
           SlidableAction(
-            key: const ValueKey('delete_fund_action'),
             onPressed: (context) {
               DialogHelper.showConfirmDialog(parentContext, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa dây hụi này, dây hụi bạn xóa sẽ không thể khôi phục lại.').then(
                 (result) async {
@@ -128,89 +126,36 @@ class MultipleFundsScreen extends StatefulWidget {
 }
 
 class _MultipleFundsScreenState extends State<MultipleFundsScreen> with AfterLayoutMixin<MultipleFundsScreen> {
-  String filterText = '';
-
-  List<Result> results = [];
+  final PagingController<int, GeneralFundModel> _pagingController = PagingController(firstPageKey: 0);
 
   @override
   Widget build(BuildContext context) {
-    final generalFundProvider = Provider.of<GeneralFundProvider>(context);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: true);
 
-    final sherlock = Sherlock(elements: generalFundProvider.getFunds().map((e) => e.toJson()).toList());
-
-    List<Widget> generalFundWigets = filterText.isNotEmpty
-        ? results
-            .map((e) => SingleFundScreen(
-                  fund: GeneralFundModel.fromJson(e.element),
-                  parentContext: context,
-                ))
-            .toList()
-        : generalFundProvider
-            .getFunds()
-            .map(
-              (e) => SingleFundScreen(
-                fund: e,
-                parentContext: context,
-              ),
-            )
-            .toList();
-
-    return LiquidPullToRefresh(
-      showChildOpacityTransition: false,
-      onRefresh: () async {
-        await generalFundProvider.fetchFunds().run();
-      },
-      child: generalFundProvider.loading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView(children: [
-                Text('Tổng số dây hụi: ${generalFundProvider.getFunds().length}'),
-                const SizedBox(
-                  width: 8,
-                  height: 8,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Tìm kiếm hụi (tên,...))',
-                        ),
-                        onChanged: (text) async {
-                          final searchResults = await sherlock.search(input: text);
-
-                          setState(() {
-                            filterText = text;
-                            results = searchResults;
-                          });
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          filterText = '';
-                        });
-                      },
-                      icon: const Icon(Icons.clear),
-                    ),
-                  ],
-                ),
-                ...generalFundWigets,
-              ]),
-            ),
+    return RefreshIndicator(
+      child: PagedListView(
+        pagingController: _pagingController..value = generalFundProvider.pagingState,
+        builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
+          itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
+        ),
+      ),
+      onRefresh: () => generalFundProvider.refreshPagingState(),
     );
   }
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final fetchFundsResult = await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds().run();
+  void dispose() {
+    _pagingController.dispose();
 
-    fetchFundsResult.match((l) {
-      log(l);
-      DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách dây hụi');
-    }, (r) => null);
+    super.dispose();
+  }
+
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) async {
+    _pagingController.addPageRequestListener((pageKey) async {
+      await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(pageKey, Constants.pageSize).run();
+    });
+
+    await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(0, Constants.pageSize).run();
   }
 }
