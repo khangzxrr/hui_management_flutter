@@ -8,7 +8,6 @@ import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
-import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -154,12 +153,6 @@ class _DashboardInfoState extends State<DashboardInfo> {
                 getAllWithPaymentReportResult.match((l) {
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                }, (r) => null);
-              } else if (index == 2) {
-                final fetchFundsResult = await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds().run();
-                fetchFundsResult.match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách dây hụi');
                 }, (r) => null);
               } else if (index == 1) {
                 final getAllUsersResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllUsers().run();
