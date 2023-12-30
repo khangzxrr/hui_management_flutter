@@ -10,7 +10,6 @@ import 'package:hui_management/model/fund_member.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/fund_provider.dart';
-import '../../provider/general_fund_provider.dart';
 import '../../routes/app_route.dart';
 
 @RoutePage()
@@ -29,7 +28,6 @@ class _EmergencySessionCreateSelectMemberScreenState extends State<EmergencySess
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: true);
-    final genalFundProvider = Provider.of<GeneralFundProvider>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
