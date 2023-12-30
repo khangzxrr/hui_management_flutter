@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
@@ -127,20 +128,49 @@ class MultipleFundsScreen extends StatefulWidget {
 
 class _MultipleFundsScreenState extends State<MultipleFundsScreen> with AfterLayoutMixin<MultipleFundsScreen> {
   final PagingController<int, GeneralFundModel> _pagingController = PagingController(firstPageKey: 0);
+  String _searchTerm = '';
 
   @override
   Widget build(BuildContext context) {
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: true);
 
-    return RefreshIndicator(
-      child: PagedListView(
-        pagingController: _pagingController..value = generalFundProvider.pagingState,
-        builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
-          itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              onChanged: (String searchTerm) {
+                EasyDebounce.debounce('fundsSearch', const Duration(milliseconds: 500), () {
+                  _searchTerm = searchTerm;
+                  generalFundProvider.refreshPagingState(_searchTerm);
+                });
+              },
+              decoration: const InputDecoration(labelText: 'Tìm kiếm ở đây'),
+            ),
+          ),
         ),
-      ),
-      onRefresh: () => generalFundProvider.refreshPagingState(),
+        PagedSliverList(
+          pagingController: _pagingController..value = generalFundProvider.pagingState,
+          builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
+            itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
+          ),
+        ),
+      ],
     );
+    // return RefreshIndicator(
+    //   child: CustomScrollView(
+    //     slivers: [
+    //       PagedListView(
+    //         pagingController: _pagingController..value = generalFundProvider.pagingState,
+    //         builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
+    //           itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    //   onRefresh: () => generalFundProvider.refreshPagingState(),
+    // );
   }
 
   @override
@@ -153,9 +183,9 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> with AfterLay
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     _pagingController.addPageRequestListener((pageKey) async {
-      await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(pageKey, Constants.pageSize).run();
+      await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(pageKey, Constants.pageSize, _searchTerm).run();
     });
 
-    await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(0, Constants.pageSize).run();
+    await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(0, Constants.pageSize, _searchTerm).run();
   }
 }

@@ -48,8 +48,8 @@ class GeneralFundProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  TaskEither<String, List<GeneralFundModel>> fetchFunds(int pageIndex, int pageSize) => TaskEither.tryCatch(() async {
-        final funds = await GetIt.I<FundService>().getAll(pageIndex, pageSize);
+  TaskEither<String, List<GeneralFundModel>> fetchFunds(int pageIndex, int pageSize, String searchTerm) => TaskEither.tryCatch(() async {
+        final funds = await GetIt.I<FundService>().getAll(pageIndex, pageSize, searchTerm);
 
         _funds.addAll(funds);
 
@@ -68,9 +68,9 @@ class GeneralFundProvider with ChangeNotifier {
 
   PagingState<int, GeneralFundModel> get pagingState => _pagingState;
 
-  Future<void> refreshPagingState() async {
+  Future<void> refreshPagingState(String searchTerm) async {
     _funds.clear();
-    await fetchFunds(0, Constants.pageSize).run();
+    await fetchFunds(0, Constants.pageSize, searchTerm).run();
   }
 
   void updateSessionCount(int fundId, int sessionCountOffset) {
