@@ -95,15 +95,17 @@ class _EmergencySessionCreateSelectMemberScreenState extends State<EmergencySess
                         fundProvider.fund.id,
                         selectedMembers.map((m) => m.id).toList(),
                       )
-                      .andThen(() => genalFundProvider.fetchFunds())
                       .andThen(() => fundProvider.getFund(fundProvider.fund.id))
-                      .match((l) {
-                      log(l);
-                      DialogHelper.showSnackBar(context, TranslateException.translate(l));
-                    }, (r) {
-                      DialogHelper.showSnackBar(context, 'Đã hốt trước cho ${selectedMembers.length} hụi viên thành công! Vui lòng kiểm tra và thanh toán hóa đơn');
-                      context.router.pushAndPopUntil(const FundSessionListRoute(), predicate: (route) => route.settings.name == FundDetailRoute.name);
-                    }).run(),
+                      .match(
+                      (l) {
+                        log(l);
+                        DialogHelper.showSnackBar(context, TranslateException.translate(l));
+                      },
+                      (r) {
+                        DialogHelper.showSnackBar(context, 'Đã hốt trước cho ${selectedMembers.length} hụi viên thành công! Vui lòng kiểm tra và thanh toán hóa đơn');
+                        context.router.pushAndPopUntil(const FundSessionListRoute(), predicate: (route) => route.settings.name == FundDetailRoute.name);
+                      },
+                    ).run(),
               style: ElevatedButton.styleFrom(disabledForegroundColor: Colors.blue),
               child: const Text('Hốt giao trước'),
             )
