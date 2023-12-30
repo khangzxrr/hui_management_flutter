@@ -138,8 +138,8 @@ class FundService {
     throw Exception(response.body);
   }
 
-  Future<List<GeneralFundModel>> getAll() async {
-    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds'));
+  Future<List<GeneralFundModel>> getAll(int pageIndex, int pageSize) async {
+    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds?pageIndex=$pageIndex&pageSize=$pageSize'));
 
     if (response.statusCode == 200) {
       final Iterable jsonIterable = jsonDecode(response.body)['funds'];
