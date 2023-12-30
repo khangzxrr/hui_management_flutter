@@ -24,7 +24,6 @@ GeneralFundModel _$GeneralFundModelFromJson(Map<String, dynamic> json) =>
       serviceCost: (json['serviceCost'] as num).toDouble(),
       membersCount: json['membersCount'] as int,
       sessionsCount: json['sessionsCount'] as int,
-      emergencySessionsCount: json['emergencySessionsCount'] as int,
       newSessionCreateDates: (json['newSessionCreateDates'] as List<dynamic>)
           .map((e) => DateTime.parse(e as String))
           .toList(),
@@ -48,7 +47,6 @@ Map<String, dynamic> _$GeneralFundModelToJson(GeneralFundModel instance) =>
       'serviceCost': instance.serviceCost,
       'membersCount': instance.membersCount,
       'sessionsCount': instance.sessionsCount,
-      'emergencySessionsCount': instance.emergencySessionsCount,
       'newSessionCreateDates': instance.newSessionCreateDates
           .map((e) => e.toIso8601String())
           .toList(),
