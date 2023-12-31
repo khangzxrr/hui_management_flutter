@@ -92,25 +92,28 @@ class SingleFundScreen extends StatelessWidget {
 
       // The child of the Slidable is what the user sees when the
       // component is not dragged.
-      child: Card(
-        child: InkWell(
-          onTap: () async {
-            await fundProvider
-                .getFund(fund.id)
-                .match(
-                  (l) => log(l.toString()),
-                  (r) => context.router.push(const FundDetailRoute()),
-                )
-                .run();
-          },
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                dense: true,
-                title: FundInfoWidget(fund: fund),
-                subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
-              ),
-            ],
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Card(
+          child: InkWell(
+            onTap: () async {
+              await fundProvider
+                  .getFund(fund.id)
+                  .match(
+                    (l) => log(l.toString()),
+                    (r) => context.router.push(const FundDetailRoute()),
+                  )
+                  .run();
+            },
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  dense: true,
+                  title: FundInfoWidget(fund: fund),
+                  subtitle: Chip(label: Text('Kì ${fund.sessionsCount}/${fund.membersCount}')),
+                ),
+              ],
+            ),
           ),
         ),
       ),
