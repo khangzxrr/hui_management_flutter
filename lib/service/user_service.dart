@@ -77,10 +77,14 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<SubUserModel>> getAll(Set<SubUserFilter> filters) async {
+  Future<List<SubUserModel>> getAll(int pageIndex, int pageSize, String searchTerm, Set<SubUserFilter> filters) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
 
     Map<String, String> queryParams = {};
+
+    queryParams['pageIndex'] = pageIndex.toString();
+    queryParams['pageSize'] = pageSize.toString();
+    queryParams['searchTerm'] = searchTerm;
 
     for (SubUserFilter filter in filters) {
       queryParams[filter.name] = 'true';

@@ -154,12 +154,6 @@ class _DashboardInfoState extends State<DashboardInfo> {
                   log(l);
                   DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
                 }, (r) => null);
-              } else if (index == 1) {
-                final getAllUsersResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllUsers().run();
-                getAllUsersResult.match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                }, (r) => null);
               }
             },
             items: const [
