@@ -14,6 +14,7 @@ import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/user_service.dart';
+import 'package:hui_management/view/member/simple_member_widget.dart';
 import 'package:provider/provider.dart';
 
 class FundMemberWidget extends StatelessWidget {
@@ -113,18 +114,19 @@ class AddMemberWidget extends StatelessWidget {
               flex: 7,
               child: FormBuilder(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: FormBuilderSearchableDropdown<SubUserModel>(
-                  popupProps: const PopupProps.dialog(showSearchBox: true),
+                  popupProps: PopupProps.dialog(showSearchBox: true, isFilterOnline: true, itemBuilder: (context, item, isSelected) => SimpleMemberWidget(subuser: item)),
                   name: 'searchable_dropdown_user',
                   decoration: const InputDecoration(
                     labelText: 'Chọn người dùng',
                   ),
-                  itemAsString: (user) => user.name,
                   compareFn: (user1, user2) => user1.name != user2.name,
+                  dropdownBuilder: (context, selectedItem) => selectedItem == null ? const Text('Chưa chọn thành viên mới') : SimpleMemberWidget(subuser: selectedItem),
                   asyncItems: (filter) async {
-                    final users = await GetIt.I<UserService>().getAll({});
-
-                    return users.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
+                    //0 will be infinite fetch
+                    final users = await GetIt.I<UserService>().getAll(0, 0, filter, {});
+                    return users;
                   },
                 ),
               ),
