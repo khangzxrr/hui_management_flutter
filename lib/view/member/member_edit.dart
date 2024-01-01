@@ -62,7 +62,7 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
 
-    final usersProvider = Provider.of<SubUsersProvider>(context, listen: false);
+    final subuserProvider = Provider.of<SubUsersProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -292,25 +292,34 @@ class _MemberEditScreenState extends State<MemberEditScreen> {
                           );
 
                           if (widget.isCreateNew) {
-                            await usersProvider.createUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
+                            //refresh subuser state here
+                            await subuserProvider
+                                .createUser(modifyUser)
+                                .andThen(
+                                  () => subuserProvider.refreshPagingTaskEither(),
+                                )
+                                .match(
                               (l) {
                                 log(l);
                                 DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi tạo thành viên mới CODE: $l');
                               },
                               (r) {
-                                log('ok');
                                 DialogHelper.showSnackBar(context, 'Tạo thành viên mới thành công');
                                 navigator.pop();
                               },
                             ).run();
                           } else {
-                            await usersProvider.updateUser(modifyUser).andThen(() => usersProvider.getAllUsers()).match(
+                            await subuserProvider
+                                .updateUser(modifyUser)
+                                .andThen(
+                                  () => subuserProvider.refreshPagingTaskEither(),
+                                )
+                                .match(
                               (l) {
                                 log(l);
                                 DialogHelper.showSnackBar(context, 'Có lỗi xảy ra khi cập nhật thông tin CODE: $l');
                               },
                               (r) {
-                                log('ok');
                                 DialogHelper.showSnackBar(context, 'Cập nhật thành viên thành công');
                                 navigator.pop(modifyUser);
                               },
