@@ -64,6 +64,21 @@ class _InfinityScrollWidgetState<T> extends State<InfinityScrollWidget<T>> with 
       await widget.paginatedProvider.fetchData(pageKey, Constants.pageSize, _searchTerm).run();
     });
 
-    await widget.paginatedProvider.fetchData(0, Constants.pageSize, _searchTerm).run();
+    final result = await widget.paginatedProvider.fetchData(0, Constants.pageSize, _searchTerm).run();
+
+    result.match((l) {
+      print(l);
+      final retrySnackBar = SnackBar(
+        content: const Text('Có lỗi xảy ra khi tải dữ liệu'),
+        action: SnackBarAction(
+          label: 'Thử lại',
+          onPressed: () async {
+            await widget.paginatedProvider.fetchData(0, Constants.pageSize, _searchTerm).run();
+          },
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(retrySnackBar);
+    }, (r) => print('OK'));
   }
 }

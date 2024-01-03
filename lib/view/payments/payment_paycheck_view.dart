@@ -7,7 +7,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/payment_model.dart';
 import 'package:hui_management/provider/payment_provider.dart';
-import 'package:hui_management/provider/sub_users_provider.dart';
+import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../helper/utils.dart';
@@ -24,7 +24,7 @@ class PaycheckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
-    final subUserProvider = Provider.of<SubUsersProvider>(context, listen: false);
+    final subuserWithPaymentReportProvider = Provider.of<SubUserWithPaymentReportProvider>(context, listen: false);
 
     double remainCost = payment.totalCost.abs() - payment.totalTransactionCost;
     return Scaffold(
@@ -88,7 +88,7 @@ class PaycheckScreen extends StatelessWidget {
                       )
                       .andThen(() => paymentProvider.getPayments(payment.owner.id))
                       .andThen(
-                        () => subUserProvider.getAllWithPaymentReport(filters: {SubUserFilter.filterByAnyPayment}, usingLoadingIdicator: true),
+                        () => subuserWithPaymentReportProvider.refreshPagingTaskEither(),
                       )
                       .match(
                     (l) {

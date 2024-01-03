@@ -49,14 +49,15 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<SubUserWithPaymentReport>> getAllWithPaymentReport(Set<SubUserFilter> filters) async {
+  Future<List<SubUserWithPaymentReport>> getAllWithPaymentReport(int pageIndex, int pageSize, String searchTerm, Set<SubUserFilter> filters) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
 
-    Map<String, String> queryParams = {};
-
-    for (SubUserFilter filter in filters) {
-      queryParams[filter.name] = 'true';
-    }
+    Map<String, dynamic> queryParams = {
+      'pageIndex': pageIndex.toString(),
+      'pageSize': pageSize.toString(),
+      'searchTerm': searchTerm,
+      'filters': filters.map((e) => e.name),
+    };
 
     Uri uri;
 

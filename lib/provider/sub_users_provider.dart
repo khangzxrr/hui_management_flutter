@@ -6,7 +6,7 @@ import 'package:hui_management/provider/abstract_provider/paginated_provider.dar
 import 'package:hui_management/service/user_service.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-enum SubUserFilter { filterByAnyPayment, getFundRatio, filterByNotFinishedPayment, filterByContainToDayPayment }
+enum SubUserFilter { AtLeastOnePayment }
 
 class SubUsersProvider extends PaginatedProvider<SubUserModel> with ChangeNotifier {
   TaskEither<String, SubUserModel> createUser(SubUserModel user) => TaskEither.tryCatch(
