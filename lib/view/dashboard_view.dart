@@ -96,11 +96,11 @@ class _DashboardInfoState extends State<DashboardInfo> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [
-        DashboardInfoRoute(),
-        MembersRoute(),
-        MultipleFundsRoute(),
-        MultiplePaymentMembersRoute(),
+      routes: [
+        const DashboardInfoRoute(),
+        const MembersRoute(),
+        const MultipleFundsRoute(),
+        const MultiplePaymentMembersRoute(),
         MemberReportRoute(),
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
