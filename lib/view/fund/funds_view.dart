@@ -6,13 +6,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
-import 'package:hui_management/service/fund_service.dart';
+import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
 import 'package:hui_management/view/fund/fund_info_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +29,7 @@ class SingleFundScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final subUserWithPaymentReportProvider = Provider.of<SubUserWithPaymentReportProvider>(context, listen: false);
 
     return Slidable(
       // The start action pane is the one at the left or the top side.
@@ -45,7 +45,12 @@ class SingleFundScreen extends StatelessWidget {
                 (result) async {
                   if (result == null || !result) return;
 
-                  final isSuccessEither = await fundProvider.removeFund(fund.id).run();
+                  final isSuccessEither = await fundProvider
+                      .removeFund(fund.id)
+                      .andThen(
+                        () => subUserWithPaymentReportProvider.refreshPagingTaskEither(),
+                      )
+                      .run();
 
                   isSuccessEither.match((l) {
                     log(l);
@@ -62,18 +67,18 @@ class SingleFundScreen extends StatelessWidget {
             icon: Icons.delete,
           ),
           // A SlidableAction can have an icon and/or a label.
-          SlidableAction(
-            onPressed: (context) async {
-              final isSuccessEither = GetIt.I<FundService>().archived(fund.id, true);
+          // SlidableAction(
+          //   onPressed: (context) async {
+          //     final isSuccessEither = GetIt.I<FundService>().archived(fund.id, true);
 
-              isSuccessEither.match((l) => {}, (r) {
-                generalFundProvider.removeFund(fund);
-              }).run();
-            },
-            backgroundColor: const Color.fromARGB(255, 20, 134, 255),
-            foregroundColor: Colors.white,
-            icon: Icons.archive,
-          ),
+          //     isSuccessEither.match((l) => {}, (r) {
+          //       generalFundProvider.removeFund(fund);
+          //     }).run();
+          //   },
+          //   backgroundColor: const Color.fromARGB(255, 20, 134, 255),
+          //   foregroundColor: Colors.white,
+          //   icon: Icons.archive,
+          // ),
           SlidableAction(
             onPressed: (context) {
               Navigator.push(
