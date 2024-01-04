@@ -107,7 +107,7 @@ class MemberReportsDataSource extends DataGridSource {
 
       bool ascendingColumnSortDirection = sortColumn.sortDirection == DataGridSortDirection.ascending;
 
-      int compareRowAStartCharWithRowBStartChar = rowAValue.split(' ').last.codeUnitAt(0).compareTo(rowBValue.split(' ').last.codeUnitAt(0));
+      int compareRowAStartCharWithRowBStartChar = rowAValue.trim().split(' ').last.codeUnitAt(0).compareTo(rowBValue.trim().split(' ').last.codeUnitAt(0));
 
       if (compareRowAStartCharWithRowBStartChar > 0) {
         return ascendingColumnSortDirection ? 1 : -1;
