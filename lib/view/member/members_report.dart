@@ -14,7 +14,7 @@ import '../../grid_datasource/member_reports_datasource.dart';
 
 @RoutePage()
 class MemberReportScreen extends StatefulWidget {
-  List<SubUserWithPaymentReport> reports = [];
+  final List<SubUserWithPaymentReport> reports = [];
 
   MemberReportScreen({super.key});
 
@@ -194,7 +194,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
     try {
       final fetchedReports = await GetIt.I<UserService>().getAllWithPaymentReport(0, 0, '', {SubUserFilter.AtLeastOnePayment});
       setState(() {
-        widget.reports = fetchedReports;
+        widget.reports.addAll(fetchedReports);
       });
     } catch (e) {
       print(e);
