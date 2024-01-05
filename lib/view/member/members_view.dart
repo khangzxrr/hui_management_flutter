@@ -100,7 +100,7 @@ class MembersScreen extends StatelessWidget {
 
     return InfinityScrollWidget<SubUserModel>(
       paginatedProvider: subuserProvider,
-      filters: {},
+      filters: const {},
       widgetItemFactory: (subuser) => MemberWidget(subuser: subuser),
     );
   }
