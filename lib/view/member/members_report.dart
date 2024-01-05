@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/sub_user_with_payment_report.dart';
-import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:hui_management/service/user_service.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -192,12 +191,10 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     try {
-      final fetchedReports = await GetIt.I<UserService>().getAllWithPaymentReport(0, 0, '', {SubUserFilter.AtLeastOnePayment});
+      final fetchedReports = await GetIt.I<UserService>().getAllWithPaymentReport(0, 0, '', {'AtLeastOnePayment'});
       setState(() {
         widget.reports.addAll(fetchedReports);
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 }
