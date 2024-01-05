@@ -1,19 +1,16 @@
-import 'dart:async';
 import 'dart:developer';
 
-import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/general_fund_model.dart';
+import 'package:hui_management/model/infinity_scroll_filter_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
+import 'package:hui_management/view/abstract_view/infinity_scroll_widget.dart';
 import 'package:hui_management/view/fund/fund_info_widget.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import '../../routes/app_route.dart';
@@ -134,55 +131,18 @@ class MultipleFundsScreen extends StatefulWidget {
   State<MultipleFundsScreen> createState() => _MultipleFundsScreenState();
 }
 
-class _MultipleFundsScreenState extends State<MultipleFundsScreen> with AfterLayoutMixin<MultipleFundsScreen> {
-  final PagingController<int, GeneralFundModel> _pagingController = PagingController(firstPageKey: 0);
-  String _searchTerm = '';
-
+class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
   @override
   Widget build(BuildContext context) {
     final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: true);
 
-    return RefreshIndicator(
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  onChanged: (String searchTerm) {
-                    EasyDebounce.debounce('fundsSearch', const Duration(milliseconds: 500), () {
-                      _searchTerm = searchTerm;
-                      generalFundProvider.refreshPagingState(_searchTerm);
-                    });
-                  },
-                  decoration: const InputDecoration(labelText: 'Tìm kiếm ở đây'),
-                ),
-              ),
-            ),
-            PagedSliverList(
-              pagingController: _pagingController..value = generalFundProvider.pagingState,
-              builderDelegate: PagedChildBuilderDelegate<GeneralFundModel>(
-                itemBuilder: (context, fund, index) => SingleFundScreen(fund: fund, parentContext: context),
-              ),
-            ),
-          ],
-        ),
-        onRefresh: () => generalFundProvider.refreshPagingState(_searchTerm));
-  }
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    _pagingController.addPageRequestListener((pageKey) async {
-      await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(pageKey, Constants.pageSize, _searchTerm).run();
-    });
-
-    await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds(0, Constants.pageSize, _searchTerm).run();
+    return InfinityScrollWidget(
+      paginatedProvider: generalFundProvider,
+      widgetItemFactory: (fund) => SingleFundScreen(fund: fund, parentContext: context),
+      filters: {
+        InfinityScrollFilter(name: 'Lọc dây hụi ngày', value: 'OnlyDayFund'),
+        InfinityScrollFilter(name: 'Lọc dây hụi tháng', value: 'OnlyMonthFund'),
+      },
+    );
   }
 }
