@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/model/infinity_scroll_filter_model.dart';
 import 'package:hui_management/model/sub_user_with_payment_report.dart';
 import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
 import 'package:hui_management/view/abstract_view/infinity_scroll_widget.dart';
@@ -113,6 +114,9 @@ class MultiplePaymentMembersScreen extends StatelessWidget {
 
     return InfinityScrollWidget<SubUserWithPaymentReport>(
       paginatedProvider: subuserProvider,
+      filters: {
+        InfinityScrollFilter(name: 'Lọc những thanh toán trong hôm nay', value: 'TodayPayment'),
+      },
       widgetItemFactory: (subuserWithPaymentReport) => SingleMemberScreen(subUserReports: subuserWithPaymentReport),
     );
   }
