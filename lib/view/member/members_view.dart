@@ -40,9 +40,7 @@ class MemberWidget extends StatelessWidget {
                   .match((l) {
                 log(l);
                 DialogHelper.showSnackBar(context, TranslateException.exceptionTranslate[l]!);
-              }, (r) {
-                subuserProvider.refreshPagingState();
-              }).run();
+              }, (r) {}).run();
             },
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
@@ -100,6 +98,10 @@ class MembersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final subuserProvider = Provider.of<SubUsersProvider>(context, listen: true);
 
-    return InfinityScrollWidget<SubUserModel>(paginatedProvider: subuserProvider, widgetItemFactory: (subuser) => MemberWidget(subuser: subuser));
+    return InfinityScrollWidget<SubUserModel>(
+      paginatedProvider: subuserProvider,
+      filters: {},
+      widgetItemFactory: (subuser) => MemberWidget(subuser: subuser),
+    );
   }
 }
