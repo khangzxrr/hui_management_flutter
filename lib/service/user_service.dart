@@ -87,7 +87,7 @@ class UserService {
       'filters': filters,
     };
 
-    final uri = httpClient.generateUriWithParams('/subuser', queryParams);
+    final uri = httpClient.generateUriWithParams('/subusers', queryParams);
 
     final response = await httpClient.get(uri);
 
