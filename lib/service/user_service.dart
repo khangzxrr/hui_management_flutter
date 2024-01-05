@@ -87,13 +87,7 @@ class UserService {
       'filters': filters,
     };
 
-    Uri uri;
-
-    if (Constants.apiHostName.contains("https")) {
-      uri = Uri.https(Constants.apiHostName.replaceAll('https://', ''), '/subusers', queryParams);
-    } else {
-      uri = Uri.http(Constants.apiHostName.replaceAll('http://', ''), '/subusers', queryParams);
-    }
+    final uri = httpClient.generateUriWithParams('/subuser', queryParams);
 
     final response = await httpClient.get(uri);
 

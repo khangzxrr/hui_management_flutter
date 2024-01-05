@@ -138,8 +138,17 @@ class FundService {
     throw Exception(response.body);
   }
 
-  Future<List<GeneralFundModel>> getAll(int pageIndex, int pageSize, String searchTerm) async {
-    final response = await httpClient.get(Uri.parse('${Constants.apiHostName}/funds?pageIndex=$pageIndex&pageSize=$pageSize&searchTerm=$searchTerm'));
+  Future<List<GeneralFundModel>> getAll(int pageIndex, int pageSize, String searchTerm, Set<String> filters) async {
+    Map<String, dynamic> queryParams = {
+      'pageIndex': pageIndex.toString(),
+      'pageSize': pageSize.toString(),
+      'searchTerm': searchTerm,
+      'filters': filters,
+    };
+
+    final uri = httpClient.generateUriWithParams('/funds', queryParams);
+
+    final response = await httpClient.get(uri);
 
     if (response.statusCode == 200) {
       final Iterable jsonIterable = jsonDecode(response.body)['funds'];
