@@ -1,17 +1,14 @@
-import 'dart:async';
 import 'dart:developer';
 
-import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hui_management/model/infinity_scroll_filter_model.dart';
 import 'package:hui_management/model/sub_user_with_payment_report.dart';
-import 'package:hui_management/provider/sub_users_provider.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
+import 'package:hui_management/view/abstract_view/infinity_scroll_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:sherlock/result.dart';
-import 'package:sherlock/sherlock.dart';
 
 import '../../helper/dialog.dart';
 import '../../helper/utils.dart';
@@ -108,117 +105,19 @@ class SingleMemberScreen extends StatelessWidget {
 }
 
 @RoutePage()
-class MultiplePaymentMembersScreen extends StatefulWidget {
+class MultiplePaymentMembersScreen extends StatelessWidget {
   const MultiplePaymentMembersScreen({super.key});
 
   @override
-  State<MultiplePaymentMembersScreen> createState() => _MultiplePaymentMembersScreenState();
-}
-
-class _MultiplePaymentMembersScreenState extends State<MultiplePaymentMembersScreen> with AfterLayoutMixin<MultiplePaymentMembersScreen> {
-  String filterText = '';
-
-  List<Result> results = [];
-
-  Set<SubUserFilter> selectedFilters = {
-    SubUserFilter.filterByAnyPayment,
-  };
-
-  @override
   Widget build(BuildContext context) {
-    final subUsersProvider = Provider.of<SubUsersProvider>(context, listen: true);
+    final subuserProvider = Provider.of<SubUserWithPaymentReportProvider>(context, listen: true);
 
-    final sherlock = Sherlock(elements: subUsersProvider.subUsersWithPaymentReport.map((e) => e.toJson()).toList());
-
-    final List<Widget> userWidgets = filterText.isNotEmpty ? results.map((e) => SingleMemberScreen(subUserReports: SubUserWithPaymentReport.fromJson(e.element))).toList() : subUsersProvider.subUsersWithPaymentReport.map((e) => SingleMemberScreen(subUserReports: e)).toList();
-
-    return LiquidPullToRefresh(
-      onRefresh: () async {
-        await subUsersProvider.getAllWithPaymentReport(
-          filters: {
-            SubUserFilter.filterByAnyPayment,
-          },
-          usingLoadingIdicator: true,
-        ).run();
+    return InfinityScrollWidget<SubUserWithPaymentReport>(
+      paginatedProvider: subuserProvider,
+      filters: {
+        InfinityScrollFilter(name: 'Lọc những thanh toán trong hôm nay', value: 'TodayPayment'),
       },
-      showChildOpacityTransition: false,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: subUsersProvider.loading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Tìm kiếm thành viên (tên, sđt, cmnd, địa chỉ, ....))',
-                          ),
-                          onChanged: (text) async {
-                            final searchResults = await sherlock.search(input: text);
-
-                            setState(() {
-                              filterText = text;
-                              results = searchResults;
-                            });
-                          },
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            filterText = '';
-                          });
-                        },
-                        icon: const Icon(Icons.clear),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      FilterChip(
-                        label: const Text('Lọc những hụi viên có bill trong hôm nay'),
-                        selected: selectedFilters.contains(SubUserFilter.filterByContainToDayPayment),
-                        onSelected: (selectedValue) async {
-                          setState(() {
-                            if (selectedValue) {
-                              selectedFilters.add(SubUserFilter.filterByContainToDayPayment);
-                            } else {
-                              selectedFilters.remove(SubUserFilter.filterByContainToDayPayment);
-                            }
-                          });
-
-                          await subUsersProvider
-                              .getAllWithPaymentReport(
-                                filters: selectedFilters,
-                                usingLoadingIdicator: false,
-                              )
-                              .run();
-                        },
-                      )
-                    ],
-                  ),
-                  ...userWidgets,
-                ],
-              ),
-      ),
+      widgetItemFactory: (subuserWithPaymentReport) => SingleMemberScreen(subUserReports: subuserWithPaymentReport),
     );
-  }
-
-  @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport(
-      filters: {SubUserFilter.filterByAnyPayment},
-      usingLoadingIdicator: true,
-    ).run();
-
-    getAllWithPaymentReportResult.match((l) {
-      log(l);
-      DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-    }, (r) => null);
   }
 }

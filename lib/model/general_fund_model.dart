@@ -32,7 +32,6 @@ class GeneralFundModel {
 
   int membersCount;
   int sessionsCount;
-  int emergencySessionsCount;
 
   List<DateTime> newSessionCreateDates;
 
@@ -51,7 +50,6 @@ class GeneralFundModel {
     required this.serviceCost,
     required this.membersCount,
     required this.sessionsCount,
-    required this.emergencySessionsCount,
     required this.newSessionCreateDates,
   });
 

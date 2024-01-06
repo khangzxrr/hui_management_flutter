@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/authentication_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/authentication_provider.dart';
-import 'package:hui_management/provider/general_fund_provider.dart';
-import 'package:hui_management/provider/sub_users_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../routes/app_route.dart';
@@ -101,11 +96,11 @@ class _DashboardInfoState extends State<DashboardInfo> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter(
-      routes: const [
-        DashboardInfoRoute(),
-        MembersRoute(),
-        MultipleFundsRoute(),
-        MultiplePaymentMembersRoute(),
+      routes: [
+        const DashboardInfoRoute(),
+        const MembersRoute(),
+        const MultipleFundsRoute(),
+        const MultiplePaymentMembersRoute(),
         MemberReportRoute(),
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
@@ -135,39 +130,6 @@ class _DashboardInfoState extends State<DashboardInfo> {
             type: BottomNavigationBarType.fixed,
             onTap: (index) async {
               tabRouter.setActiveIndex(index);
-
-              if (index == 3) {
-                final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport(
-                  filters: {SubUserFilter.filterByAnyPayment},
-                  usingLoadingIdicator: true,
-                ).run();
-                getAllWithPaymentReportResult.match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                }, (r) => null);
-              } else if (index == 4) {
-                final getAllWithPaymentReportResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllWithPaymentReport(
-                  filters: {SubUserFilter.filterByAnyPayment},
-                  usingLoadingIdicator: true,
-                ).run();
-
-                getAllWithPaymentReportResult.match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                }, (r) => null);
-              } else if (index == 2) {
-                final fetchFundsResult = await Provider.of<GeneralFundProvider>(context, listen: false).fetchFunds().run();
-                fetchFundsResult.match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách dây hụi');
-                }, (r) => null);
-              } else if (index == 1) {
-                final getAllUsersResult = await Provider.of<SubUsersProvider>(context, listen: false).getAllUsers().run();
-                getAllUsersResult.match((l) {
-                  log(l);
-                  DialogHelper.showSnackBar(context, 'Có lỗi khi lấy danh sách thành viên');
-                }, (r) => null);
-              }
             },
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Cá nhân'),

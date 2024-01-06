@@ -14,6 +14,7 @@ import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/service/user_service.dart';
+import 'package:hui_management/view/member/simple_member_widget.dart';
 import 'package:provider/provider.dart';
 
 class FundMemberWidget extends StatelessWidget {
@@ -24,6 +25,7 @@ class FundMemberWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fundProvider = Provider.of<FundProvider>(context, listen: false);
+    final generalFundProvider = Provider.of<GeneralFundProvider>(context, listen: false);
 
     return Slidable(
       // The start action pane is the one at the left or the top side.
@@ -44,6 +46,7 @@ class FundMemberWidget extends StatelessWidget {
                         DialogHelper.showSnackBar(context, 'Có lỗi khi xóa thành viên');
                       },
                       (r) {
+                        generalFundProvider.updateGeneralFundMemberCount(fundProvider.fund.id, -1);
                         log("OK");
                         DialogHelper.showSnackBar(context, 'Xóa thành viên thành công');
                       },
@@ -111,18 +114,19 @@ class AddMemberWidget extends StatelessWidget {
               flex: 7,
               child: FormBuilder(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: FormBuilderSearchableDropdown<SubUserModel>(
-                  popupProps: const PopupProps.dialog(showSearchBox: true),
+                  popupProps: PopupProps.dialog(showSearchBox: true, isFilterOnline: true, itemBuilder: (context, item, isSelected) => SimpleMemberWidget(subuser: item)),
                   name: 'searchable_dropdown_user',
                   decoration: const InputDecoration(
                     labelText: 'Chọn người dùng',
                   ),
-                  itemAsString: (user) => user.name,
                   compareFn: (user1, user2) => user1.name != user2.name,
+                  dropdownBuilder: (context, selectedItem) => selectedItem == null ? const Text('Chưa chọn thành viên mới') : SimpleMemberWidget(subuser: selectedItem),
                   asyncItems: (filter) async {
-                    final users = await GetIt.I<UserService>().getAll({});
-
-                    return users.where((user) => user.name.toLowerCase().contains(filter.toLowerCase())).toList();
+                    //0 will be infinite fetch
+                    final users = await GetIt.I<UserService>().getAll(0, 0, filter, {});
+                    return users;
                   },
                 ),
               ),
@@ -145,13 +149,13 @@ class AddMemberWidget extends StatelessWidget {
                       .andThen(
                         () => fundProvider.getFund(fund.id),
                       )
-                      .andThen(() => generalFundProvider.fetchFunds())
                       .match(
                     (l) {
                       log(l);
                       DialogHelper.showSnackBar(context, 'Có lỗi khi thêm thành viên mới');
                     },
                     (r) {
+                      generalFundProvider.updateGeneralFundMemberCount(fund.id, 1);
                       DialogHelper.showSnackBar(context, 'Thêm thành viên mới thành công');
                     },
                   ).run();

@@ -25,7 +25,6 @@ class Fund extends GeneralFundModel {
     required super.serviceCost,
     required super.membersCount,
     required super.sessionsCount,
-    required super.emergencySessionsCount,
     required this.members,
     required this.sessions,
     required super.newSessionCreateDates,

@@ -119,9 +119,11 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     MemberReportRoute.name: (routeData) {
+      final args = routeData.argsAs<MemberReportRouteArgs>(
+          orElse: () => const MemberReportRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MemberReportScreen(),
+        child: MemberReportScreen(key: args.key),
       );
     },
     MembersRoute.name: (routeData) {
@@ -508,16 +510,31 @@ class MemberEditRouteArgs {
 
 /// generated route for
 /// [MemberReportScreen]
-class MemberReportRoute extends PageRouteInfo<void> {
-  const MemberReportRoute({List<PageRouteInfo>? children})
-      : super(
+class MemberReportRoute extends PageRouteInfo<MemberReportRouteArgs> {
+  MemberReportRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           MemberReportRoute.name,
+          args: MemberReportRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'MemberReportRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<MemberReportRouteArgs> page =
+      PageInfo<MemberReportRouteArgs>(name);
+}
+
+class MemberReportRouteArgs {
+  const MemberReportRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'MemberReportRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

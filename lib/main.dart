@@ -6,17 +6,15 @@ import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/payment_provider.dart';
 import 'package:hui_management/provider/sub_users_provider.dart';
+import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
 import 'package:hui_management/routes/app_route.dart';
 import 'package:hui_management/service/setup_service.dart';
 
 import 'package:hui_management/view/login_view.dart';
 import 'package:provider/provider.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
 
   SetupService.setup();
 
@@ -27,6 +25,7 @@ void main() async {
       ChangeNotifierProvider(create: (context) => GeneralFundProvider()),
       ChangeNotifierProvider(create: (context) => FundProvider()),
       ChangeNotifierProvider(create: (context) => PaymentProvider()),
+      ChangeNotifierProvider(create: (context) => SubUserWithPaymentReportProvider()),
     ],
     child: const MyApp(),
   ));

@@ -2,56 +2,63 @@ import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hui_management/model/general_fund_model.dart';
+import 'package:hui_management/model/infinity_scroll_filter_model.dart';
+import 'package:hui_management/provider/abstract_provider/paginated_provider.dart';
 import 'package:hui_management/service/fund_service.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class GeneralFundProvider with ChangeNotifier {
-  bool loading = false;
-  List<GeneralFundModel> _funds = [];
-
-  void setLoading(bool loading) {
-    this.loading = loading;
-
-    notifyListeners();
+class GeneralFundProvider extends PaginatedProvider<GeneralFundModel> with ChangeNotifier {
+  GeneralFundModel getGeneralFundById(int id) {
+    return items.where((f) => f.id == id).first;
   }
 
-  void setFunds(List<GeneralFundModel> funds) {
-    _funds = funds;
+  void updateGeneralFundMemberCount(int id, int membersCountOffset) {
+    final fund = items.where((f) => f.id == id).first;
+    fund.membersCount += membersCountOffset;
 
-    notifyListeners();
+    updateFund(fund);
   }
 
   void updateFund(GeneralFundModel fund) {
-    var index = _funds.lastIndexWhere((element) => element.id == fund.id);
-    _funds[index] = fund;
+    var index = items.lastIndexWhere((element) => element.id == fund.id);
+    items[index] = fund;
 
     notifyListeners();
   }
 
   void removeFund(GeneralFundModel fund) {
-    _funds.removeWhere((element) => element.id == fund.id);
+    items.removeWhere((element) => element.id == fund.id);
 
     notifyListeners();
   }
 
   void addFund(GeneralFundModel fund) {
-    _funds.add(fund);
+    items.add(fund);
 
     notifyListeners();
   }
 
-  TaskEither<String, List<GeneralFundModel>> fetchFunds() => TaskEither.tryCatch(() async {
-        setLoading(true);
+  void updateSessionCount(int fundId, int sessionCountOffset) {
+    final fund = items.where((f) => f.id == fundId).first;
+    fund.sessionsCount += sessionCountOffset;
 
-        final funds = await GetIt.I<FundService>().getAll();
-
-        setFunds(funds);
-
-        setLoading(false);
-
-        return funds;
-      }, (error, stackTrace) => error.toString());
-
-  List<GeneralFundModel> getFunds() {
-    return _funds;
+    updateFund(fund);
   }
+
+  @override
+  TaskEither<String, void> fetchData(int pageIndex, int pageSize, String searchTerm, Set<InfinityScrollFilter> additionalFilters) => TaskEither.tryCatch(() async {
+        final filterValues = getFilterValues(additionalFilters);
+
+        final funds = await GetIt.I<FundService>().getAll(pageIndex, pageSize, searchTerm, filterValues);
+
+        items.addAll(funds);
+
+        if (funds.length < pageSize) {
+          pagingState = PagingState<int, GeneralFundModel>(itemList: items);
+        } else {
+          pagingState = PagingState<int, GeneralFundModel>(nextPageKey: pageIndex + 1, itemList: items);
+        }
+
+        notifyListeners();
+      }, (error, stackTrace) => error.toString());
 }

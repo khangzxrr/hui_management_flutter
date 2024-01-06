@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hui_management/helper/utils.dart';
+import 'package:hui_management/service/user_service.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:collection/collection.dart';
 import '../model/sub_user_with_payment_report.dart';
@@ -7,8 +9,24 @@ import '../model/sub_user_with_payment_report.dart';
 class MemberReportsDataSource extends DataGridSource {
   List<DataGridRow> reportRows = [];
 
+  void clearData() {
+    reportRows.clear();
+  }
+
   @override
   List<DataGridRow> get rows => reportRows;
+
+  @override
+  Future<void> handleRefresh() async {
+    try {
+      final reports = await GetIt.I<UserService>().getAllWithPaymentReport(0, 0, '', {'AtLeastOnePayment'});
+      setReportsData(reports);
+    } catch (e) {
+      print(e);
+    }
+
+    notifyListeners();
+  }
 
   void setReportsData(List<SubUserWithPaymentReport> reports) {
     reportRows = reports
@@ -88,7 +106,7 @@ class MemberReportsDataSource extends DataGridSource {
 
       bool ascendingColumnSortDirection = sortColumn.sortDirection == DataGridSortDirection.ascending;
 
-      int compareRowAStartCharWithRowBStartChar = rowAValue.split(' ').last.codeUnitAt(0).compareTo(rowBValue.split(' ').last.codeUnitAt(0));
+      int compareRowAStartCharWithRowBStartChar = rowAValue.trim().split(' ').last.codeUnitAt(0).compareTo(rowBValue.trim().split(' ').last.codeUnitAt(0));
 
       if (compareRowAStartCharWithRowBStartChar > 0) {
         return ascendingColumnSortDirection ? 1 : -1;
