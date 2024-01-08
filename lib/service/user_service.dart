@@ -5,6 +5,7 @@ import 'package:hui_management/helper/authorize_http.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/model/sub_user_with_payment_report.dart';
 
+import '../filters/subuser_filter.dart';
 import '../helper/constants.dart';
 
 class UserService {
@@ -48,15 +49,15 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<SubUserWithPaymentReport>> getAllWithPaymentReport(int pageIndex, int pageSize, String searchTerm, Set<String> filters) async {
+  Future<List<SubUserWithPaymentReport>> getAllWithPaymentReport(int pageIndex, int pageSize, SubUserFilter filter) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
 
     Map<String, dynamic> queryParams = {
       'pageIndex': pageIndex.toString(),
       'pageSize': pageSize.toString(),
-      'searchTerm': searchTerm,
-      'filters': filters,
     };
+
+    queryParams.addAll(filter.toMap());
 
     Uri uri;
 
@@ -77,15 +78,15 @@ class UserService {
     throw Exception(response.body);
   }
 
-  Future<List<SubUserModel>> getAll(int pageIndex, int pageSize, String searchTerm, Set<String> filters) async {
+  Future<List<SubUserModel>> getAll(int pageIndex, int pageSize, SubUserFilter filter) async {
     final httpClient = GetIt.I<AuthorizeHttp>();
 
     Map<String, dynamic> queryParams = {
       'pageIndex': pageIndex.toString(),
       'pageSize': pageSize.toString(),
-      'searchTerm': searchTerm,
-      'filters': filters,
     };
+
+    queryParams.addAll(filter.toMap());
 
     final uri = httpClient.generateUriWithParams('/subusers', queryParams);
 

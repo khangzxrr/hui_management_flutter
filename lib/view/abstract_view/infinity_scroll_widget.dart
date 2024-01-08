@@ -82,6 +82,11 @@ class _InfinityScrollWidgetState<T> extends State<InfinityScrollWidget<T>> with 
                             selectedFilters.removeWhere((f) => f.name == filter.name);
                           }
 
+                          developer.log(
+                            'selected filters count: ${selectedFilters.length}',
+                            name: 'infinity.scroll.widget.filterchip.onselect',
+                          );
+
                           await widget.paginatedProvider
                               .refreshPagingTaskEither(newFilters: selectedFilters)
                               .match(
