@@ -66,7 +66,7 @@ class PaycheckScreen extends StatelessWidget {
                 height: 14,
               ),
               FilledButton(
-                onPressed: () {
+                onPressed: () async {
                   double transactionAmount = double.parse(formKey.currentState!.fields['transactionAmount']!.value.toString());
 
                   if (transactionAmount < 0) {
@@ -79,7 +79,7 @@ class PaycheckScreen extends StatelessWidget {
                     return;
                   }
 
-                  paymentProvider
+                  await paymentProvider
                       .addTransaction(
                         payment,
                         formKey.currentState!.fields['transactionMethod']!.value,

@@ -8,17 +8,16 @@ class SubUserFilter extends IFilter<SubUserFilter> {
   bool? todayPayment;
   static const todayPaymentName = 'todayPayment';
 
+  bool? unfinishedPayment;
+  static const unfinishedPaymentName = 'unfinishedPayment';
+
   String? searchTerm;
   static const searchTermName = 'searchTerm';
-
-  int? byPaymentId;
-  static const byPaymentIdName = 'byPaymentId';
 
   SubUserFilter({
     this.atLeastOnePayment,
     this.todayPayment,
     this.searchTerm,
-    this.byPaymentId,
   });
 
   @override
@@ -26,16 +25,16 @@ class SubUserFilter extends IFilter<SubUserFilter> {
     final Map<String, dynamic> filters = {};
 
     if (atLeastOnePayment != null) {
-      filters['atLeastOnePayment'] = 'true';
+      filters[atLeastOnePaymentName] = 'true';
     }
     if (todayPayment != null) {
-      filters['todayPayment'] = 'true';
+      filters[todayPaymentName] = 'true';
     }
     if (searchTerm != null) {
-      filters['searchTerm'] = searchTerm.toString();
+      filters[searchTermName] = searchTerm.toString();
     }
-    if (byPaymentId != null) {
-      filters['byPaymentId'] = byPaymentId.toString();
+    if (unfinishedPayment != null) {
+      filters[unfinishedPaymentName] = 'true';
     }
 
     return filters;
@@ -55,8 +54,8 @@ class SubUserFilter extends IFilter<SubUserFilter> {
       if (infinityScrollFilter.name == searchTermName) {
         filter.searchTerm = infinityScrollFilter.value;
       }
-      if (infinityScrollFilter.name == byPaymentIdName) {
-        filter.searchTerm = infinityScrollFilter.value;
+      if (infinityScrollFilter.name == unfinishedPaymentName) {
+        filter.unfinishedPayment = true;
       }
     }
 
@@ -67,7 +66,8 @@ class SubUserFilter extends IFilter<SubUserFilter> {
   Set<InfinityScrollFilter> convertToInfinityScrollFilters() {
     return {
       InfinityScrollFilter(label: 'Tìm kiếm theo tên hụi viên', name: searchTermName, textFilter: true),
-      InfinityScrollFilter(label: 'Những thanh toán hôm nay', name: todayPaymentName, textFilter: false),
+      InfinityScrollFilter(label: 'Lọc những thanh toán hôm nay', name: todayPaymentName, textFilter: false),
+      InfinityScrollFilter(label: 'Lọc những thanh toán chưa hoàn thành (gồm nợ)', name: unfinishedPaymentName, textFilter: false),
     };
   }
 }

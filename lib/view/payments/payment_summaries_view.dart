@@ -23,7 +23,7 @@ class PaymentWidget extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.request_quote),
               title: Text('Bill thanh toán ngày ${Utils.dateFormat.format(payment.createAt.toLocal())}'),
-              subtitle: Text('Loại: ${payment.totalCost < 0 ? 'Chủ hụi phải thanh toán' : 'Thành viên phải thanh toán'}\nTổng tiền thanh toán: ${Utils.moneyFormat.format(payment.totalCost.abs())}đ'),
+              subtitle: Text('Loại: ${payment.totalCost < 0 ? 'Chủ hụi phải thanh toán' : 'Thành viên phải thanh toán'}\nTổng tiền thanh toán còn lại: ${Utils.moneyFormat.format(payment.remainPayCost.abs())}đ'),
             ),
           ],
         ),
