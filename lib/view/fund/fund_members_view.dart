@@ -7,6 +7,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/filters/sub_user_with_payment_report_filter.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/fund_member.dart';
 import 'package:hui_management/model/fund_model.dart';
@@ -125,7 +126,7 @@ class AddMemberWidget extends StatelessWidget {
                   dropdownBuilder: (context, selectedItem) => selectedItem == null ? const Text('Chưa chọn thành viên mới') : SimpleMemberWidget(subuser: selectedItem),
                   asyncItems: (filter) async {
                     //0 will be infinite fetch
-                    final users = await GetIt.I<UserService>().getAll(0, 0, filter, {});
+                    final users = await GetIt.I<UserService>().getAll(0, 0, SubUserFilter(searchTerm: filter));
                     return users;
                   },
                 ),

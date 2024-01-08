@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/filters/general_fund_filter.dart';
 import 'package:hui_management/model/general_fund_model.dart';
 import 'package:hui_management/model/infinity_scroll_filter_model.dart';
 import 'package:hui_management/provider/abstract_provider/paginated_provider.dart';
@@ -47,9 +48,9 @@ class GeneralFundProvider extends PaginatedProvider<GeneralFundModel> with Chang
 
   @override
   TaskEither<String, void> fetchData(int pageIndex, int pageSize, String searchTerm, Set<InfinityScrollFilter> additionalFilters) => TaskEither.tryCatch(() async {
-        final filterValues = getFilterValues(additionalFilters);
+        var filter = GeneralFundFilter().convertFromInfinityScrollFilter(additionalFilters);
 
-        final funds = await GetIt.I<FundService>().getAll(pageIndex, pageSize, searchTerm, filterValues);
+        final funds = await GetIt.I<FundService>().getAll(pageIndex, pageSize, filter);
 
         items.addAll(funds);
 

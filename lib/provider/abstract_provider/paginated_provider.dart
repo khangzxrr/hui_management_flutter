@@ -10,9 +10,10 @@ abstract class PaginatedProvider<T> {
   String searchTerm = '';
   Set<InfinityScrollFilter> previousFilters = {};
 
-  TaskEither<String, void> refreshPagingTaskEither() => TaskEither.tryCatch(() async => await refreshPagingState(previousFilters), (error, stackTrace) => error.toString());
-
-  Set<String> getFilterValues(Set<InfinityScrollFilter> filters) => filters.map((f) => f.value).toSet();
+  TaskEither<String, void> refreshPagingTaskEither({Set<InfinityScrollFilter>? newFilters}) => TaskEither.tryCatch(
+        () async => await refreshPagingState(newFilters ?? previousFilters),
+        (error, stackTrace) => error.toString(),
+      );
 
   Future<void> refreshPagingState(Set<InfinityScrollFilter> additionalFilters, {String newSearchTerm = ''}) async {
     searchTerm = newSearchTerm;

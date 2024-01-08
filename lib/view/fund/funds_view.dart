@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hui_management/filters/general_fund_filter.dart';
 import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/general_fund_model.dart';
-import 'package:hui_management/model/infinity_scroll_filter_model.dart';
 import 'package:hui_management/provider/fund_provider.dart';
 import 'package:hui_management/provider/general_fund_provider.dart';
 import 'package:hui_management/provider/sub_users_with_payment_report_provider.dart';
@@ -139,10 +139,7 @@ class _MultipleFundsScreenState extends State<MultipleFundsScreen> {
     return InfinityScrollWidget(
       paginatedProvider: generalFundProvider,
       widgetItemFactory: (fund) => SingleFundScreen(fund: fund, parentContext: context),
-      filters: {
-        InfinityScrollFilter(name: 'Lọc dây hụi ngày', value: 'OnlyDayFund'),
-        InfinityScrollFilter(name: 'Lọc dây hụi tháng', value: 'OnlyMonthFund'),
-      },
+      filters: GeneralFundFilter().convertToInfinityScrollFilters(),
     );
   }
 }
