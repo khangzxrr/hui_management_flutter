@@ -88,7 +88,7 @@ class PaycheckScreen extends StatelessWidget {
                       )
                       .andThen(() => paymentProvider.getPayments(payment.owner.id))
                       .andThen(
-                        () => subuserWithPaymentReportProvider.refreshPagingTaskEither(),
+                        () => subuserWithPaymentReportProvider.refreshSingleItem(payment.owner.id),
                       )
                       .match(
                     (l) {

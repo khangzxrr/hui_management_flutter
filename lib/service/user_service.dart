@@ -100,4 +100,20 @@ class UserService {
 
     throw Exception(response.body);
   }
+
+  Future<SubUserWithPaymentReport> getByIdWithReport(int subuserId) async {
+    final httpClient = GetIt.I<AuthorizeHttp>();
+
+    final uri = httpClient.generateUriWithParams('/subusers/$subuserId/reports', {});
+
+    final response = await httpClient.get(uri);
+
+    if (response.statusCode == 200) {
+      final jsonObj = jsonDecode(response.body)['subUserReportRecord'];
+
+      return SubUserWithPaymentReport.fromJson(jsonObj);
+    }
+
+    throw Exception(response.body);
+  }
 }

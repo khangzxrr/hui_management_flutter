@@ -30,4 +30,20 @@ class SubUserWithPaymentReportProvider extends PaginatedProvider<SubUserWithPaym
         },
         (error, stackTrace) => error.toString(),
       );
+
+  @override
+  TaskEither<String, void> refreshSingleItem(int itemId) => TaskEither.tryCatch(
+        () async {
+          final user = await GetIt.I<UserService>().getByIdWithReport(itemId);
+
+          final index = items.indexWhere((i) => i.id == user.id);
+
+          throwIf(index == -1, 'index is not found');
+
+          items[index] = user;
+
+          notifyListeners();
+        },
+        (error, stackTrace) => error.toString(),
+      );
 }

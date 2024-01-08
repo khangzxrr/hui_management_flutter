@@ -22,5 +22,7 @@ abstract class PaginatedProvider<T> {
     await fetchData(0, Constants.pageSize, additionalFilters).run();
   }
 
+  TaskEither<String, void> refreshSingleItem(int itemId);
+
   TaskEither<String, void> fetchData(int pageIndex, int pageSize, Set<InfinityScrollFilter> additionalFilters);
 }
