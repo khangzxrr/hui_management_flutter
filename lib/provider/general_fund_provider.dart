@@ -47,7 +47,7 @@ class GeneralFundProvider extends PaginatedProvider<GeneralFundModel> with Chang
   }
 
   @override
-  TaskEither<String, void> fetchData(int pageIndex, int pageSize, String searchTerm, Set<InfinityScrollFilter> additionalFilters) => TaskEither.tryCatch(() async {
+  TaskEither<String, void> fetchData(int pageIndex, int pageSize, Set<InfinityScrollFilter> additionalFilters) => TaskEither.tryCatch(() async {
         var filter = GeneralFundFilter().convertFromInfinityScrollFilter(additionalFilters);
 
         final funds = await GetIt.I<FundService>().getAll(pageIndex, pageSize, filter);

@@ -7,7 +7,6 @@ import '../../helper/constants.dart';
 abstract class PaginatedProvider<T> {
   PagingState<int, T> pagingState = const PagingState();
   List<T> items = List.empty(growable: true);
-  String searchTerm = '';
   Set<InfinityScrollFilter> previousFilters = {};
 
   TaskEither<String, void> refreshPagingTaskEither({Set<InfinityScrollFilter>? newFilters}) => TaskEither.tryCatch(
@@ -15,15 +14,13 @@ abstract class PaginatedProvider<T> {
         (error, stackTrace) => error.toString(),
       );
 
-  Future<void> refreshPagingState(Set<InfinityScrollFilter> additionalFilters, {String newSearchTerm = ''}) async {
-    searchTerm = newSearchTerm;
-
+  Future<void> refreshPagingState(Set<InfinityScrollFilter> additionalFilters) async {
     previousFilters.clear();
     previousFilters.addAll(additionalFilters);
 
     items.clear();
-    await fetchData(0, Constants.pageSize, searchTerm, additionalFilters).run();
+    await fetchData(0, Constants.pageSize, additionalFilters).run();
   }
 
-  TaskEither<String, void> fetchData(int pageIndex, int pageSize, String searchTerm, Set<InfinityScrollFilter> additionalFilters);
+  TaskEither<String, void> fetchData(int pageIndex, int pageSize, Set<InfinityScrollFilter> additionalFilters);
 }

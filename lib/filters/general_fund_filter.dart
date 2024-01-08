@@ -14,8 +14,9 @@ class GeneralFundFilter extends IFilter<GeneralFundFilter> {
   @override
   Set<InfinityScrollFilter> convertToInfinityScrollFilters() {
     return {
-      InfinityScrollFilter(label: 'Lọc dây hụi ngày', name: onlyDayFundName),
-      InfinityScrollFilter(label: 'Lọc dây hụi tháng', name: onlyMonthFundName),
+      InfinityScrollFilter(label: 'Lọc dây hụi ngày', name: onlyDayFundName, textFilter: false),
+      InfinityScrollFilter(label: 'Lọc dây hụi tháng', name: onlyMonthFundName, textFilter: false),
+      InfinityScrollFilter(label: 'Lọc dây hụi bởi tên', name: searchTermName, textFilter: true),
     };
   }
 
