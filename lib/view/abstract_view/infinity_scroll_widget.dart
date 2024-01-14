@@ -69,32 +69,35 @@ class _InfinityScrollWidgetState<T> extends State<InfinityScrollWidget<T>> with 
                 children: widget.filters
                     .where((f) => !f.textFilter)
                     .map(
-                      (filter) => FilterChip(
-                        label: Text(filter.label),
-                        selected: selectedFilters.any((f) => f.name == filter.name),
-                        onSelected: (selected) async {
-                          //because refreshPagingState cause widget to reload
-                          //that is why we dont really need to call setState for filters
+                      (filter) => Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
+                        child: FilterChip(
+                          label: Text(filter.label),
+                          selected: selectedFilters.any((f) => f.name == filter.name),
+                          onSelected: (selected) async {
+                            //because refreshPagingState cause widget to reload
+                            //that is why we dont really need to call setState for filters
 
-                          if (selected) {
-                            selectedFilters.add(filter);
-                          } else {
-                            selectedFilters.removeWhere((f) => f.name == filter.name);
-                          }
+                            if (selected) {
+                              selectedFilters.add(filter);
+                            } else {
+                              selectedFilters.removeWhere((f) => f.name == filter.name);
+                            }
 
-                          developer.log(
-                            'selected filters count: ${selectedFilters.length}',
-                            name: 'infinity.scroll.widget.filterchip.onselect',
-                          );
+                            developer.log(
+                              'selected filters count: ${selectedFilters.length}',
+                              name: 'infinity.scroll.widget.filterchip.onselect',
+                            );
 
-                          await widget.paginatedProvider
-                              .refreshPagingTaskEither(newFilters: selectedFilters)
-                              .match(
-                                (l) => DialogHelper.showSnackBar(context, 'Có lỗi khi lấy dữ liệu'),
-                                (r) {},
-                              )
-                              .run();
-                        },
+                            await widget.paginatedProvider
+                                .refreshPagingTaskEither(newFilters: selectedFilters)
+                                .match(
+                                  (l) => DialogHelper.showSnackBar(context, 'Có lỗi khi lấy dữ liệu'),
+                                  (r) {},
+                                )
+                                .run();
+                          },
+                        ),
                       ),
                     )
                     .toList(),

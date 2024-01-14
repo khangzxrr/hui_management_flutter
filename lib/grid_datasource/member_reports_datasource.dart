@@ -11,6 +11,14 @@ import 'dart:developer' as developer;
 class MemberReportsDataSource extends DataGridSource {
   List<DataGridRow> reportRows = [];
 
+  Set<String> numberFormatColumnNames = {
+    'totalProcessingAmount',
+    'totalDebtAmount',
+    'totalAliveAmount',
+    'totalDeadAmount',
+    'totalUnfinishedTakenAmount',
+    'fundRatio',
+  };
   void clearData() {
     reportRows.clear();
   }
@@ -62,7 +70,7 @@ class MemberReportsDataSource extends DataGridSource {
       (dataGridCell) {
         late String cellTextValue;
 
-        if (dataGridCell.columnName == 'totalProcessingAmount' || dataGridCell.columnName == 'totalDebtAmount' || dataGridCell.columnName == 'totalAliveAmount' || dataGridCell.columnName == 'totalDeadAmount' || dataGridCell.columnName == 'totalTakenAmount' || dataGridCell.columnName == 'fundRatio') {
+        if (numberFormatColumnNames.contains(dataGridCell.columnName)) {
           cellTextValue = Utils.moneyFormat.format(dataGridCell.value);
         } else {
           cellTextValue = dataGridCell.value.toString();
@@ -88,7 +96,7 @@ class MemberReportsDataSource extends DataGridSource {
 
     String formatedSummaryValue = summaryValue;
 
-    if (summaryColumn.columnName == 'totalProcessingAmount' || summaryColumn.columnName == 'totalDebtAmount' || summaryColumn.columnName == 'totalAliveAmount' || summaryColumn.columnName == 'totalDeadAmount' || summaryColumn.columnName == 'totalTakenAmount' || summaryColumn.columnName == 'fundRatio') {
+    if (numberFormatColumnNames.contains(summaryColumn.columnName)) {
       formatedSummaryValue = Utils.moneyFormat.format(double.parse(summaryValue));
     } else {
       formatedSummaryValue = summaryValue;
