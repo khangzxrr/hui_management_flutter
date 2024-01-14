@@ -5,18 +5,23 @@ class GeneralFundFilter extends IFilter<GeneralFundFilter> {
   String? seachTerm;
   static const String searchTermName = 'searchTerm';
 
+  int? bySubuserId;
+  static const String bySubuserIdName = 'bySubuserId';
+
   bool? onlyDayFund;
   static const String onlyDayFundName = 'onlyDayFund';
 
   bool? onlyMonthFund;
   static const String onlyMonthFundName = 'onlyMonthFundName';
 
+  GeneralFundFilter({this.seachTerm, this.bySubuserId, this.onlyDayFund, this.onlyMonthFund});
+
   @override
   Set<InfinityScrollFilter> convertToInfinityScrollFilters() {
     return {
       InfinityScrollFilter(label: 'Lọc dây hụi ngày', name: onlyDayFundName, textFilter: false),
       InfinityScrollFilter(label: 'Lọc dây hụi tháng', name: onlyMonthFundName, textFilter: false),
-      InfinityScrollFilter(label: 'Lọc dây hụi bởi tên', name: searchTermName, textFilter: true),
+      InfinityScrollFilter(label: 'Lọc dây hụi bởi tên hụi', name: searchTermName, textFilter: true),
     };
   }
 
@@ -33,6 +38,9 @@ class GeneralFundFilter extends IFilter<GeneralFundFilter> {
       }
       if (isfilter.name == onlyMonthFundName) {
         filter.onlyMonthFund = true;
+      }
+      if (isfilter.name == bySubuserIdName) {
+        filter.bySubuserId = isfilter.value as int;
       }
     }
 
@@ -51,6 +59,9 @@ class GeneralFundFilter extends IFilter<GeneralFundFilter> {
     }
     if (onlyMonthFund != null) {
       filters[onlyMonthFundName] = 'true';
+    }
+    if (bySubuserId != null) {
+      filters[bySubuserIdName] = bySubuserId.toString();
     }
 
     return filters;

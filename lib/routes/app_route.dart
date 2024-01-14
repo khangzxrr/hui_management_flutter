@@ -12,6 +12,7 @@ import '../model/sub_user_with_payment_report.dart';
 import '../view/dashboard_info.dart';
 import '../view/dashboard_view.dart';
 import '../view/fund/final_settlement_for_dead_session_view.dart';
+import '../view/fund/fund_belong_to_sub_user_view.dart';
 import '../view/fund/fund_detail.dart';
 import '../view/fund/fund_edit.dart';
 import '../view/fund/fund_members_view.dart';
@@ -52,6 +53,7 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: MemberReportRoute.page, guards: [AuthGuard()]),
           ],
         ),
+        AutoRoute(page: FundBelongToSubUserRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: MemberEditRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundMembersRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundEditRoute.page, guards: [AuthGuard()]),

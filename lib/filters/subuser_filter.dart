@@ -70,4 +70,8 @@ class SubUserFilter extends IFilter<SubUserFilter> {
       InfinityScrollFilter(label: 'Lọc những thanh toán chưa hoàn thành (gồm nợ)', name: unfinishedPaymentName, textFilter: false),
     };
   }
+
+  Set<InfinityScrollFilter> convertToMemberInfinityScrollFilters() {
+    return {InfinityScrollFilter(label: 'Tìm kiếm theo tên hụi viên', name: searchTermName, textFilter: true)};
+  }
 }
