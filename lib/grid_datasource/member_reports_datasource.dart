@@ -46,7 +46,7 @@ class MemberReportsDataSource extends DataGridSource {
               DataGridCell(columnName: 'totalDebtAmount', value: r.totalDebtAmount),
               DataGridCell(columnName: 'totalAliveAmount', value: r.totalAliveAmount),
               DataGridCell(columnName: 'totalDeadAmount', value: r.totalDeadAmount),
-              DataGridCell(columnName: 'totalTakenAmount', value: r.totalTakenAmount),
+              DataGridCell(columnName: 'totalUnfinishedTakenAmount', value: r.totalUnfinishedTakenAmount),
               DataGridCell(columnName: 'fundRatio', value: r.fundRatio),
             ],
           ),

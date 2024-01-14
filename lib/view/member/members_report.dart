@@ -98,8 +98,8 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
             summaryType: GridSummaryType.sum,
           ),
           const GridSummaryColumn(
-            name: 'sumTotalTakenAmount',
-            columnName: 'totalTakenAmount',
+            name: 'sumTotalUnfinishedTakenAmount',
+            columnName: 'totalUnfinishedTakenAmount',
             summaryType: GridSummaryType.sum,
           ),
           const GridSummaryColumn(
@@ -170,7 +170,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
         ),
       ),
       GridColumn(
-        columnName: 'totalTakenAmount',
+        columnName: 'totalUnfinishedTakenAmount',
         minimumWidth: 100,
         label: Container(
           padding: const EdgeInsets.all(5.0),
