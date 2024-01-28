@@ -11,6 +11,7 @@ class SubUserWithPaymentReport extends SubUserModel {
   final double totalDeadAmount;
   final double fundRatio;
   final double totalTakenAmount;
+  final double totalUnfinishedTakenAmount;
 
   SubUserWithPaymentReport({
     required this.totalProcessingAmount,
@@ -19,6 +20,7 @@ class SubUserWithPaymentReport extends SubUserModel {
     required this.totalAliveAmount,
     required this.totalDeadAmount,
     required this.totalTakenAmount,
+    required this.totalUnfinishedTakenAmount,
     required int id,
     required String imageUrl,
     required String name,

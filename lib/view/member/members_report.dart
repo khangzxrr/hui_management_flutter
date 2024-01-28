@@ -4,7 +4,9 @@ import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/filters/subuser_filter.dart';
 import 'package:hui_management/helper/constants.dart';
+import 'package:hui_management/helper/dialog.dart';
 import 'package:hui_management/model/sub_user_with_payment_report.dart';
 import 'package:hui_management/service/user_service.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -42,6 +44,12 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
     dataSource.sort();
 
     bool isMobile = MediaQuery.of(context).size.width < Constants.smallScreenSize;
+
+    if (widget.reports.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return SfDataGrid(
       allowPullToRefresh: true,
@@ -96,8 +104,8 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
             summaryType: GridSummaryType.sum,
           ),
           const GridSummaryColumn(
-            name: 'sumTotalTakenAmount',
-            columnName: 'totalTakenAmount',
+            name: 'sumTotalUnfinishedTakenAmount',
+            columnName: 'totalUnfinishedTakenAmount',
             summaryType: GridSummaryType.sum,
           ),
           const GridSummaryColumn(
@@ -114,17 +122,9 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
   List<GridColumn> buildColumns() {
     return [
       GridColumn(
-        columnName: 'name',
-        minimumWidth: 100,
-        label: Container(
-          padding: const EdgeInsets.all(5.0),
-          alignment: Alignment.center,
-          child: const Text('Tên hụi viên'),
-        ),
-      ),
-      GridColumn(
         columnName: 'nickName',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -132,8 +132,19 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
         ),
       ),
       GridColumn(
+        columnName: 'name',
+        minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Tên hụi viên'),
+        ),
+      ),
+      GridColumn(
         columnName: 'totalProcessingAmount',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -143,6 +154,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       GridColumn(
         columnName: 'totalDebtAmount',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -152,6 +164,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       GridColumn(
         columnName: 'totalAliveAmount',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -161,6 +174,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       GridColumn(
         columnName: 'totalDeadAmount',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -168,8 +182,9 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
         ),
       ),
       GridColumn(
-        columnName: 'totalTakenAmount',
+        columnName: 'totalUnfinishedTakenAmount',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -179,6 +194,7 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
       GridColumn(
         columnName: 'fundRatio',
         minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
           padding: const EdgeInsets.all(5.0),
           alignment: Alignment.center,
@@ -191,10 +207,18 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
   @override
   FutureOr<void> afterFirstLayout(BuildContext context) async {
     try {
-      final fetchedReports = await GetIt.I<UserService>().getAllWithPaymentReport(0, 0, '', {'AtLeastOnePayment'});
+      final fetchedReports = await GetIt.I<UserService>().getAllWithPaymentReport(
+          0,
+          0,
+          SubUserFilter(
+            atLeastOnePayment: true,
+          ));
       setState(() {
+        widget.reports.clear();
         widget.reports.addAll(fetchedReports);
       });
-    } catch (e) {}
+    } catch (e) {
+      DialogHelper.showSnackBar(context, 'Lỗi khi lấy dữ liệu, vui lòng liên hệ admin');
+    }
   }
 }

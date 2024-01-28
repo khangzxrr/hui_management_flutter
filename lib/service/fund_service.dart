@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/filters/general_fund_filter.dart';
 import 'package:hui_management/helper/authorize_http.dart';
 import 'package:hui_management/helper/constants.dart';
 import 'package:hui_management/model/fund_model.dart';
@@ -138,13 +139,13 @@ class FundService {
     throw Exception(response.body);
   }
 
-  Future<List<GeneralFundModel>> getAll(int pageIndex, int pageSize, String searchTerm, Set<String> filters) async {
+  Future<List<GeneralFundModel>> getAll(int pageIndex, int pageSize, GeneralFundFilter filter) async {
     Map<String, dynamic> queryParams = {
       'pageIndex': pageIndex.toString(),
       'pageSize': pageSize.toString(),
-      'searchTerm': searchTerm,
-      'filters': filters,
     };
+
+    queryParams.addAll(filter.toMap());
 
     final uri = httpClient.generateUriWithParams('/funds', queryParams);
 

@@ -100,7 +100,12 @@ class _LoginScreenState extends State<LoginScreen> with AfterLayoutMixin<LoginSc
 
                         enableLoading();
 
-                        final authenticationEither = await GetIt.I<LoginService>().login(_emailFieldKey.currentState?.value as String, _passwordFieldKey.currentState?.value as String).run();
+                        final authenticationEither = await GetIt.I<LoginService>()
+                            .login(
+                              _emailFieldKey.currentState?.value as String,
+                              _passwordFieldKey.currentState?.value as String,
+                            )
+                            .run();
 
                         authenticationEither.match(
                           (error) {

@@ -1,8 +1,10 @@
 class InfinityScrollFilter implements Comparable<InfinityScrollFilter> {
-  String value;
-  String name;
+  String? value;
+  final String name;
+  final String label;
+  final bool textFilter;
 
-  InfinityScrollFilter({required this.name, required this.value});
+  InfinityScrollFilter({required this.label, required this.name, required this.textFilter});
 
   @override
   int compareTo(other) {
@@ -11,6 +13,6 @@ class InfinityScrollFilter implements Comparable<InfinityScrollFilter> {
 
   @override
   String toString() {
-    return '{name: $name, value: $value}';
+    return '{label: $label, name: $name, value: $value, textFiler: $textFilter}';
   }
 }

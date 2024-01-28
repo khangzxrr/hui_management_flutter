@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hui_management/filters/subuser_filter.dart';
 import 'package:hui_management/model/infinity_scroll_filter_model.dart';
 import 'package:hui_management/model/sub_user_model.dart';
 import 'package:hui_management/provider/abstract_provider/paginated_provider.dart';
@@ -30,11 +31,12 @@ class SubUsersProvider extends PaginatedProvider<SubUserModel> with ChangeNotifi
   }
 
   @override
-  TaskEither<String, void> fetchData(int pageIndex, int pageSize, String searchTerm, Set<InfinityScrollFilter> additionalFilters) => TaskEither.tryCatch(
+  TaskEither<String, void> fetchData(int pageIndex, int pageSize, Set<InfinityScrollFilter> additionalFilters) => TaskEither.tryCatch(
         () async {
-          final users = await GetIt.I<UserService>().getAll(pageIndex, pageSize, searchTerm, getFilterValues(additionalFilters));
+          final filter = SubUserFilter().convertFromInfinityScrollFilter(additionalFilters);
+
+          final users = await GetIt.I<UserService>().getAll(pageIndex, pageSize, filter);
           items.addAll(users);
-          this.searchTerm = searchTerm;
 
           if (users.length < pageIndex) {
             pagingState = PagingState<int, SubUserModel>(itemList: items);

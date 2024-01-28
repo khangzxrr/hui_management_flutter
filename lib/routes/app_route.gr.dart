@@ -55,6 +55,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const FinalSettlementForDeadSessionScreen(),
       );
     },
+    FundBelongToSubUserRoute.name: (routeData) {
+      final args = routeData.argsAs<FundBelongToSubUserRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: FundBelongToSubUserScreen(
+          key: args.key,
+          subUserId: args.subUserId,
+          subUserName: args.subUserName,
+        ),
+      );
+    },
     FundDetailRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -306,6 +317,50 @@ class FinalSettlementForDeadSessionRoute extends PageRouteInfo<void> {
   static const String name = 'FinalSettlementForDeadSessionRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FundBelongToSubUserScreen]
+class FundBelongToSubUserRoute
+    extends PageRouteInfo<FundBelongToSubUserRouteArgs> {
+  FundBelongToSubUserRoute({
+    Key? key,
+    required int subUserId,
+    required String subUserName,
+    List<PageRouteInfo>? children,
+  }) : super(
+          FundBelongToSubUserRoute.name,
+          args: FundBelongToSubUserRouteArgs(
+            key: key,
+            subUserId: subUserId,
+            subUserName: subUserName,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'FundBelongToSubUserRoute';
+
+  static const PageInfo<FundBelongToSubUserRouteArgs> page =
+      PageInfo<FundBelongToSubUserRouteArgs>(name);
+}
+
+class FundBelongToSubUserRouteArgs {
+  const FundBelongToSubUserRouteArgs({
+    this.key,
+    required this.subUserId,
+    required this.subUserName,
+  });
+
+  final Key? key;
+
+  final int subUserId;
+
+  final String subUserName;
+
+  @override
+  String toString() {
+    return 'FundBelongToSubUserRouteArgs{key: $key, subUserId: $subUserId, subUserName: $subUserName}';
+  }
 }
 
 /// generated route for
