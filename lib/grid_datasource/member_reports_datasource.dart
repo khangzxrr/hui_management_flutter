@@ -48,8 +48,8 @@ class MemberReportsDataSource extends DataGridSource {
         .map<DataGridRow>(
           (r) => DataGridRow(
             cells: [
-              DataGridCell(columnName: 'name', value: r.name),
               DataGridCell(columnName: 'nickName', value: r.nickName),
+              DataGridCell(columnName: 'name', value: r.name),
               DataGridCell(columnName: 'totalProcessingAmount', value: r.totalProcessingAmount),
               DataGridCell(columnName: 'totalDebtAmount', value: r.totalDebtAmount),
               DataGridCell(columnName: 'totalAliveAmount', value: r.totalAliveAmount),
@@ -78,7 +78,7 @@ class MemberReportsDataSource extends DataGridSource {
 
         return Container(
           padding: const EdgeInsets.all(16.0),
-          child: Text(cellTextValue),
+          child: Text(cellTextValue, textAlign: TextAlign.end),
         );
       },
     ).toList());
