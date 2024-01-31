@@ -234,7 +234,6 @@ class PaymentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final isSmallScreen = MediaQuery.of(context).size.width < Constants.smallScreenSize;
 
     return Scaffold(
@@ -288,7 +287,7 @@ class PaymentDetailScreen extends StatelessWidget {
                       const Text('Tổng tiền phải đóng:\t'),
                       const Text('Tổng tiền hốt:\t'),
                       const Text('Tổng tiền đã hoàn thành:\t'),
-                      Text(payment.status == PaymentStatus.debting ? 'Nợ còn lại: ' : 'Tổng còn lại phải thanh toán: '),
+                      Text(payment.status == PaymentStatus.debting ? 'Nợ: ' : 'Tổng còn lại phải thanh toán: '),
                     ],
                   ),
                   Column(

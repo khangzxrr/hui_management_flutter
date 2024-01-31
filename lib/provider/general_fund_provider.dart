@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_it/get_it.dart';
@@ -40,7 +42,13 @@ class GeneralFundProvider extends PaginatedProvider<GeneralFundModel> with Chang
   }
 
   void updateSessionCount(int fundId, int sessionCountOffset) {
-    final fund = items.where((f) => f.id == fundId).first;
+    final fund = items.where((f) => f.id == fundId).firstOrNull;
+
+    if (fund == null) {
+      log("Cannot found fund by id ${fundId} - no update session count");
+      return;
+    }
+
     fund.sessionsCount += sessionCountOffset;
 
     updateFund(fund);
@@ -62,4 +70,10 @@ class GeneralFundProvider extends PaginatedProvider<GeneralFundModel> with Chang
 
         notifyListeners();
       }, (error, stackTrace) => error.toString());
+
+  @override
+  TaskEither<String, void> refreshSingleItem(int itemId) {
+    // TODO: implement refreshSingleItem
+    throw UnimplementedError();
+  }
 }

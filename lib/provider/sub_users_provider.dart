@@ -48,4 +48,10 @@ class SubUsersProvider extends PaginatedProvider<SubUserModel> with ChangeNotifi
         },
         (error, stackTrace) => error.toString(),
       );
+      
+        @override
+        TaskEither<String, void> refreshSingleItem(int itemId) {
+          // TODO: implement refreshSingleItem
+          throw UnimplementedError();
+        }
 }
