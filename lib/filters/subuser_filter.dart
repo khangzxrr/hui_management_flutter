@@ -14,10 +14,14 @@ class SubUserFilter extends IFilter<SubUserFilter> {
   String? searchTerm;
   static const searchTermName = 'searchTerm';
 
+  bool? getProcessingAndDebtPaymentOnly;
+  static const getProcessingAndDebtPaymentOnlyName = 'getProcessingAndDebtPaymentOnly';
+
   SubUserFilter({
     this.atLeastOnePayment,
     this.todayPayment,
     this.searchTerm,
+    this.getProcessingAndDebtPaymentOnly,
   });
 
   @override
@@ -35,6 +39,9 @@ class SubUserFilter extends IFilter<SubUserFilter> {
     }
     if (unfinishedPayment != null) {
       filters[unfinishedPaymentName] = 'true';
+    }
+    if (getProcessingAndDebtPaymentOnly != null) {
+      filters[getProcessingAndDebtPaymentOnlyName] = 'true';
     }
 
     return filters;
@@ -57,6 +64,9 @@ class SubUserFilter extends IFilter<SubUserFilter> {
       if (infinityScrollFilter.name == unfinishedPaymentName) {
         filter.unfinishedPayment = true;
       }
+      if (infinityScrollFilter.name == getProcessingAndDebtPaymentOnlyName) {
+        filter.getProcessingAndDebtPaymentOnly = true;
+      }
     }
 
     return filter;
@@ -65,13 +75,41 @@ class SubUserFilter extends IFilter<SubUserFilter> {
   @override
   Set<InfinityScrollFilter> convertToInfinityScrollFilters() {
     return {
-      InfinityScrollFilter(label: 'Tìm kiếm theo tên hụi viên', name: searchTermName, textFilter: true),
-      InfinityScrollFilter(label: 'Lọc những thanh toán hôm nay', name: todayPaymentName, textFilter: false),
-      InfinityScrollFilter(label: 'Lọc những thanh toán chưa hoàn thành (gồm nợ)', name: unfinishedPaymentName, textFilter: false),
+      InfinityScrollFilter(
+        label: 'Tìm kiếm theo tên hụi viên',
+        name: searchTermName,
+        textFilter: true,
+      ),
+      InfinityScrollFilter(
+        label: 'Chỉ lọc những hụi viên có ít nhất 1 bill',
+        name: atLeastOnePaymentName,
+        textFilter: false,
+        isShow: false,
+        isAlwaysOn: true,
+      ),
+      InfinityScrollFilter(
+        label: 'Chỉ lấy bill nợ và bill đang xử lí',
+        name: getProcessingAndDebtPaymentOnlyName,
+        textFilter: false,
+        isShow: false,
+        isAlwaysOn: true,
+      ),
+      InfinityScrollFilter(
+        label: 'Lọc những thanh toán hôm nay',
+        name: todayPaymentName,
+        textFilter: false,
+      ),
+      InfinityScrollFilter(
+        label: 'Lọc những thanh toán chưa hoàn thành (gồm nợ)',
+        name: unfinishedPaymentName,
+        textFilter: false,
+      ),
     };
   }
 
   Set<InfinityScrollFilter> convertToMemberInfinityScrollFilters() {
-    return {InfinityScrollFilter(label: 'Tìm kiếm theo tên hụi viên', name: searchTermName, textFilter: true)};
+    return {
+      InfinityScrollFilter(label: 'Tìm kiếm theo tên hụi viên', name: searchTermName, textFilter: true, isShow: true),
+    };
   }
 }

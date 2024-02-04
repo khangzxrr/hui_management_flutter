@@ -13,6 +13,7 @@ import '../../model/infinity_scroll_filter_model.dart';
 class InfinityScrollWidget<T> extends StatefulWidget {
   final PaginatedProvider<T> paginatedProvider;
   final Set<InfinityScrollFilter> filters;
+  final Set<InfinityScrollFilter> alwaysOnFilters;
 
   final Widget Function(T) widgetItemFactory;
 
@@ -21,6 +22,7 @@ class InfinityScrollWidget<T> extends StatefulWidget {
     required this.paginatedProvider,
     required this.widgetItemFactory,
     required this.filters,
+    this.alwaysOnFilters = const {},
   });
 
   @override
@@ -34,6 +36,8 @@ class _InfinityScrollWidgetState<T> extends State<InfinityScrollWidget<T>> with 
 
   @override
   Widget build(BuildContext context) {
+    selectedFilters.addAll(widget.alwaysOnFilters);
+
     developer.log(selectedFilters.toString(), name: 'infinity.scroll.widget.build');
 
     return RefreshIndicator(
@@ -67,7 +71,7 @@ class _InfinityScrollWidgetState<T> extends State<InfinityScrollWidget<T>> with 
               child: Wrap(
                 spacing: 4.0,
                 children: widget.filters
-                    .where((f) => !f.textFilter)
+                    .where((f) => !f.textFilter && f.isShow)
                     .map(
                       (filter) => Padding(
                         padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),

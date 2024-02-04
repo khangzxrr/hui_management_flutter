@@ -5,4 +5,8 @@ abstract class IFilter<T> {
   T convertFromInfinityScrollFilter(Set<InfinityScrollFilter> infinityScrollFilters);
 
   Set<InfinityScrollFilter> convertToInfinityScrollFilters();
+
+  Set<InfinityScrollFilter> convertAlwaysOnFilterToInfinityScrollFilters() {
+    return convertToInfinityScrollFilters().where((element) => element.isAlwaysOn).toSet();
+  }
 }

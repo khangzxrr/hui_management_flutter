@@ -112,9 +112,12 @@ class MultiplePaymentMembersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final subuserProvider = Provider.of<SubUserWithPaymentReportProvider>(context, listen: true);
 
+    final convertedToInfinityScrollFilters = SubUserFilter().convertToInfinityScrollFilters();
+
     return InfinityScrollWidget<SubUserWithPaymentReport>(
       paginatedProvider: subuserProvider,
-      filters: SubUserFilter().convertToInfinityScrollFilters(),
+      filters: convertedToInfinityScrollFilters,
+      alwaysOnFilters: SubUserFilter().convertAlwaysOnFilterToInfinityScrollFilters(),
       widgetItemFactory: (subuserWithPaymentReport) => SingleMemberScreen(subUserReports: subuserWithPaymentReport),
     );
   }

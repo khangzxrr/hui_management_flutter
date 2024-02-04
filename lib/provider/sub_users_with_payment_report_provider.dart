@@ -14,11 +14,8 @@ class SubUserWithPaymentReportProvider extends PaginatedProvider<SubUserWithPaym
         () async {
           final filter = SubUserFilter().convertFromInfinityScrollFilter(additionalFilters);
 
-          filter.atLeastOnePayment = true; //additional filter
-
           final users = await GetIt.I<UserService>().getAllWithPaymentReport(pageIndex, pageSize, filter);
           items.addAll(users);
-          //this.searchTerm = searchTerm;
 
           if (users.length < pageIndex) {
             pagingState = PagingState<int, SubUserWithPaymentReport>(itemList: items);
