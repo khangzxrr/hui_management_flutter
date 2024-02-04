@@ -113,7 +113,7 @@ class _DashboardInfoState extends State<DashboardInfo> {
 
         return Scaffold(
           body: child,
-          floatingActionButton: tabRouter.activeIndex > 0 && tabRouter.activeIndex < 3
+          floatingActionButton: tabRouter.activeIndex > 0 && tabRouter.activeIndex < 4
               ? FloatingActionButton(
                   onPressed: () {
                     if (tabRouter.current.name == MembersRoute.name) {

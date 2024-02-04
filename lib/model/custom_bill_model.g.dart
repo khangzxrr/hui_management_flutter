@@ -24,4 +24,5 @@ Map<String, dynamic> _$CustomBillToJson(CustomBill instance) =>
 const _$CustomBillTypeEnumMap = {
   CustomBillType.ownerTake: 'OwnerTake',
   CustomBillType.ownerPaid: 'OwnerPaid',
+  CustomBillType.outsideDebt: 'OutsideDebt',
 };

@@ -201,6 +201,16 @@ class _MemberReportScreenState extends State<MemberReportScreen> with AfterLayou
           child: const Text('Âm/Dương'),
         ),
       ),
+      GridColumn(
+        columnName: 'totalOutsideDebt',
+        minimumWidth: 100,
+        columnWidthMode: ColumnWidthMode.fitByCellValue,
+        label: Container(
+          padding: const EdgeInsets.all(5.0),
+          alignment: Alignment.center,
+          child: const Text('Nợ khác'),
+        ),
+      ),
     ];
   }
 

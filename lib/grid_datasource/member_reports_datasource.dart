@@ -18,6 +18,7 @@ class MemberReportsDataSource extends DataGridSource {
     'totalDeadAmount',
     'totalUnfinishedTakenAmount',
     'fundRatio',
+    'totalOutsideDebt',
   };
   void clearData() {
     reportRows.clear();
@@ -56,6 +57,7 @@ class MemberReportsDataSource extends DataGridSource {
               DataGridCell(columnName: 'totalDeadAmount', value: r.totalDeadAmount),
               DataGridCell(columnName: 'totalUnfinishedTakenAmount', value: r.totalUnfinishedTakenAmount),
               DataGridCell(columnName: 'fundRatio', value: r.fundRatio),
+              DataGridCell(columnName: 'totalOutsideDebt', value: r.totalOutsideDebt),
             ],
           ),
         )

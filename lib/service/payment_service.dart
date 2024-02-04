@@ -7,6 +7,17 @@ import '../helper/constants.dart';
 class PaymentService {
   final httpClient = GetIt.I<AuthorizeHttp>();
 
+  Future addCustomBill({required int subuserId, required double amount, required String customBillType, required String description}) async {
+    await httpClient.postJson(
+      '${Constants.apiHostName}/owner/subusers/$subuserId/payments/custom-bills/add',
+      {
+        'customBillType': customBillType,
+        'amount': amount,
+        'description': description,
+      },
+    );
+  }
+
   Future<List<PaymentModel>> getPayments({required int ownerId, int? sessionDetailId}) async {
     final json = await httpClient.getJson('${Constants.apiHostName}/owner/subusers/$ownerId/payments');
 

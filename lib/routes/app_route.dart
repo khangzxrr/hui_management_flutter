@@ -28,6 +28,7 @@ import '../view/login_view.dart';
 import '../view/member/member_edit.dart';
 import '../view/member/members_report.dart';
 import '../view/member/members_view.dart';
+import '../view/payments/payment_add_custom_bill_view.dart';
 import '../view/payments/payment_detail_table_view.dart';
 import '../view/payments/payment_paycheck_view.dart';
 import '../view/payments/payment_summaries_view.dart';
@@ -53,6 +54,7 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: MemberReportRoute.page, guards: [AuthGuard()]),
           ],
         ),
+        //========= fund related route
         AutoRoute(page: FundBelongToSubUserRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: MemberEditRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundMembersRoute.page, guards: [AuthGuard()]),
@@ -64,9 +66,12 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: FinalSettlementForDeadSessionRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundSessionListRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: SessionDetailRoute.page, guards: [AuthGuard()]),
+        //========== payment related route
         AutoRoute(page: PaymentListOfUserRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PaycheckRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PaymentDetailRoute.page, guards: [AuthGuard()]),
+        AutoRoute(page: AddCustomBillRoute.page, guards: [AuthGuard()]),
+        //========== report & export route
         AutoRoute(page: FundReportRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: PdfExportReviewRoute.page, guards: [AuthGuard()]),
         AutoRoute(page: FundNormalSessionExportPdfRoute.page, guards: [AuthGuard()]),

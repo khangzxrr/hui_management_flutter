@@ -7,6 +7,9 @@ enum CustomBillType {
   ownerTake,
   @JsonValue('OwnerPaid')
   ownerPaid,
+
+  @JsonValue("OutsideDebt")
+  outsideDebt,
 }
 
 @JsonSerializable()

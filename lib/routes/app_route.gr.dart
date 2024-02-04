@@ -15,6 +15,16 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    AddCustomBillRoute.name: (routeData) {
+      final args = routeData.argsAs<AddCustomBillRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: AddCustomBillScreen(
+          key: args.key,
+          subuser: args.subuser,
+        ),
+      );
+    },
     CreateSessionEnterInfoRoute.name: (routeData) {
       final args = routeData.argsAs<CreateSessionEnterInfoRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -208,6 +218,44 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [AddCustomBillScreen]
+class AddCustomBillRoute extends PageRouteInfo<AddCustomBillRouteArgs> {
+  AddCustomBillRoute({
+    Key? key,
+    required SubUserModel subuser,
+    List<PageRouteInfo>? children,
+  }) : super(
+          AddCustomBillRoute.name,
+          args: AddCustomBillRouteArgs(
+            key: key,
+            subuser: subuser,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'AddCustomBillRoute';
+
+  static const PageInfo<AddCustomBillRouteArgs> page =
+      PageInfo<AddCustomBillRouteArgs>(name);
+}
+
+class AddCustomBillRouteArgs {
+  const AddCustomBillRouteArgs({
+    this.key,
+    required this.subuser,
+  });
+
+  final Key? key;
+
+  final SubUserModel subuser;
+
+  @override
+  String toString() {
+    return 'AddCustomBillRouteArgs{key: $key, subuser: $subuser}';
+  }
 }
 
 /// generated route for

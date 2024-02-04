@@ -85,7 +85,18 @@ class PaymentListOfUserScreen extends StatelessWidget {
         // ),
         body: TabBarView(children: [
           ListView(
-            children: processingBillsWidget,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () => context.pushRoute(
+                    AddCustomBillRoute(subuser: user),
+                  ),
+                  child: const Text('Thêm bill mới'),
+                ),
+              ),
+              ...processingBillsWidget,
+            ],
           ),
           ListView(
             children: debtingBillsWidget,

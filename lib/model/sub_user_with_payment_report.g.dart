@@ -17,6 +17,7 @@ SubUserWithPaymentReport _$SubUserWithPaymentReportFromJson(
       totalTakenAmount: (json['totalTakenAmount'] as num).toDouble(),
       totalUnfinishedTakenAmount:
           (json['totalUnfinishedTakenAmount'] as num).toDouble(),
+      totalOutsideDebt: (json['totalOutsideDebt'] as num).toDouble(),
       id: json['id'] as int,
       imageUrl: json['imageUrl'] as String,
       name: json['name'] as String,
@@ -57,4 +58,5 @@ Map<String, dynamic> _$SubUserWithPaymentReportToJson(
       'fundRatio': instance.fundRatio,
       'totalTakenAmount': instance.totalTakenAmount,
       'totalUnfinishedTakenAmount': instance.totalUnfinishedTakenAmount,
+      'totalOutsideDebt': instance.totalOutsideDebt,
     };

@@ -9,6 +9,22 @@ class PaymentProvider with ChangeNotifier {
 
   final paymentService = GetIt.I<PaymentService>();
 
+  TaskEither<String, void> addCustomBill({
+    required int subuserId,
+    required double amount,
+    required String customBillType,
+    required String description,
+  }) =>
+      TaskEither.tryCatch(
+        () async => await paymentService.addCustomBill(
+          subuserId: subuserId,
+          amount: amount,
+          customBillType: customBillType,
+          description: description,
+        ),
+        (error, stackTrace) => error.toString(),
+      );
+
   TaskEither<String, List<PaymentModel>> getPaymentsFilterBy({required int subUserId, int? sessionDetailId}) => TaskEither.tryCatch(
         () async => await paymentService.getPayments(ownerId: subUserId, sessionDetailId: sessionDetailId),
         (error, stackTrace) => error.toString(),
